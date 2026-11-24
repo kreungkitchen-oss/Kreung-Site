@@ -84,7 +84,7 @@ const crumbs = [
           <h3>Proteins</h3>
           <ul class="mlist">
             {cateringMenu.proteins.map((p) => (
-              <li><b>{p.name}</b>{p.vegan ? <span class="vg">Vegan</span> : <span class="md">{meatNote}</span>}</li>
+              <li><b>{p.name}</b>{p.vegan ? <span class="vg">Vegan</span> : <span class="md">{('note' in p && p.note) || meatNote}</span>}</li>
             ))}
           </ul>
           <p class="note">Classic: choose 1. Signature: choose 2. The Full Experience: all 4 meats.</p>
