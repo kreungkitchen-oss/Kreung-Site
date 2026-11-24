@@ -1,0 +1,43 @@
+---
+/**
+ * Page-matched sticky call to action.
+ * - Desktop (900px+): a pill fixed at the bottom left (the "Text us" button stays bottom right).
+ * - Mobile: a bottom bar with the CTA and the "Text us" link side by side; the
+ *   floating "Text us" button is hidden on pages with this bar so they don't overlap.
+ * With JavaScript, the desktop pill waits until you scroll past the hero so it
+ * doesn't cover the hero button. Without JavaScript it always shows. Hidden when printing.
+ */
+import { business } from '../data/business';
+interface Props { label: string; href: string }
+const { label, href } = Astro.props;
+---
+<div class="scta" data-sticky-cta>
+  <a class="scta__main" href={href}>{label}</a>
+  <a class="scta__text" href={`sms:${business.phone.e164}`} aria-label={`Text us at ${business.phone.display}`}>Text us</a>
+</div>
+<script>
+  const bar = document.querySelector('[data-sticky-cta]');
+  const check = () => bar?.classList.toggle('is-on', window.scrollY > window.innerHeight * 0.7);
+  addEventListener('scroll', check, { passive: true });
+  check();
+</script>
+<style>
+  .scta { position: fixed; z-index: 49; left: 0; right: 0; bottom: 0; display: flex; gap: 8px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: var(--plum); border-top: 3px solid var(--yellow); }
+  .scta a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 999px; font-weight: 800; font-size: 16px; text-decoration: none; padding: 0 16px; }
+  .scta__main { flex: 1; background: var(--yellow); color: var(--plum); }
+  .scta__text { background: var(--teal-d); color: #fff; border: 2px solid var(--cream); }
+  .scta a:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+  :global(body:has([data-sticky-cta])) { padding-bottom: 76px; }
+  :global(body:has([data-sticky-cta]) .textus) { display: none; }
+  @media (min-width: 900px) {
+    .scta { left: 16px; right: auto; bottom: 16px; padding: 0; background: none; border: 0; }
+    .scta__text { display: none !important; }
+    .scta__main { flex: none; min-height: 52px; padding: 0 22px; border: 3px solid var(--plum); box-shadow: 4px 4px 0 var(--plum); font-size: 17px; }
+    .scta__main:hover { background: var(--cream); }
+    :global(html.js) .scta { opacity: 0; visibility: hidden; transition: opacity .2s, visibility .2s; }
+    :global(html.js) .scta.is-on { opacity: 1; visibility: visible; }
+    :global(body:has([data-sticky-cta])) { padding-bottom: 0; }
+    :global(body:has([data-sticky-cta]) .textus) { display: inline-flex; }
+  }
+  @media print { .scta { display: none; } }
+</style>

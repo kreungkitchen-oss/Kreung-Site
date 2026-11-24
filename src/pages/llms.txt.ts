@@ -3,7 +3,8 @@
  * Built from src/data/business.ts so it never drifts from the site.
  */
 import type { APIRoute } from 'astro';
-import { business, packages, packagesNote, policies, markets, marketNote, cateringMenu, clients, ratings, rewards, money, SITE_URL } from '../data/business';
+import { business, packages, packagesNote, policies, markets, marketNote, cateringMenu, clients, ratings, rewards, money, SITE_URL, portionsReady } from '../data/business';
+import { pageInfo } from '../data/pages';
 
 const u = (p: string) => `${SITE_URL}${p}`;
 
@@ -53,22 +54,15 @@ ${rewards.name}: ${rewards.joinOffer}. ${rewards.earn}
 ## Key pages
 
 - [Catering](${u('/catering')}): all catering options
-- [Corporate catering](${u('/corporate-catering')}): office and team catering with a price estimator
-- [Catering pricing](${u('/catering-pricing')}): how pricing works, with a worked example
-- [Catering menu](${u('/catering-menu')}): full menu, vegan and allergy info
-- [On-site grill catering](${u('/on-site-grill-catering')}): live grilling at events
-- [Production catering](${u('/production-catering')}): film, TV and studio crews
-- [Office Lunch Club](${u('/office-lunch-club')}): recurring office catering
+${Object.entries(pageInfo).filter(([path]) => path.startsWith('/catering/')).map(([path, i]) => `- [${i.name}](${u(path)}): ${i.blurb}`).join('\n')}
 - [Find us](${u('/find-us')}): weekly markets and market menu
 - [Our story](${u('/about')}): Sam, Christina and Mak
 - [FAQ](${u('/faq')}): common questions
 
 ## Guides
 
-- [What is kreung?](${u('/guides/what-is-kreung')})
-- [Cambodian vs. Thai food](${u('/guides/cambodian-vs-thai-food')})
-- [Office lunch ideas in Los Angeles](${u('/guides/office-lunch-ideas-los-angeles')})
-- [How much does catering cost in Los Angeles?](${u('/guides/catering-cost-los-angeles')})
+- [All guides](${u('/guides')})
+${Object.entries(pageInfo).filter(([path]) => path.startsWith('/guides/')).filter(([path]) => portionsReady || path !== '/guides/how-much-food-for-50-people').map(([path, i]) => `- [${i.name}](${u(path)}): ${i.blurb}`).join('\n')}
 `;
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };

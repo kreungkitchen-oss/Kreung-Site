@@ -1,9 +1,12 @@
 ---
 /**
- * Shared template for the niche catering landing pages (Prompt 5).
- * Each page passes its own copy, FAQs, photo and proof; the frame is shared:
- * breadcrumbs, hero with one primary button, page body (slot), packages,
- * proof (clients, reviews, press), estimator, FAQs, closing button.
+ * Shared template for the /catering/ landing pages.
+ * Each page passes its own copy, FAQs, photo, proof, dates and takeaways; the
+ * frame is shared: breadcrumbs, hero with one primary button and the author
+ * box (dates from the page's front matter), key takeaways, page body (slot),
+ * optional video, packages + comparison tables, proof, estimator, FAQs
+ * (H2 + H3s), closing button, related pages and a sticky CTA.
+ * JSON-LD: Service (from here), BreadcrumbList (Breadcrumbs), FAQPage (Faq).
  */
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -14,6 +17,13 @@ import Reviews from './Reviews.astro';
 import Faq from './Faq.astro';
 import Estimator from './Estimator.astro';
 import CtaBand from './CtaBand.astro';
+import AuthorBox from './AuthorBox.astro';
+import KeyTakeaways from './KeyTakeaways.astro';
+import CompareTables from './CompareTables.astro';
+import VideoSlot from './VideoSlot.astro';
+import StickyCta from './StickyCta.astro';
+import Related from './Related.astro';
+import { service } from '../data/schema';
 import { press, reviews, policies, money } from '../data/business';
 import { tone, type ToneName } from '../data/tones';
 
@@ -34,7 +44,14 @@ interface Props {
   reviewKeys: (keyof typeof reviews)[];
   proofHeading?: string;
   faqs: { q: string; a: string }[];
-  faqHeading: string;
+  faqHeading?: string;
+  published: string;
+  updated?: string;
+  takeaways: string[];
+  related: string[];
+  serviceName: string;
+  compare?: ('packages' | 'service')[];
+  video?: { youtubeId: string; title: string; caption?: string; captionsUrl?: string };
   ctaHeading: string;
   ctaText?: string;
   heroTone?: ToneName;
@@ -50,7 +67,7 @@ const crumbs = [
   { name: p.crumb, path: p.path },
 ];
 ---
-<BaseLayout title={p.title} description={p.description} path={p.path}>
+<BaseLayout title={p.title} description={p.description} path={p.path} jsonLd={[service({ name: p.serviceName, description: p.description, path: p.path })]}>
   <section class="sec page-hero" {...tone(p.heroTone ?? 'yellow')}>
     <div class="wrap split split--wide">
       <div>
@@ -59,6 +76,7 @@ const crumbs = [
         <p class="lede">{p.lede}</p>
         <p class="hero-facts">{p.heroFacts ?? `From $20 per person · ${policies.guestsLabel} guests · ${money(policies.minimumDropoff)} minimum`}</p>
         <div class="btn-row"><a class="btn" href="#estimate">{button}</a></div>
+        <AuthorBox published={p.published} updated={p.updated} />
       </div>
       <figure class="photo">
         <Image src={p.photo} alt={p.photoAlt} widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
@@ -68,6 +86,8 @@ const crumbs = [
 
   <section class="sec niche-body" {...tone(p.bodyTone ?? 'cream')}>
     <div class="wrap">
+      <KeyTakeaways items={p.takeaways} cta={{ label: button, href: '#estimate' }} />
+      {p.video && <VideoSlot {...p.video} />}
       <slot />
     </div>
   </section>
@@ -79,8 +99,14 @@ const crumbs = [
       <div class="wrap">
         <div class="head"><h2 id="pk-h">Packages</h2><p class="lede">Priced per person.</p></div>
         <Packages />
-        <p class="dl"><a href="/catering-pricing">How pricing works</a> · <a href="/catering-menu">Catering menu</a> · <a href="/catering">All catering</a></p>
+        <p class="dl"><a href="/catering/pricing">How pricing works</a> · <a href="/catering/menu">Catering menu</a> · <a href="/catering">All catering</a></p>
       </div>
+    </section>
+  )}
+
+  {(p.compare ?? ['packages', 'service']).length > 0 && (
+    <section class="sec" {...tone('cream')} aria-label="Comparison tables">
+      <div class="wrap"><CompareTables show={p.compare ?? ['packages', 'service']} /></div>
     </section>
   )}
 
@@ -100,12 +126,14 @@ const crumbs = [
 
   <section class="sec" {...tone('cream')}>
     <div class="wrap">
-      <Faq faqs={p.faqs} heading={p.faqHeading} />
-      <p class="more-faq"><a href="/catering-pricing">Pricing</a> · <a href="/catering-menu">Menu</a> · <a href="/catering">All catering</a> · <a href="/faq">More questions</a></p>
+      <Faq faqs={p.faqs} />
+      <p class="more-faq"><a href="/catering/pricing">Pricing</a> · <a href="/catering/menu">Menu</a> · <a href="/catering">All catering</a> · <a href="/faq">More questions</a></p>
     </div>
   </section>
 
   <CtaBand heading={p.ctaHeading} text={p.ctaText ?? 'See a price in a minute. We reply within 24 hours.'} href="#estimate" label={button} />
+  <Related paths={p.related} />
+  <StickyCta label={button} href="#estimate" />
 </BaseLayout>
 
 <style>

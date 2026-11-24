@@ -1,17 +1,29 @@
 ---
-/** FAQ accordion + FAQPage JSON-LD. Answers are plain text (also used in JSON-LD). */
+/**
+ * FAQ section + FAQPage JSON-LD. Heading defaults to H2 "Frequently asked
+ * questions"; each question is an H3 (or one level below the heading) with a
+ * plain-text answer of 2 to 3 sentences, also used in the JSON-LD.
+ */
 import { faqPage } from '../data/schema';
 interface Props { faqs: { q: string; a: string }[]; heading?: string; id?: string; schema?: boolean; headingLevel?: 2 | 3 }
-const { faqs, heading = 'Questions', id = 'faq', schema = true, headingLevel = 2 } = Astro.props;
+const { faqs, heading = 'Frequently asked questions', id = 'faq', schema = true, headingLevel = 2 } = Astro.props;
 const H = `h${headingLevel}`;
+const Q = `h${headingLevel + 1}`;
 ---
 <div class="faq-list" id={id}>
   {heading && <H>{heading}</H>}
   {faqs.map((f) => (
-    <details>
-      <summary>{f.q}</summary>
-      <div class="faq-answer"><p>{f.a}</p></div>
-    </details>
+    <div class="faq-item">
+      <Q class="faq-q">{f.q}</Q>
+      <p class="faq-a">{f.a}</p>
+    </div>
   ))}
 </div>
 {schema && <script type="application/ld+json" set:html={JSON.stringify(faqPage(faqs))} />}
+<style>
+  .faq-list { max-width: 860px; }
+  .faq-item { padding: 18px 0; border-bottom: 2px solid currentColor; border-bottom-color: color-mix(in srgb, currentColor 22%, transparent); }
+  .faq-item:last-child { border-bottom: 0; }
+  .faq-q { font-family: var(--f-text); font-size: clamp(19px, 2.2vw, 22px); font-weight: 800; letter-spacing: 0; text-transform: none; margin: 0 0 6px; text-shadow: none; }
+  .faq-a { margin: 0; font-size: 17px; line-height: 1.55; }
+</style>

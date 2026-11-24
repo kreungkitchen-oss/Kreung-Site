@@ -1,21 +1,27 @@
 ---
-import NichePage from '../components/NichePage.astro';
-import { policies, cateringMenu } from '../data/business';
-import photo from '../assets/photos/event-backyard-spread.jpg';
+import NichePage from '../../components/NichePage.astro';
+import { policies, cateringMenu } from '../../data/business';
+import photo from '../../assets/photos/event-backyard-spread.jpg';
 
 const faqs = [
   { q: 'Is Cambodian food Southeast Asian?', a: 'Yes. Cambodia sits between Thailand, Laos and Vietnam. Our BBQ uses classic Southeast Asian ingredients like lemongrass, galangal, turmeric and makrut lime leaves.' },
   { q: 'Will it work for a team with mixed tastes?', a: 'Yes. Grilled chicken, beef skewers and short rib are easy for anyone to love, and the herbs make them taste new. There are vegan tofu skewers too.' },
   { q: 'What vegan and allergy options do you have?', a: `Our tofu skewers are vegan, and our food contains no dairy or peanuts. ${policies.allergyNote}` },
   { q: 'How much does it cost per person?', a: 'Packages are $20, $25 and $33 per person, plus delivery from $75 and sales tax. A 50-person Signature drop-off is about $29 per guest, all in.' },
-  { q: 'How big a group can you feed?', a: `We cater for ${policies.guestsLabel} guests.` },
+  { q: 'How big a group can you feed?', a: `We cater for ${policies.guestsLabel} guests. That covers small team lunches up to company-wide events.` },
   { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks). ${policies.responseTime}` },
 ];
 ---
 <NichePage
+  published="2026-11-24"
+  updated="2026-11-24"
+  serviceName="Southeast Asian BBQ catering in Los Angeles"
+  takeaways={["Cambodian BBQ is Southeast Asian food, built on lemongrass, galangal, turmeric and makrut lime leaves.", "Grilled chicken, beef skewers and short rib work for teams with mixed tastes. Tofu skewers are vegan.", "Packages are $20, $25 and $33 per person, plus delivery from $75 and sales tax.", "A 50-person Signature drop-off is about $29 per guest, all in.", "Book at least 2 weeks ahead. We reply within 24 hours."]}
+  related={["/catering/cambodian", "/catering/menu", "/guides/cambodian-vs-thai-food", "/catering/pricing"]}
+  button="Get a Southeast Asian catering quote"
   title="Southeast Asian BBQ Catering in Los Angeles | Kreung LA"
   description="Southeast Asian BBQ catering in LA: lemongrass chicken, beef skewers, vegan tofu skewers, coconut corn and pickled veggies. From $20 per person."
-  path="/southeast-asian-catering"
+  path="/catering/southeast-asian"
   crumb="Southeast Asian Catering"
   h1="Southeast Asian BBQ Catering in Los Angeles"
   lede="Looking for Asian catering that isn't the same old tray? Cambodian BBQ is grilled, fresh and full of lemongrass. It's a crowd-pleaser for every kind of team."
@@ -23,7 +29,6 @@ const faqs = [
   photoAlt="A backyard buffet of Kreung LA grilled skewers and sides at an outdoor party"
   reviewKeys={['repeatClient', 'rareBeauty', 'janeT']}
   faqs={faqs}
-  faqHeading="Southeast Asian catering questions"
   ctaHeading="Something new for the team."
   bodyTone="cream"
 >
@@ -39,7 +44,7 @@ const faqs = [
       </ul>
       <h2>Good for diverse teams</h2>
       <p>Grilled chicken and beef skewers are easy wins for picky eaters. Adventurous eaters get bold herb flavor. Vegan guests get tofu skewers, and our food has no dairy or peanuts.</p>
-      <p><a href="/guides/cambodian-vs-thai-food">Cambodian vs. Thai food</a> · <a href="/catering-menu">See the menu</a></p>
+      <p><a href="/guides/cambodian-vs-thai-food">Cambodian vs. Thai food</a> · <a href="/catering/menu">See the menu</a></p>
     </div>
     <div class="card card--line">
       <h3>On the menu</h3>

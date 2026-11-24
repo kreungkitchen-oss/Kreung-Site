@@ -1,0 +1,44 @@
+---
+/** /guides: list of every guide, so the /guides/ folder has a real page (and a breadcrumb target). */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { pageInfo } from '../../data/pages';
+import { portionsReady } from '../../data/business';
+import { tone } from '../../data/tones';
+
+const guides = Object.entries(pageInfo)
+  .filter(([path]) => path.startsWith('/guides/'))
+  .filter(([path]) => portionsReady || path !== '/guides/how-much-food-for-50-people')
+  .map(([path, info]) => ({ path, ...info }));
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Guides', path: '/guides' }];
+---
+<BaseLayout
+  title="Guides: Cambodian Food and LA Catering | Kreung LA"
+  description="Plain-language guides from Kreung LA: what kreung is, Cambodian vs. Thai food, office lunch ideas, catering costs in LA and how much food to order."
+  path="/guides"
+>
+  <section class="sec page-hero" {...tone('yellow')}>
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <h1>Guides</h1>
+      <p class="lede">Plain answers about Cambodian food and planning catering in Los Angeles.</p>
+    </div>
+  </section>
+  <section class="sec" {...tone('cream')} aria-label="All guides">
+    <div class="wrap">
+      <p>These guides are written by Sam Oum, who started Kreung LA to share his mother's Cambodian cooking. Some explain the food itself, like what kreung is and how Cambodian food differs from Thai food. Others help you plan catering for your office or event in Los Angeles: what it costs, what to serve and how to book. Each guide is short, and each one ends with answers to common questions.</p>
+      <ul class="glist">
+        {guides.map((g) => <li><a href={g.path}><b>{g.name}</b><span>{g.blurb}</span></a></li>)}
+      </ul>
+    </div>
+  </section>
+  <CtaBand heading="Planning an event?" text="See catering options, prices and the menu." href="/catering" label="See catering" />
+</BaseLayout>
+<style>
+  .glist { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .glist a { display: grid; gap: 6px; height: 100%; padding: 20px 22px; background: var(--white); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 18px; text-decoration: none; box-shadow: 5px 5px 0 var(--plum); }
+  .glist a:hover { transform: translate(-2px, -2px); }
+  .glist a:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+  .glist b { font-size: 20px; }
+</style>

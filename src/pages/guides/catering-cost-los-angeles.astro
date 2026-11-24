@@ -7,7 +7,7 @@ const faqs = [
   { q: 'What fees should I expect on a catering quote?', a: 'Common extras are delivery, setup, service or production fees, sales tax, drinks and gratuity. Ask for an all-in estimate so nothing surprises you.' },
   { q: 'Do caterers have minimums?', a: `Most do. At Kreung LA the minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.` },
   { q: 'Is a production fee the same as a tip?', a: 'Not always. At Kreung LA, the production fee is a one-time charge for large or on-site events. It is not a gratuity.' },
-  { q: 'How can I lower my catering cost?', a: 'Choose drop-off instead of full service, pick fewer proteins, get an accurate headcount and book early so you are not paying rush fees.' },
+  { q: 'How can I lower my catering cost?', a: 'Choose drop-off instead of full service, and pick fewer proteins. Get an accurate headcount and book early so you are not paying rush fees.' },
 ];
 ---
 <GuideLayout
@@ -18,10 +18,15 @@ const faqs = [
   crumb="Catering Cost in LA"
   lede="A short, plain-language guide to catering prices in LA: what's typical, what gets added, and how to get an all-in number."
   datePublished="2026-11-24"
+  dateUpdated="2026-11-24"
+  takeaways={["Catering is usually priced per person, but the all-in total is what matters.", "Expect extras: delivery and setup, service or production fees, sales tax, drinks and sometimes gratuity.", "Most caterers have a minimum order, which can raise the per-person cost for small teams.", "Drop-off is the most affordable. Live cooking on-site usually costs the most.", "At Kreung LA, a 50-person Signature drop-off comes to about $29 per guest, all in."]}
+  related={["/catering/pricing", "/guides/how-much-food-for-50-people", "/catering/corporate", "/guides/office-lunch-ideas-los-angeles"]}
+  compare={["packages", "service"]}
   faqs={faqs}
+  ctaLabel="Get your all-in estimate"
+  ctaHref="/catering/corporate#estimate"
   ctaHeading="Get your all-in number."
   ctaText="Our estimator shows food, delivery, fees and tax in about a minute."
-  ctaLabel="Get your estimate"
 >
   <h2>The short answer</h2>
   <p>{marketContext.text} (Source: <a href={marketContext.sourceUrl} rel="noopener">{marketContext.sourceName}</a>.) Weddings and full-service events usually cost more, because they need staff, rentals and more time.</p>
@@ -54,7 +59,7 @@ const faqs = [
 
   <h2>A real example from Kreung LA</h2>
   <p>Here's how our pricing works for 50 guests on our $25 Signature package, dropped off: {money(1250)} for food, ${policies.deliveryFrom} for delivery and setup, no production fee under {policies.productionFeeDropoffThreshold} guests, plus estimated tax. That comes to about $29 per guest, all in.</p>
-  <p>Our <a href="/catering-pricing">catering pricing guide</a> walks through it step by step, with a second example for 150 guests.</p>
+  <p>Our <a href="/catering/pricing">catering prices page</a> walks through it step by step, with a second example for 150 guests.</p>
 
   <h2>Tips to keep costs down</h2>
   <ul>
@@ -63,5 +68,5 @@ const faqs = [
     <li>Pick one or two proteins instead of four.</li>
     <li>Book at least two weeks ahead.</li>
   </ul>
-  <p>Ready for a number? See our <a href="/catering">catering options</a> or the <a href="/catering-menu">catering menu</a>.</p>
+  <p>Ready for a number? See our <a href="/catering">catering options</a> or the <a href="/catering/menu">catering menu</a>.</p>
 </GuideLayout>

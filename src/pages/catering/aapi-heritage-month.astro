@@ -1,21 +1,27 @@
 ---
-import NichePage from '../components/NichePage.astro';
-import { policies, khmer } from '../data/business';
-import photo from '../assets/photos/team-shirts-tent.jpg';
+import NichePage from '../../components/NichePage.astro';
+import { policies, khmer } from '../../data/business';
+import photo from '../../assets/photos/team-shirts-tent.jpg';
 
 const faqs = [
   { q: 'When should we book for AAPI Heritage Month?', a: `AAPI Heritage Month is in May. Please book as early as you can, and at least ${policies.leadTimeDays} days ahead.` },
   { q: 'Is Kreung LA AAPI-owned?', a: 'Yes. Kreung LA is owned by Sam Oum and Christina. Sam is Cambodian American, born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border.' },
-  { q: 'Can Sam share the story behind the food?', a: 'Tell us what your event needs when you ask for a quote, and we will talk through it with you.' },
+  { q: 'Can Sam share the story behind the food?', a: 'Tell us what your event needs when you ask for a quote. We will talk it through with you.' },
   { q: 'How much does it cost?', a: 'Packages are $20, $25 and $33 per person. The minimum is $1,000 for pickup and drop-off and $2,000 for our grill on-site.' },
   { q: 'Can you serve our whole office?', a: `Yes. We cater for ${policies.guestsLabel} guests and deliver to ${policies.deliveryArea}.` },
   { q: 'Do you have vegan options?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
 ];
 ---
 <NichePage
+  published="2026-11-24"
+  updated="2026-11-24"
+  serviceName="AAPI Heritage Month catering in Los Angeles"
+  takeaways={["AAPI Heritage Month is in May, so book early. We need at least 2 weeks.", "Kreung LA is owned by Sam Oum and Christina. Sam is Cambodian American, born in the Khao-I-Dang refugee camp.", "Packages are $20, $25 and $33 per person.", "We cater for 30 to 300+ guests and deliver to most of LA County."]}
+  related={["/catering/cambodian", "/catering/corporate", "/guides/what-is-kreung", "/about"]}
+  button="Get an AAPI Heritage Month quote"
   title="AAPI Heritage Month Catering in Los Angeles | Kreung LA"
   description="Cambodian BBQ catering for AAPI Heritage Month in LA. AAPI-owned, with a family story your team can taste. Book early for May. From $20 per person."
-  path="/aapi-heritage-month-catering"
+  path="/catering/aapi-heritage-month"
   crumb="AAPI Heritage Month"
   h1="AAPI Heritage Month Catering in Los Angeles"
   lede="Planning a May event for your ERG or the whole office? Celebrate with Cambodian BBQ from an AAPI-owned family business, and a story worth sharing."
@@ -25,7 +31,6 @@ const faqs = [
   estimateNotes="This is for an AAPI Heritage Month event in May."
   reviewKeys={['repeatClient', 'rareBeauty', 'janeT']}
   faqs={faqs}
-  faqHeading="AAPI Heritage Month questions"
   ctaHeading="Book early for May."
   ctaText="Get your estimate now and lock in your May date."
   bodyTone="pink"

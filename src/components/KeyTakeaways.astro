@@ -1,0 +1,16 @@
+---
+/** "Key takeaways" box at the top of catering pages and guides (3 to 5 bullets). */
+interface Props { items: string[]; cta?: { label: string; href: string } }
+const { items, cta } = Astro.props;
+---
+<section class="kt" aria-labelledby="kt-h">
+  <h2 id="kt-h" class="kt__h">Key takeaways</h2>
+  <ul>{items.map((t) => <li>{t}</li>)}</ul>
+  {cta && <a class="btn btn--plum btn--sm" href={cta.href}>{cta.label}</a>}
+</section>
+<style>
+  .kt { background: var(--white); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 20px; padding: 22px 26px; box-shadow: 6px 6px 0 var(--plum); margin: 0 0 clamp(28px, 4vw, 48px); max-width: 860px; }
+  .kt__h { --hf: var(--plum); --hs: var(--pink); --hsw: 0px; font-size: clamp(24px, 3vw, 32px); margin: 0 0 12px; }
+  .kt ul { margin: 0 0 16px; padding-left: 1.2em; display: grid; gap: 8px; font-size: 17px; }
+  .kt ul:last-child { margin-bottom: 0; }
+</style>

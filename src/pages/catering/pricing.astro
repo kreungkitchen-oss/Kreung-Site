@@ -1,15 +1,20 @@
 ---
 import { Image } from 'astro:assets';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Packages from '../components/Packages.astro';
-import ProofBar from '../components/ProofBar.astro';
-import Reviews from '../components/Reviews.astro';
-import Faq from '../components/Faq.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { packages, policies, money, marketContext, cateringMenu } from '../data/business';
-import { article } from '../data/schema';
-import plating from '../assets/photos/food-rice-corn-plating.jpg';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Packages from '../../components/Packages.astro';
+import ProofBar from '../../components/ProofBar.astro';
+import Reviews from '../../components/Reviews.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import KeyTakeaways from '../../components/KeyTakeaways.astro';
+import CompareTables from '../../components/CompareTables.astro';
+import StickyCta from '../../components/StickyCta.astro';
+import Related from '../../components/Related.astro';
+import { packages, policies, money, marketContext, cateringMenu } from '../../data/business';
+import { service } from '../../data/schema';
+import plating from '../../assets/photos/food-rice-corn-plating.jpg';
 
 /** Worked examples use the same rules as the estimator. */
 function example(guests: number, pkgId: string, service: 'drop' | 'onsite') {
@@ -26,6 +31,11 @@ function example(guests: number, pkgId: string, service: 'drop' | 'onsite') {
 const ex1 = example(50, 'signature', 'drop');
 const ex2 = example(150, 'signature', 'drop');
 
+const published = '2026-11-24';
+const updated = '2026-11-24';
+const cta = 'Get your catering estimate';
+const ctaHref = '/catering/corporate#estimate';
+
 const faqs = [
   { q: 'How much does catering cost per person?', a: `Our packages are $20 (Classic), $25 (Signature) and $33 (The Full Experience) per person. A 50-person Signature drop-off comes to about ${money(ex1.per)} per guest with delivery and estimated tax.` },
   { q: 'Is there a minimum order?', a: `Yes. ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
@@ -39,30 +49,45 @@ const faqs = [
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Catering', path: '/catering' },
-  { name: 'Pricing', path: '/catering-pricing' },
+  { name: 'Pricing', path: '/catering/pricing' },
 ];
-const title = 'Catering Cost in Los Angeles: Pricing Guide | Kreung LA';
-const description = 'What Cambodian BBQ catering costs in LA: $20–33 per person, minimums, delivery, production fee and tax, with a worked example. About $29 per guest.';
+const title = 'Kreung LA Catering Prices and Packages';
+const description = 'Kreung LA catering prices: $20, $25 or $33 per person, plus minimums, delivery, production fee and tax, with a worked example. About $29 per guest.';
+const takeaways = [
+  'Packages are $20 (Classic), $25 (Signature) and $33 (The Full Experience) per person.',
+  `A 50-person Signature drop-off comes to about ${money(ex1.per)} per guest, with delivery and estimated tax.`,
+  `The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.`,
+  `Delivery starts at $${policies.deliveryFrom}. Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests add a ${policies.productionFeeDropoffPct}% production fee.`,
+  'Sales tax applies. Your quote has your final price.',
+];
 ---
 <BaseLayout
   title={title}
   description={description}
-  path="/catering-pricing"
-  jsonLd={[article({ title: 'How Much Does Catering Cost in Los Angeles? Kreung LA Pricing Guide', description, path: '/catering-pricing', datePublished: '2026-11-24' })]}
+  path="/catering/pricing"
+  jsonLd={[service({ name: 'Kreung LA catering packages', description, path: '/catering/pricing' })]}
 >
   <section class="sec s-yellow page-hero">
     <div class="wrap split split--wide">
       <div>
         <Breadcrumbs items={crumbs} />
-        <h1>How Much Does Catering Cost in Los Angeles? Kreung LA Pricing Guide</h1>
+        <h1>Kreung LA Catering Prices: Packages, Minimums and Fees</h1>
         <p class="lede">Our catering is priced per person: $20, $25 or $33. Most office lunches land around {money(ex1.per)} per guest, all in. Here's exactly how it adds up.</p>
         <div class="btn-row">
-          <a class="btn" href="/corporate-catering#estimate">Get your estimate</a>
+          <a class="btn" href={ctaHref}>{cta}</a>
         </div>
+        <AuthorBox published={published} updated={updated} />
       </div>
       <figure class="photo">
         <Image src={plating} alt="Plates of Kreung LA rice and coconut corn being served at a catered event" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
       </figure>
+    </div>
+  </section>
+
+  <section class="sec sec--tight s-cream">
+    <div class="wrap">
+      <KeyTakeaways items={takeaways} cta={{ label: cta, href: ctaHref }} />
+      <p>Looking for typical LA catering prices across caterers? See our guide: <a href="/guides/catering-cost-los-angeles">How much does catering cost in Los Angeles?</a></p>
     </div>
   </section>
 
@@ -74,6 +99,10 @@ const description = 'What Cambodian BBQ catering costs in LA: $20–33 per perso
       </div>
       <Packages />
     </div>
+  </section>
+
+  <section class="sec s-cream" aria-label="Comparison tables">
+    <div class="wrap"><CompareTables /></div>
   </section>
 
   <section class="sec s-cream" aria-labelledby="add-h">
@@ -116,7 +145,7 @@ const description = 'What Cambodian BBQ catering costs in LA: $20–33 per perso
 
       <h2 id="ctx-h">How we compare</h2>
       <p>{marketContext.text} (Source: <a href={marketContext.sourceUrl} rel="noopener">{marketContext.sourceName}</a>.) Our packages run $20 to $33 per person, and every one comes with rice, sides and house sauces.</p>
-      <p><a href="/catering-menu">See the full catering menu</a> · <a href="/catering">All catering options</a></p>
+      <p><a href="/catering/menu">See the full catering menu</a> · <a href="/catering">All catering options</a></p>
     </div>
   </section>
 
@@ -133,12 +162,14 @@ const description = 'What Cambodian BBQ catering costs in LA: $20–33 per perso
 
   <section class="sec s-mint">
     <div class="wrap">
-      <Faq faqs={faqs} heading="Pricing questions" />
-      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering-menu">Menu</a> · <a href="/catering">All catering</a></p>
+      <Faq faqs={faqs} />
+      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering/menu">Menu</a> · <a href="/catering">All catering</a></p>
     </div>
   </section>
 
-  <CtaBand heading="See your price in a minute." text="Answer a few questions and get a ballpark right away." href="/corporate-catering#estimate" label="Get your estimate" />
+  <CtaBand heading="See your price in a minute." text="Answer a few questions and get a ballpark right away." href={ctaHref} label={cta} />
+  <Related paths={['/guides/catering-cost-los-angeles', '/catering/menu', '/catering/corporate', '/guides/how-much-food-for-50-people']} />
+  <StickyCta label={cta} href={ctaHref} />
 </BaseLayout>
 
 <style>

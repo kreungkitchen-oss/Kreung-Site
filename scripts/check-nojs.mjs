@@ -18,20 +18,23 @@ const UTILITY = new Set(['404.html', 'thanks.html']);
 const MUST = {
   'index.html': ['Cambodian BBQ', '$20', 'Westwood Village Farmers Market', 'kreungkitchen@gmail.com', 'CBS News Los Angeles', 'Sharing Cambodian cuisine', 'Live Nation has booked us', 'Join and get $5 off'],
   'catering.html': ['$20', '$25', '$33', '$1,000', '$2,000'],
-  'corporate-catering.html': ['$25', '$1,000', '$2,000', '$75', '14 days', 'Live Nation'],
-  'catering-pricing.html': ['$1,474', '$29', '11.25%', 'ZeroCater'],
-  'catering-menu.html': ['Tofu skewers', 'Vegan', 'fish sauce', 'no dairy or peanuts'],
+  'catering/corporate.html': ['$25', '$1,000', '$2,000', '$75', '14 days', 'Live Nation'],
+  'catering/menu.html': ['Tofu skewers', 'Vegan', 'fish sauce', 'no dairy or peanuts'],
   'faq.html': ['$1,000', '14 days', 'Smorgasburg'],
-  'on-site-grill-catering.html': ['$2,000', '20%', '$400'],
-  'production-catering.html': ['Sony Pictures', 'DreamWorks', 'Live Nation'],
-  'aapi-heritage-month-catering.html': ['May', 'Khao-I-Dang'],
-  'office-lunch-club.html': ['Ask about the Lunch Club'],
+  'catering/on-site-grill.html': ['$2,000', '20%', '$400'],
+  'catering/film-production.html': ['Sony Pictures', 'DreamWorks', 'Live Nation'],
+  'catering/aapi-heritage-month.html': ['May', 'Khao-I-Dang'],
+  'catering/office-lunch-club.html': ['Ask about the Lunch Club'],
   'about.html': ['Khao-I-Dang', 'January 1, 2024', 'Mak'],
   'find-us.html': ['1036 Broxton Ave', '12775 Millennium Dr', '777 S Alameda St', 'The Sampler', '$25', '$16.50', '$19', '$7', 'Lemonade'],
   'press.html': ['Los Angeles Times', 'L.A. TACO', 'CBS News Los Angeles', 'Follow My Gut'],
   'rewards.html': ['$5 off', '$15 minimum', 'Join Kreung Rewards'],
   'thanks.html': ['24 hours'],
+  'catering/pricing.html': ['$1,474', '$29', '11.25%', 'ZeroCater', 'Compare packages', 'Drop-off vs. on-site grill'],
+  'guides/how-much-food-for-50-people.html': ['50 guests', 'Grilled lemongrass chicken', 'Rice'],
 };
+
+const TEMPLATE = ['By Sam Oum', 'Published', 'Last updated', 'Key takeaways', 'Frequently asked questions', 'Related pages'];
 
 const files = [];
 (function walk(dir) {
@@ -78,6 +81,13 @@ for (const file of files.sort()) {
 
   const text = strip(html);
   for (const s of MUST[rel] || []) if (!text.includes(s)) problems.push(`missing "${s}"`);
+  // Page template for every /catering/ page and guide (Sam's SEO checklist, Nov 2026).
+  if (/^(catering|guides)\//.test(rel)) {
+    for (const s of TEMPLATE) if (!text.includes(s)) problems.push(`template: missing "${s}"`);
+    if (rel.startsWith('catering/') && !types.includes('Service')) problems.push('template: no Service JSON-LD');
+    if (!types.includes('FAQPage')) problems.push('template: no FAQPage JSON-LD');
+    if (!types.includes('BreadcrumbList')) problems.push('template: no BreadcrumbList JSON-LD');
+  }
 
   if (problems.length) failed++;
   rows.push(`| /${rel.replace(/\.html$/, '').replace(/^index$/, '')} | ${h1s[0] ?? '—'} | ${words} | ${prices} | ${faqs} | ${[...new Set(types)].join(', ')} | ${problems.length ? '❌ ' + problems.join('; ') : '✅'} |`);

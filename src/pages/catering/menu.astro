@@ -1,15 +1,20 @@
 ---
 import { Image } from 'astro:assets';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Packages from '../components/Packages.astro';
-import Faq from '../components/Faq.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { cateringMenu, policies, khmer } from '../data/business';
-import { menuSchema } from '../data/schema';
-import plate from '../assets/photos/plate-combo.jpg';
-import chicken from '../assets/photos/grill-chicken.jpg';
-import skewers from '../assets/photos/food-skewers-tray.jpg';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Packages from '../../components/Packages.astro';
+import Faq from '../../components/Faq.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import KeyTakeaways from '../../components/KeyTakeaways.astro';
+import CompareTables from '../../components/CompareTables.astro';
+import StickyCta from '../../components/StickyCta.astro';
+import Related from '../../components/Related.astro';
+import { cateringMenu, policies, khmer } from '../../data/business';
+import { menuSchema, service } from '../../data/schema';
+import plate from '../../assets/photos/plate-combo.jpg';
+import chicken from '../../assets/photos/grill-chicken.jpg';
+import skewers from '../../assets/photos/food-skewers-tray.jpg';
 
 const meatNote = 'Fire-grilled and marinated in kreung.';
 const sections = [
@@ -20,9 +25,21 @@ const sections = [
   { name: 'Drinks', items: cateringMenu.drinks.map((d) => ({ name: d, description: 'Available separately.' })) },
 ];
 
+const published = '2026-11-24';
+const updated = '2026-11-24';
+const cta = 'Get a quote for this menu';
+const ctaHref = '/catering/corporate#estimate';
+const takeaways = [
+  'Every meat is fire-grilled and marinated in kreung, our Cambodian herb paste.',
+  'Pick 1 protein (Classic), 2 proteins (Signature) or all 4 meats (The Full Experience).',
+  'Every package comes with rice, sides and house sauces.',
+  'Our tofu skewers are vegan, and our food has no dairy or peanuts.',
+  'Drinks are available separately.',
+];
+
 const faqs = [
-  { q: 'Do you have vegan options?', a: 'Yes. Our tofu skewers are vegan.' },
-  { q: 'Is your food dairy-free and peanut-free?', a: 'Yes. Our food contains no dairy or peanuts.' },
+  { q: 'Do you have vegan options?', a: 'Yes. Our tofu skewers are vegan. Our food also contains no dairy or peanuts.' },
+  { q: 'Is your food dairy-free and peanut-free?', a: 'Yes. Our food contains no dairy or peanuts. Some dishes do contain fish sauce, oyster sauce, tamari and sesame oil.' },
   { q: 'What allergens are in your food?', a: policies.allergyNote },
   { q: 'What is kreung?', a: 'Kreung is the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. We marinate our meats in it before they hit the grill.' },
   { q: 'Which proteins come with each package?', a: 'Classic comes with 1 protein and Signature with 2. The Full Experience includes all 4 meats, including short rib, with coconut lime leaf rice.' },
@@ -31,14 +48,14 @@ const faqs = [
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Catering', path: '/catering' },
-  { name: 'Catering Menu', path: '/catering-menu' },
+  { name: 'Catering Menu', path: '/catering/menu' },
 ];
 ---
 <BaseLayout
   title="Cambodian BBQ Catering Menu | Kreung LA"
   description="Our catering menu: lemongrass chicken, beef skewers, vegan tofu skewers, short rib, coconut corn, pickled veggies, rice and house sauces. No dairy or peanuts."
-  path="/catering-menu"
-  jsonLd={[menuSchema(sections, '/catering-menu')]}
+  path="/catering/menu"
+  jsonLd={[menuSchema(sections, '/catering/menu'), service({ name: 'Cambodian BBQ catering menu', description: 'Catering menu: grilled lemongrass chicken, beef skewers, vegan tofu skewers, short rib, sides, rice and house sauces.', path: '/catering/menu' })]}
 >
   <section class="sec s-yellow page-hero">
     <div class="wrap split split--wide">
@@ -47,8 +64,9 @@ const crumbs = [
         <h1>Cambodian BBQ Catering Menu</h1>
         <p class="lede">Every meat is fire-grilled and marinated in kreung (<span lang="km">{khmer.kreung}</span>), our Cambodian herb paste. Pick your proteins, and we bring the rice, sides and house sauces.</p>
         <div class="btn-row">
-          <a class="btn" href="/corporate-catering#estimate">Get a quote</a>
+          <a class="btn" href={ctaHref}>{cta}</a>
         </div>
+        <AuthorBox published={published} updated={updated} />
       </div>
       <figure class="photo">
         <Image src={plate} alt="A Kreung LA plate with grilled meats, rice, coconut corn and pickled vegetables" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
@@ -58,6 +76,7 @@ const crumbs = [
 
   <section class="sec s-cream" aria-labelledby="menu-h">
     <div class="wrap">
+      <KeyTakeaways items={takeaways} cta={{ label: cta, href: ctaHref }} />
       <h2 id="menu-h" class="visually-hidden">The menu</h2>
       <div class="menu-grid">
         <div class="card card--line menu-card big">
@@ -112,18 +131,24 @@ const crumbs = [
         <p class="lede">Priced per person.</p>
       </div>
       <Packages />
-      <p class="dl"><a href="/catering-pricing">How pricing works</a> · <a href="/catering">All catering options</a></p>
+      <p class="dl"><a href="/catering/pricing">How pricing works</a> · <a href="/catering">All catering options</a></p>
     </div>
+  </section>
+
+  <section class="sec s-cream" aria-label="Package comparison">
+    <div class="wrap"><CompareTables show={['packages']} /></div>
   </section>
 
   <section class="sec s-mint">
     <div class="wrap">
-      <Faq faqs={faqs} heading="Menu questions" />
-      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering-pricing">Pricing</a> · <a href="/catering">All catering</a></p>
+      <Faq faqs={faqs} />
+      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering/pricing">Pricing</a> · <a href="/catering">All catering</a></p>
     </div>
   </section>
 
-  <CtaBand heading="Hungry yet?" text="Tell us about your event. We reply within 24 hours." href="/corporate-catering#estimate" label="Get a quote" />
+  <CtaBand heading="Hungry yet?" text="Tell us about your event. We reply within 24 hours." href={ctaHref} label={cta} />
+  <Related paths={['/catering/pricing', '/guides/what-is-kreung', '/catering/cambodian', '/guides/how-much-food-for-50-people']} />
+  <StickyCta label={cta} href={ctaHref} />
 </BaseLayout>
 
 <style>
