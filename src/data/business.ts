@@ -22,7 +22,7 @@ export const business = {
   // Phone from the current kreungla.com; Sam approved keeping the floating "Text us" button (2026-11-24).
   phone: { display: '(562) 726-5072', e164: '+15627265072' },
   instagram: { handle: '@kreung_la', url: 'https://www.instagram.com/kreung_la' },
-  yelp: { url: 'https://www.yelp.com/biz/kreung-kitchen-culver-city' },
+  yelp: { url: 'https://www.yelp.com/biz/kreung-la-culver-city' },
   taglines: {
     main: 'Cambodian Street BBQ',
     mission: 'Rooted in culture. Built for community.',
@@ -204,7 +204,7 @@ export const clientNote = 'Live Nation has booked us 4 times in 12 months.';
 
 export const ratings = {
   google: { value: 4.9, count: 45 },
-  yelp: { value: 4.9, count: 54 },
+  yelp: { value: 4.9, count: 60 },
   asOf: 'Nov 2026',
 } as const;
 

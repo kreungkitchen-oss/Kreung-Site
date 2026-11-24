@@ -43,7 +43,8 @@ const groups = [
     faqs: [
       { q: 'Where can I find you each week?', a: `${markets.map((m) => `${m.day}: ${m.name}, ${m.address}, ${m.hours}`).join('. ')}. ${marketNote}` },
       { q: 'What do you serve at the markets?', a: `Chicken plates, skewer plates, sampler plates, pork belly plates and short rib by the rib. ${marketMenuNote}` },
-      { q: 'Can I order online?', a: 'Yes. Online ordering is through our Square store.' },
+      // TODO(Sam): add 'Can I order online?' once Square online ordering is turned back on.
+      ...(links.order ? [{ q: 'Can I order online?', a: 'Yes. Online ordering is through our Square store.' }] : []),
       { q: 'Do you have a rewards program?', a: `Yes, ${rewards.name}. You get ${rewards.joinOffer.replace(' when you join', '')} when you join. ${rewards.earn}` },
     ],
     // TODO(Sam): market plate prices, and how Square online ordering pickup works. Left off until confirmed.

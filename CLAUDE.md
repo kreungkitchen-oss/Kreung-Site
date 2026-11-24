@@ -21,7 +21,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 
 ## Business facts (single source of truth — never invent facts beyond these)
 - Name: Kreung LA (formerly Kreung Kitchen). Founded January 1, 2024. Owners: Sam Oum and Christina. Based in Culver City, Los Angeles, CA.
-- Contact: kreungkitchen@gmail.com · Phone/text (562) 726-5072 (floating "Text us" button, approved by Sam) · Instagram @kreung_la · Yelp: yelp.com/biz/kreung-kitchen-culver-city
+- Contact: kreungkitchen@gmail.com · Phone/text (562) 726-5072 (floating "Text us" button, approved by Sam) · Instagram @kreung_la · Yelp: yelp.com/biz/kreung-la-culver-city
 - What we are: Cambodian street BBQ. Fire-grilled meats marinated in kreung, the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. Served with rice, coconut corn, pickled vegetables and house sauces.
 - Weekly markets:
   - Thursday: Westwood Village Farmers Market, 1036 Broxton Ave, Los Angeles, 12–5 PM
@@ -43,7 +43,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 - Response time: reply within 24 hours, aiming for same day. Estimates in 24–48 hours.
 - Allergy note: some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil. Our food contains no dairy or peanuts.
 - Clients (logos only where Sam confirms permission — use a text list until then): SpaceX, Adobe, Amazon, Live Nation (booked 4 times in 12 months), Sony Pictures, DreamWorks, Rare Beauty, Cedars-Sinai, Caltech, Altruist, Truist, Shamrock Capital, Causeway Capital Management, Karney Properties, Layla Bagels.
-- Ratings: 4.9 on Google (45 reviews), 4.9 on Yelp (54 reviews) — as of Nov 2026.
+- Ratings: 4.9 on Google (45 reviews), 4.9 on Yelp (60 reviews) — as of Nov 2026.
 - Press: Los Angeles Times, CBS News Los Angeles, Time Out Los Angeles, L.A. TACO (https://lataco.com/cambodian-food-la-pop-up), Eater LA, Follow My Gut.
 - Rewards: Kreung Rewards — $5 off when you join; earn a point every visit with a $15 minimum.
 - Story: Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community. He moved to Long Beach in 2011 and to Culver City in 2017, where he met Christina and started cooking his mother's dishes himself. For years he told his mother, Mak, "I'm gonna bring Cambodian food to LA." She passed in late November 2023; her last words to him were to stop talking and start doing. On January 1, 2024, her birthday, Kreung LA got its first catering order.
@@ -56,7 +56,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 - "Best Cambodian Barbecue in Los Angeles. And it's not even close." — Pasqual Allen, Google
 
 ## External links
-- Online ordering (Square): [ORDER_URL — TODO, Sam to provide the Square ordering link]
+- Online ordering (Square): [ORDER_URL — TODO] Online ordering is turned off for now; keep order buttons hidden until Sam sends the link before launch.
 - Gift cards (Square): not set up yet. Hide gift card links until Sam sets them up.
 - Instagram: https://www.instagram.com/kreung_la
 

@@ -24,7 +24,8 @@ const doors = [
   { href: '/on-site-grill-catering', title: 'On-site grill', text: 'We bring the fire and grill for your guests, live.' },
   { href: '/production-catering', title: 'Production & studio', text: 'Crew meals for film, TV and music sets.' },
   { href: '/office-lunch-club', title: 'Office Lunch Club', text: 'A standing Cambodian BBQ lunch on your calendar.' },
-  { href: links.order || '/find-us', title: 'Order ahead', text: 'Order online through Square and pick up at the market.', todo: !links.order },
+  // Online ordering is off for now (Sam, 2026-11-24). Shows automatically once links.order is set.
+  ...(links.order ? [{ href: links.order, title: 'Order ahead', text: 'Order online through Square.' }] : []),
   // Gift cards hidden until Sam sets them up in Square (Sam, 2026-11-24). Re-add when links.giftCards is set.
   { href: '/rewards', title: 'Kreung Rewards', text: `${rewards.joinOffer}. ${rewards.earn}` },
 ];
