@@ -1,0 +1,67 @@
+---
+import GuideLayout from '../../components/GuideLayout.astro';
+import { marketContext, policies, money } from '../../data/business';
+
+const faqs = [
+  { q: 'How much does catering cost per person in Los Angeles?', a: `${marketContext.text} Kreung LA packages are $20, $25 and $33 per person.` },
+  { q: 'What fees should I expect on a catering quote?', a: 'Common extras are delivery, setup, service or production fees, sales tax, drinks and gratuity. Ask for an all-in estimate so nothing surprises you.' },
+  { q: 'Do caterers have minimums?', a: `Most do. At Kreung LA the minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.` },
+  { q: 'Is a production fee the same as a tip?', a: 'Not always. At Kreung LA, the production fee is a one-time charge for large or on-site events. It is not a gratuity.' },
+  { q: 'How can I lower my catering cost?', a: 'Choose drop-off instead of full service, pick fewer proteins, get an accurate headcount and book early so you are not paying rush fees.' },
+];
+---
+<GuideLayout
+  title="How Much Does Catering Cost in Los Angeles? | Kreung LA"
+  description="What catering costs in Los Angeles: typical per-person prices, the fees to expect, minimums, and how to read a catering quote."
+  path="/guides/catering-cost-los-angeles"
+  h1="How Much Does Catering Cost in Los Angeles?"
+  crumb="Catering Cost in LA"
+  lede="A short, plain-language guide to catering prices in LA: what's typical, what gets added, and how to get an all-in number."
+  datePublished="2026-11-24"
+  faqs={faqs}
+  ctaHeading="Get your all-in number."
+  ctaText="Our estimator shows food, delivery, fees and tax in about a minute."
+  ctaLabel="Get your estimate"
+>
+  <h2>The short answer</h2>
+  <p>{marketContext.text} (Source: <a href={marketContext.sourceUrl} rel="noopener">{marketContext.sourceName}</a>.) Weddings and full-service events usually cost more, because they need staff, rentals and more time.</p>
+  <p>The per-person price is only part of the story. To compare quotes fairly, you need the all-in total.</p>
+
+  <h2>What goes into a catering price</h2>
+  <ul>
+    <li><strong>Food.</strong> Usually priced per person. More proteins or premium items cost more.</li>
+    <li><strong>Delivery and setup.</strong> Often a flat fee that can grow with distance.</li>
+    <li><strong>Service or production fees.</strong> For staff, large orders or cooking on-site.</li>
+    <li><strong>Sales tax.</strong> Applies to most catering in LA.</li>
+    <li><strong>Drinks and extras.</strong> Water, sodas, plates and utensils may be extra.</li>
+    <li><strong>Gratuity.</strong> Sometimes included, sometimes optional. Ask.</li>
+  </ul>
+
+  <h2>Minimums</h2>
+  <p>Most caterers have a minimum order. For small teams, that can push the per-person price up. Ask about minimums before you fall in love with a menu.</p>
+
+  <h2>Drop-off vs. full service vs. live cooking</h2>
+  <p><strong>Drop-off</strong> is the most affordable. The caterer brings the food, sets it up and leaves. <strong>Full service</strong> adds staff to serve and clean up. <strong>Live cooking</strong>, like a grill on-site, is the most memorable and usually the most expensive.</p>
+
+  <h2>How to read a catering quote</h2>
+  <ol>
+    <li>Check that the guest count and date are right.</li>
+    <li>Find the per-person food price.</li>
+    <li>Add every fee: delivery, service, production.</li>
+    <li>Add tax.</li>
+    <li>Divide the total by your guest count. That's your real per-person cost.</li>
+  </ol>
+
+  <h2>A real example from Kreung LA</h2>
+  <p>Here's how our pricing works for 50 guests on our $25 Signature package, dropped off: {money(1250)} for food, ${policies.deliveryFrom} for delivery and setup, no production fee under {policies.productionFeeDropoffThreshold} guests, plus estimated tax. That comes to about $29 per guest, all in.</p>
+  <p>Our <a href="/catering-pricing">catering pricing guide</a> walks through it step by step, with a second example for 150 guests.</p>
+
+  <h2>Tips to keep costs down</h2>
+  <ul>
+    <li>Get an accurate headcount, and don't over-order by much.</li>
+    <li>Choose drop-off for regular lunches, and save live cooking for big moments.</li>
+    <li>Pick one or two proteins instead of four.</li>
+    <li>Book at least two weeks ahead.</li>
+  </ul>
+  <p>Ready for a number? See our <a href="/catering">catering options</a> or the <a href="/catering-menu">catering menu</a>.</p>
+</GuideLayout>

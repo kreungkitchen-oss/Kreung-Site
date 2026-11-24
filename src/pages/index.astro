@@ -9,11 +9,7 @@ import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { tone } from '../data/tones';
-import laTimes from '../assets/press/press-la-times.png';
-import timeOut from '../assets/press/press-time-out.png';
-import laTaco from '../assets/press/press-la-taco.png';
-import fmg from '../assets/press/press-follow-my-gut.png';
-const pressLogos: Record<string, ImageMetadata> = { 'Los Angeles Times': laTimes, 'Time Out Los Angeles': timeOut, 'L.A. TACO': laTaco, 'Follow My Gut': fmg };
+import PressGrid from '../components/PressGrid.astro';
 import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients } from '../data/business';
 
 import logo from '../assets/brand/logo-horizontal.png';
@@ -215,21 +211,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   <section class="sec" {...tone('teal')} aria-labelledby="press-h">
     <div class="wrap">
       <div class="head"><h2 id="press-h">As seen in</h2></div>
-      <ul class="outlets" role="list">
-        {press.map((p) => {
-          const logo = pressLogos[p.name];
-          const inner = (
-            <>
-              <span class={`plogo${logo ? '' : ' plogo--text'}`}>
-                {logo ? <Image src={logo} alt={p.name} width={96} height={96} densities={[1, 2]} /> : <span>{p.name}</span>}
-              </span>
-              <b>{p.title ?? p.name}</b>
-              {logo && <span class="pname">{p.name}</span>}
-            </>
-          );
-          return <li>{p.url ? <a class="outlet" href={p.url} rel="noopener">{inner}</a> : <div class="outlet">{inner}</div>}</li>;
-        })}
-      </ul>
+      <PressGrid />
       <p><a class="inline-link" href="/press">Press and media</a></p>
 
       <div class="club" id="rewards">
@@ -239,6 +221,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
         </div>
         <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
           <input type="hidden" name="form-name" value="rewards-signup" />
+          <input type="hidden" name="name" value="" />
           <p class="visually-hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
           <label class="visually-hidden" for="rw-email">Email address</label>
           <input id="rw-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required />
@@ -316,18 +299,6 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   .tline .dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--plum); font-weight: 900; }
   .tline .yr { font-weight: 800; }
   .tline .pl { font-weight: 600; }
-
-  /* Press */
-  .outlets { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
-  .outlets li { display: flex; }
-  .outlet { width: 100%; display: grid; gap: 6px; align-content: start; background: var(--white); color: var(--plum); border-radius: var(--r-card); padding: 18px; text-decoration: none; border: 2.5px solid transparent; transition: transform 0.15s, box-shadow 0.15s; }
-  a.outlet:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--plum); border-color: var(--plum); }
-  .outlet b { font-size: 17px; line-height: 1.25; }
-  .outlet .pname { font-size: 14px; color: var(--muted); font-weight: 600; }
-  .plogo { justify-self: start; width: 72px; height: 72px; border-radius: 16px; background: var(--plum); display: grid; place-items: center; overflow: hidden; }
-  .plogo :global(img) { width: 100%; height: 100%; object-fit: contain; }
-  .plogo--text { width: auto; min-width: 72px; padding: 0 12px; color: var(--cream); font-weight: 900; font-stretch: 75%; text-transform: uppercase; font-size: 14px; line-height: 1.05; text-align: center; }
-  @media (min-width: 960px) { .outlets { grid-template-columns: repeat(3, 1fr); } }
 
   .club { margin-top: clamp(48px, 7vw, 96px); background: var(--yellow); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 26px; padding: clamp(24px, 5vw, 56px); display: grid; gap: 24px; align-items: center; box-shadow: 8px 10px 0 var(--plum); }
   .club h2 { margin: 0 0 10px; }

@@ -88,3 +88,14 @@ export const menuSchema = (sections: { name: string; items: { name: string; vega
     })),
   })),
 });
+
+export const personSam = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL}/about#sam-oum`,
+  name: 'Sam Oum',
+  jobTitle: 'Co-owner',
+  birthPlace: { '@type': 'Place', name: 'Khao-I-Dang refugee camp, Thai-Cambodian border' },
+  worksFor: { '@id': BUSINESS_ID },
+  url: `${SITE_URL}/about`,
+});

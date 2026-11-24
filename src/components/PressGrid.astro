@@ -1,0 +1,39 @@
+---
+/** Press cards with outlet logos (files from Sam). No CBS or Eater logo yet, so those show as text. */
+import { Image } from 'astro:assets';
+import { press } from '../data/business';
+import laTimes from '../assets/press/press-la-times.png';
+import timeOut from '../assets/press/press-time-out.png';
+import laTaco from '../assets/press/press-la-taco.png';
+import fmg from '../assets/press/press-follow-my-gut.png';
+const pressLogos: Record<string, ImageMetadata> = { 'Los Angeles Times': laTimes, 'Time Out Los Angeles': timeOut, 'L.A. TACO': laTaco, 'Follow My Gut': fmg };
+---
+<ul class="outlets" role="list">
+  {press.map((p) => {
+    const logo = pressLogos[p.name];
+    const inner = (
+      <>
+        <span class={`plogo${logo ? '' : ' plogo--text'}`}>
+          {logo ? <Image src={logo} alt={p.name} width={96} height={96} densities={[1, 2]} /> : <span>{p.name}</span>}
+        </span>
+        <b>{p.title ?? p.name}</b>
+        {logo && <span class="pname">{p.name}</span>}
+        {p.url && <span class="read">Read the story →</span>}
+      </>
+    );
+    return <li>{p.url ? <a class="outlet" href={p.url} rel="noopener">{inner}</a> : <div class="outlet">{inner}</div>}</li>;
+  })}
+</ul>
+<style>
+  .outlets { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+  .outlets li { display: flex; }
+  .outlet { width: 100%; display: grid; gap: 6px; align-content: start; background: var(--white); color: var(--plum); border-radius: var(--r-card); padding: 18px; text-decoration: none; border: 2.5px solid transparent; transition: transform 0.15s, box-shadow 0.15s; }
+  a.outlet:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--plum); border-color: var(--plum); }
+  .outlet b { font-size: 17px; line-height: 1.25; }
+  .outlet .pname { font-size: 14px; color: var(--muted); font-weight: 600; }
+  .outlet .read { font-size: 14px; font-weight: 800; margin-top: 4px; }
+  .plogo { justify-self: start; width: 72px; height: 72px; border-radius: 16px; background: var(--plum); display: grid; place-items: center; overflow: hidden; }
+  .plogo :global(img) { width: 100%; height: 100%; object-fit: contain; }
+  .plogo--text { width: auto; min-width: 72px; padding: 0 12px; color: var(--cream); font-weight: 900; font-stretch: 75%; text-transform: uppercase; font-size: 14px; line-height: 1.05; text-align: center; }
+  @media (min-width: 960px) { .outlets { grid-template-columns: repeat(3, 1fr); } }
+</style>

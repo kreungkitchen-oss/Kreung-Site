@@ -1,0 +1,74 @@
+---
+import GuideLayout from '../../components/GuideLayout.astro';
+import { marketContext } from '../../data/business';
+
+const faqs = [
+  { q: 'How much should I budget per person for an office lunch in LA?', a: `${marketContext.text} Your total also depends on delivery, service fees, tax and drinks.` },
+  { q: 'How far ahead should I order catering for the office?', a: 'Two weeks is a safe default for caterers. Some restaurants can do next-day orders for small groups, but popular caterers book up, especially in December and May.' },
+  { q: 'How do I handle dietary restrictions at a team lunch?', a: 'Ask your team ahead of time with a short form. Make sure there is at least one filling vegan option, and ask the caterer for a full allergen list.' },
+  { q: 'What is a good office lunch for a big, diverse team?', a: 'Build-your-own spreads work well: a protein, rice or grains, and fresh sides. Grilled meats with a vegan option, like Cambodian BBQ with tofu skewers, please most groups.' },
+  { q: 'Should I choose drop-off catering or a full-service caterer?', a: 'Drop-off is cheaper and easy for regular lunches. Full service or live cooking makes sense for celebrations, client events and all-hands.' },
+];
+---
+<GuideLayout
+  title="Office Lunch Ideas in Los Angeles: A Planner's Guide | Kreung LA"
+  description="Practical office lunch ideas for LA teams: formats, budgets, timing, dietary needs and how to keep team lunches from getting boring."
+  path="/guides/office-lunch-ideas-los-angeles"
+  h1="Office Lunch Ideas in Los Angeles: A Practical Guide for Office Managers"
+  crumb="Office Lunch Ideas in LA"
+  lede="Feeding a team every week is a real job. Here are practical ideas for formats, budgets and timing, so lunch gets easier and better."
+  datePublished="2026-11-24"
+  faqs={faqs}
+  ctaHeading="Need a lunch idea for next month?"
+  ctaText="See a price for Cambodian BBQ in about a minute."
+>
+  <h2>Start with the basics</h2>
+  <p>Before you pick a menu, answer four questions. They'll save you time and money.</p>
+  <ol>
+    <li><strong>How many people?</strong> Get a real headcount, then add a small buffer.</li>
+    <li><strong>What's the budget per person?</strong> Include delivery, fees, tax and drinks, not just the food.</li>
+    <li><strong>What are the dietary needs?</strong> Vegan, vegetarian, gluten-free, allergies. Ask before you order.</li>
+    <li><strong>What's the occasion?</strong> A regular Tuesday lunch is different from an all-hands or a client visit.</li>
+  </ol>
+
+  <h2>Lunch formats that work</h2>
+  <h3>Individual boxed meals</h3>
+  <p>Easy to hand out and good for meetings. They can feel a bit stiff, and leftovers are hard to share. Best for training days and working lunches.</p>
+  <h3>Family-style buffet</h3>
+  <p>Trays of food that people serve themselves. It's social, flexible and usually cheaper per person than boxes. Best for team lunches of 20 or more.</p>
+  <h3>Build-your-own bowls or plates</h3>
+  <p>A protein, a base like rice, and a few sides. People can make it their own, which helps with picky eaters and dietary needs. This is one of the easiest ways to please a big group.</p>
+  <h3>Live cooking or a food truck</h3>
+  <p>A grill or truck turns lunch into an event. It costs more and needs space, but it's great for celebrations, launches and summer parties.</p>
+  <h3>A recurring lunch program</h3>
+  <p>If you order every week or month, set up a standing order with one or two caterers you trust. You spend less time planning and get more consistent quality.</p>
+
+  <h2>Ideas to keep lunch from getting boring</h2>
+  <ul>
+    <li><strong>Rotate cuisines.</strong> LA has food from everywhere. Try a new region each month: Mexican, Korean, Armenian, Ethiopian, Cambodian and more.</li>
+    <li><strong>Tie lunch to the calendar.</strong> Lunar New Year, AAPI Heritage Month in May, Hispanic Heritage Month in the fall and the holidays are natural moments.</li>
+    <li><strong>Let the team vote.</strong> A quick poll between two or three options gets people excited.</li>
+    <li><strong>Support local.</strong> Small caterers and pop-ups often have the best food, and your order matters more to them.</li>
+    <li><strong>Add a story.</strong> When the caterer can share where the food comes from, lunch becomes a conversation.</li>
+  </ul>
+
+  <h2>Budgeting for LA office lunches</h2>
+  <p>{marketContext.text} (Source: <a href={marketContext.sourceUrl} rel="noopener">{marketContext.sourceName}</a>.) Watch for the extras: delivery fees, service or production fees, tax and drinks can add a lot.</p>
+  <p>Many caterers also have order minimums. If your team is small, you may need to order a little more food or combine lunches.</p>
+  <p>For a full breakdown, read our <a href="/guides/catering-cost-los-angeles">guide to catering costs in Los Angeles</a>.</p>
+
+  <h2>Timing and logistics</h2>
+  <ul>
+    <li><strong>Book early.</strong> Two weeks is a safe default for caterers. Book even earlier for December holiday parties and May heritage events.</li>
+    <li><strong>Plan for setup.</strong> Ask if delivery includes setup, and where the food will go.</li>
+    <li><strong>Mind the clock.</strong> Have food arrive 15 minutes before people eat.</li>
+    <li><strong>Think about cleanup.</strong> Who takes the trays? Is there a place for trash and compost?</li>
+  </ul>
+
+  <h2>Handling dietary needs</h2>
+  <p>Send a short form when people join the team, and keep a list. For each lunch, make sure there's at least one filling vegan option, not just a salad. Ask the caterer for an allergen list, and label dishes on the table.</p>
+
+  <h2>One option to consider: Cambodian BBQ</h2>
+  <p>Full disclosure: this is our business. If you want something new that still feels familiar, Cambodian BBQ is a strong pick for a team lunch. At Kreung LA we serve fire-grilled meats marinated in kreung, a Cambodian herb paste, with rice, coconut corn, pickled vegetables and house sauces. Our tofu skewers are vegan, and our food has no dairy or peanuts.</p>
+  <p>We do drop-off catering with setup across most of LA County, and we can bring our grill on-site for bigger events. Packages run $20 to $33 per person, for 30 to 300+ guests. See our <a href="/corporate-catering">corporate catering</a>, <a href="/catering-pricing">pricing</a> or the <a href="/office-lunch-club">Office Lunch Club</a> for recurring lunches.</p>
+</GuideLayout>

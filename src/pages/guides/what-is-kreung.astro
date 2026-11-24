@@ -1,0 +1,76 @@
+---
+import GuideLayout from '../../components/GuideLayout.astro';
+import { kreungIngredients, khmer } from '../../data/business';
+
+const notes: Record<string, string> = {
+  Lemongrass: 'The backbone. Bright, lemony and floral. Cooks use the tender lower stalk, sliced thin so it pounds smooth.',
+  Galangal: 'A cousin of ginger with a sharper, piney bite. It gives kreung its warmth.',
+  Turmeric: 'Earthy and a little bitter. It turns the paste golden and gives grilled meat its sunny color.',
+  'Makrut lime leaves': 'Glossy leaves with a strong citrus perfume. A few go a long way.',
+  Garlic: 'Savory depth that rounds out the herbs.',
+  Shallots: 'Sweet and mellow onion flavor that helps the paste cling to meat.',
+};
+
+const faqs = [
+  { q: 'What does kreung mean?', a: 'Kreung (ក្រឿង) is the Khmer word for the herb paste at the base of many Cambodian dishes. You will also see it spelled kroeung.' },
+  { q: 'What is in kreung?', a: 'Our kreung uses six ingredients: lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots.' },
+  { q: 'Is kreung spicy?', a: 'Kreung is about herbs, not heat. Some cooks add chilies to certain versions, but the paste itself is fragrant rather than fiery.' },
+  { q: 'How is kreung different from Thai curry paste?', a: 'They share ingredients like lemongrass and galangal. Thai curry pastes usually lean on chilies and shrimp paste. Kreung is built around fresh herbs and is often milder.' },
+  { q: 'How does Kreung LA use kreung?', a: 'We marinate all of our meats in kreung, then grill them over fire. It is the reason our BBQ tastes the way it does, and the reason for our name.' },
+];
+---
+<GuideLayout
+  title="What Is Kreung? Cambodia's Herb Paste Explained | Kreung LA"
+  description="Kreung is the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. What it is, how it's made and how it's used."
+  path="/guides/what-is-kreung"
+  h1="What Is Kreung? The Cambodian Herb Paste Behind Our BBQ"
+  crumb="What Is Kreung?"
+  lede="Kreung is the fragrant herb paste at the heart of Cambodian cooking. Here's what goes in it, how it's made and why we named our business after it."
+  datePublished="2026-11-24"
+  faqs={faqs}
+  ctaHeading="Taste kreung for yourself."
+  ctaText="Every meat we grill is marinated in it. Find us at a market or book us for your event."
+  ctaHref="/find-us"
+  ctaLabel="Find us this week"
+>
+  <h2>Kreung in one sentence</h2>
+  <p>Kreung (<span lang="km">{khmer.kreung}</span>, sometimes spelled <em>kroeung</em>) is a paste of fresh herbs and aromatics, pounded together by hand, that gives many Cambodian dishes their flavor.</p>
+  <p>If you've eaten Cambodian food, you've probably tasted it. It's in soups, stir-fries, curries and marinades. Think of it as the flavor base a Cambodian cook reaches for first.</p>
+
+  <h2>The six ingredients in our kreung</h2>
+  <p>Families make kreung a little differently, and there are several kinds. Ours uses six ingredients. Here they are, with their Khmer names.</p>
+  <ul>
+    {kreungIngredients.map((i) => (
+      <li><strong>{i.en}</strong> (<span lang="km">{i.km}</span>). {notes[i.en]}</li>
+    ))}
+  </ul>
+  <p>Put together, they taste bright, citrusy, earthy and savory all at once. There's no single loud flavor. That balance is the point.</p>
+
+  <h2>How kreung is made</h2>
+  <p>The traditional way is with a mortar and pestle. You slice the tough herbs thin, then pound them a handful at a time until they break down into a thick, rough paste. Pounding crushes the fibers and releases oils in a way a blender can't quite match.</p>
+  <p>It takes time and muscle. That's part of why kreung feels like home cooking. Many Cambodian Americans remember a parent or grandparent pounding it in the kitchen. On our homepage you can try a little "pound the kreung" game to see how the six ingredients come together.</p>
+
+  <h2>Different kinds of kreung</h2>
+  <p>Cambodian cooks make more than one kind of kreung, and they're often named by color. The color depends on which ingredients lead. Turmeric gives a golden paste. Using more of the green parts of lemongrass gives a greener one. Some versions add dried chilies for a red paste.</p>
+  <p>The kind we use for our BBQ is golden from turmeric and packed with lemongrass.</p>
+
+  <h2>How kreung is used in Cambodian cooking</h2>
+  <p>Kreung shows up all over the Cambodian table:</p>
+  <ul>
+    <li><strong>Soups and stews.</strong> Stirred into simmering broths to build flavor fast.</li>
+    <li><strong>Curries.</strong> Fried in oil, then cooked with coconut milk.</li>
+    <li><strong>Steamed dishes.</strong> Amok, a well-known Cambodian dish, uses kreung for its fragrant flavor.</li>
+    <li><strong>Marinades.</strong> Rubbed onto meat before grilling. This is how we use it.</li>
+  </ul>
+
+  <h2>How we use kreung at Kreung LA</h2>
+  <p>Every meat we serve soaks in kreung before it touches the grill. That includes our lemongrass chicken, beef skewers, pork belly and short rib. Then we cook over fire, so the herbs char a little at the edges. You get smoke, citrus and spice in the same bite.</p>
+  <p>We serve it with rice, coconut corn, pickled vegetables and our house sauces. The sides keep things fresh and crunchy next to the rich, grilled meat.</p>
+  <div class="callout">
+    <p><strong>Why the name?</strong> Sam learned to cook his mother's dishes himself. When he started Kreung LA, he named it after the paste that makes Cambodian food taste like Cambodian food. <a href="/about">Read our story</a>.</p>
+  </div>
+
+  <h2>Where to try it in LA</h2>
+  <p>Find us each week at three LA farmers markets: Westwood Village on Thursday, Playa Vista on Saturday and Smorgasburg LA on Sunday. <a href="/find-us">See times and addresses</a>.</p>
+  <p>Feeding a group? We cater for 30 to 300+ guests, with packages from $20 per person. See our <a href="/catering">catering options</a>, the <a href="/catering-menu">catering menu</a> and <a href="/catering-pricing">how pricing works</a>.</p>
+</GuideLayout>

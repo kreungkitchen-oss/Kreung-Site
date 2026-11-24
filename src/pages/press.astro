@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PressGrid from '../components/PressGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, clients, ratings } from '../data/business';
+import { tone } from '../data/tones';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Press', path: '/press' }];
+---
+<BaseLayout
+  title="Press and Media | Kreung LA"
+  description="Kreung LA in the Los Angeles Times, CBS News Los Angeles, Time Out, L.A. TACO, Eater LA and Follow My Gut. Press bio and media contact."
+  path="/press"
+>
+  <section class="sec page-hero" {...tone('yellow')}>
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <h1>Press and Media</h1>
+      <p class="lede">Writing about Cambodian food in LA? We'd love to talk. Here's where Kreung LA has been featured, plus a short bio you can use.</p>
+      <div class="btn-row"><a class="btn" href={`mailto:${business.email}?subject=Press%20inquiry`}>Email us</a></div>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('teal')} aria-labelledby="feat-h">
+    <div class="wrap">
+      <h2 id="feat-h">As seen in</h2>
+      <PressGrid />
+      {/* TODO(Sam): links to the CBS News Los Angeles segment and the Eater LA article */}
+    </div>
+  </section>
+
+  <section class="sec" {...tone('cream')} aria-labelledby="bio-h">
+    <div class="wrap prose">
+      <h2 id="bio-h">Press bio</h2>
+      <p><strong>Kreung LA</strong> (formerly Kreung Kitchen) is a Cambodian street BBQ business in Culver City, Los Angeles, founded by Sam Oum and Christina on January 1, 2024. Its fire-grilled meats are marinated in kreung, the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots.</p>
+      <p>Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border, and grew up in North Carolina, far from any Cambodian community. For years he promised his mother, Mak, that he would bring Cambodian food to LA. Kreung LA got its first catering order on her birthday, weeks after she passed.</p>
+      <p>Kreung LA caters events for 30 to 300+ guests for teams including {clients.slice(0, 6).join(', ')}, and serves weekly at farmers markets in Westwood, Playa Vista and Smorgasburg LA. It is rated {ratings.google.value} on Google and {ratings.yelp.value} on Yelp (as of {ratings.asOf}).</p>
+      <h2>Media contact</h2>
+      <p>Email <a href={`mailto:${business.email}`}>{business.email}</a> or text {business.phone.display}.</p>
+      <h2>Photos</h2>
+      {/* TODO(Sam): add a downloadable press kit (logo files and high-res photos). */}
+      <p><span class="todo">Downloadable press photos coming soon</span> Need photos now? Email us and we'll send them.</p>
+    </div>
+  </section>
+
+  <CtaBand heading="Want to taste it first?" text="Find us at a market this week." href="/find-us" label="Find us this week" />
+</BaseLayout>

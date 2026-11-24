@@ -1,0 +1,62 @@
+---
+/** Shared layout for /guides/* articles: Article JSON-LD (author Sam Oum), breadcrumbs, prose, FAQ, CTA. */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Faq from './Faq.astro';
+import CtaBand from './CtaBand.astro';
+import { article } from '../data/schema';
+import { tone } from '../data/tones';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  h1: string;
+  crumb: string;
+  lede: string;
+  datePublished: string;
+  faqs: { q: string; a: string }[];
+  ctaHeading: string;
+  ctaText: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+const p = Astro.props;
+const crumbs = [{ name: 'Home', path: '/' }, { name: p.crumb, path: p.path }];
+const date = new Date(p.datePublished + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+<BaseLayout title={p.title} description={p.description} path={p.path} ogType="article"
+  jsonLd={[article({ title: p.h1, description: p.description, path: p.path, datePublished: p.datePublished })]}>
+  <section class="sec page-hero" {...tone('yellow')}>
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <p class="eyebrow">Guide</p>
+      <h1>{p.h1}</h1>
+      <p class="lede">{p.lede}</p>
+      <p class="byline">By <a href="/about">Sam Oum</a>, co-owner of Kreung LA · <time datetime={p.datePublished}>{date}</time></p>
+    </div>
+  </section>
+
+  <article class="sec" {...tone('cream')}>
+    <div class="wrap prose guide">
+      <slot />
+    </div>
+  </article>
+
+  <section class="sec" {...tone('teal')}>
+    <div class="wrap">
+      <Faq faqs={p.faqs} heading="Questions" />
+      <p class="more-faq"><a href="/catering">Catering</a> · <a href="/catering-pricing">Catering pricing</a> · <a href="/catering-menu">Catering menu</a></p>
+    </div>
+  </section>
+
+  <CtaBand heading={p.ctaHeading} text={p.ctaText} href={p.ctaHref ?? '/corporate-catering#estimate'} label={p.ctaLabel ?? 'Get a catering quote'} />
+</BaseLayout>
+<style>
+  .byline { margin: 18px 0 0; font-weight: 600; font-size: 15px; }
+  .byline a { font-weight: 800; }
+  .guide { font-size: 18px; }
+  .guide :global(h2:first-child) { margin-top: 0; }
+  .guide :global(.callout) { background: var(--white); border: 2.5px solid var(--plum); border-radius: 18px; padding: 18px 22px; box-shadow: 5px 5px 0 var(--plum); margin: 1.6em 0; }
+  .guide :global(.callout p:last-child) { margin: 0; }
+</style>
