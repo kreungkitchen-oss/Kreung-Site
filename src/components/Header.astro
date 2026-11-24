@@ -50,7 +50,7 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
 <style>
   .site-header { position: relative; z-index: 50; background: var(--bg, var(--yellow)); color: var(--fg, var(--plum)); --bg: var(--yellow); --fg: var(--plum); }
   .site-header__inner { display: flex; align-items: center; gap: 12px; height: var(--header-h); }
-  .brand-space { width: 70px; flex: none; margin-right: auto; }
+  .brand-space { width: 86px; flex: none; margin-right: auto; }
   .header-actions { display: flex; align-items: center; gap: 10px; }
   /* Header buttons copy the current site: rounded box, plum outline, offset shadow */
   .hbtn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border: 3px solid var(--plum); border-radius: 14px; box-shadow: 4px 4px 0 var(--plum); font-weight: 700; font-size: 16px; text-decoration: none; background: #ee5a84; color: var(--plum); transition: transform 0.15s, box-shadow 0.15s; }
@@ -85,6 +85,6 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
     .site-nav li a:not(.hbtn):hover { background: rgba(255, 255, 255, 0.5); }
     .site-nav__cta { margin: 0 0 0 14px; }
     .site-nav__cta .hbtn { width: auto; min-height: 50px; font-size: 18px; padding: 0 22px; }
-    .brand-space { width: 110px; }
+    .brand-space { width: 138px; }
   }
 </style>

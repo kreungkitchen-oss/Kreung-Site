@@ -35,7 +35,7 @@ for (let y = 10; y <= 130; y += step) { holes.push([0, y], [120, y]); }
     --paper: var(--f-fg, var(--plum));
     --ink: var(--f-bg, var(--cream));
     position: fixed; z-index: 60; left: max(10px, env(safe-area-inset-left)); top: 6px;
-    width: 62px; display: block; transform: rotate(-6deg); transform-origin: 30% 30%;
+    width: 78px; display: block; transform: rotate(-6deg); transform-origin: 30% 30%;
     filter: drop-shadow(3px 4px 0 rgba(43, 27, 63, 0.35));
     transition: transform 0.2s;
   }
@@ -45,6 +45,6 @@ for (let y = 10; y <= 130; y += step) { holes.push([0, y], [120, y]); }
   .paper { fill: var(--paper); }
   .frame { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 4 3; }
   .ink { fill: var(--ink); font: 900 10px/1 'Archivo Variable', Arial, sans-serif; font-stretch: 75%; letter-spacing: 0.08em; }
-  @media (min-width: 1040px) { .stamp { width: 92px; left: 18px; top: 10px; } }
+  @media (min-width: 1040px) { .stamp { width: 120px; left: 18px; top: 10px; } }
   @media print { .stamp { position: absolute; } }
 </style>
