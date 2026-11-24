@@ -9,7 +9,7 @@ A step-by-step guide for Sam. No coding needed. Plan on about an hour, plus wait
 ## Before you start
 
 1. **Merge the pull request** on GitHub (the green "Merge" button). This puts the new site on the `main` branch, which is what Netlify will publish.
-2. **Know where your domain lives.** You bought `kreungla.com` through **Square**, and its DNS records are at **Register.com**. You'll change two records there in Step 4, so make sure you can log in. The domain renews on **July 6, 2027**. Keep **auto-renew turned on in Square** so it never lapses.
+2. **Know where your domain lives.** You bought `kreungla.com` through **Square**. Square uses Register.com behind the scenes, but you don't need a separate Register.com login: the DNS settings for a Square-bought domain are usually managed in your **Square Dashboard → Online → Website → Domains**. Find them there now, because you'll change two records in Step 4. If you can't find them, contact Square support. The domain renews on **July 6, 2027**. Keep **auto-renew turned on in Square** so it never lapses.
 3. **Find your Square Online `.square.site` address.** In your Square Dashboard, go to **Online → Website → Domains**. Next to `kreungla.com` you'll see a free address that ends in `.square.site`. Write it down, open it in your browser and check that your Square site loads. Do this **before Step 4**: after the switch, that address is how people reach Square Online ordering.
    - Send that address to Claude. It becomes the site's ordering link (`ORDER_URL`, which is `links.order` in `src/data/business.ts`, plus the `/order` redirects). The "Order ahead" buttons stay hidden until it's set, so send it when you're ready to turn ordering back on.
 4. **Go through `TODO.md`.** The site works without those answers, but the "Before launch" items (order link, grill space, Lunch Club terms and so on) should be filled in before you announce it.
@@ -26,7 +26,7 @@ A step-by-step guide for Sam. No coding needed. Plan on about an hour, plus wait
    - Publish directory: `dist`
 5. Click **Deploy**. After a minute or two you get a test address like `something-random.netlify.app`. Open it and click around. That's your new site.
 
-**Tip:** In **Site configuration → General → Site details → Change site name**, rename it to `kreungla` so the test address becomes `kreungla.netlify.app`.
+**Tip:** In **Site configuration → General → Site details → Change site name**, rename it to `kreungla` so the test address becomes `kreungla.netlify.app`. (Your site is currently `kreung-site.netlify.app`. Renaming is optional. If you do rename it, use the new address in Step 4.)
 
 ---
 
@@ -60,7 +60,7 @@ Spam is filtered automatically. Every form has a hidden trap field that bots fil
 
 This is the step that actually moves visitors from the old Square site to the new one. Do it when you're ready to switch, ideally on a quiet weekday.
 
-Log in to wherever your domain lives (see "Before you start") and find the **DNS settings** (sometimes called "DNS records" or "Advanced DNS").
+Log in to your **Square Dashboard** and go to **Online → Website → Domains**. Open `kreungla.com` and find its **DNS settings** (sometimes called "DNS records" or "Advanced DNS"). If you can't find them there, contact Square support and ask how to edit DNS records for a domain bought through Square.
 
 > **⚠️ Don't break your email.** kreungla.com uses Google Workspace for email. Your DNS has five `MX` records that point to Google: `aspmx.l.google.com`, `alt1.aspmx.l.google.com`, `alt2.aspmx.l.google.com`, `alt3.aspmx.l.google.com` and `alt4.aspmx.l.google.com`.
 >
@@ -73,7 +73,7 @@ Log in to wherever your domain lives (see "Before you start") and find the **DNS
 | Type | Name / Host | Value |
 | --- | --- | --- |
 | `A` | `@` (or blank) | `75.2.60.5` |
-| `CNAME` | `www` | `kreungla.netlify.app` (your Netlify address from Step 1) |
+| `CNAME` | `www` | Your exact Netlify address, as shown in Netlify's **Domain management**. Right now that's `kreung-site.netlify.app`. It's `kreungla.netlify.app` only if you renamed the site using the Step 1 tip. |
 
 - Delete any old `A` or `CNAME` records for `@` and `www` that point to Square. Two records for the same name will confuse browsers.
 - **Do not touch** any `MX` records (Google Workspace email, see the warning above) or any `TXT` records. Those handle email and verification.
@@ -83,7 +83,7 @@ Log in to wherever your domain lives (see "Before you start") and find the **DNS
 
 In Netlify, choose **Set up Netlify DNS**. Netlify gives you four "name servers" (they look like `dns1.p01.nsone.net`). At your domain company, replace the current name servers with those four. This hands **all** DNS to Netlify, so first add your five Google Workspace `MX` records in Netlify DNS, copied exactly from your screenshot (the same names, values and priority numbers). If you skip this, email to your @kreungla.com addresses stops working. Option A is safer if you're not sure.
 
-**Your DNS is at Register.com.** Make the Option A changes there. If you can't find the DNS settings or Register.com won't let you edit them, ask Square support how to edit DNS for a domain bought through Square. Don't transfer the domain or cancel anything at Square: the domain renews through Square on July 6, 2027, and Square Online keeps running for ordering.
+**Where to make these changes:** in the Square Dashboard (Online → Website → Domains), as above. Square uses Register.com behind the scenes, so you won't need a Register.com login. If you can't find the DNS settings or Square won't let you edit them, contact Square support. Don't transfer the domain or cancel anything at Square: the domain renews through Square on July 6, 2027, and Square Online keeps running for ordering.
 
 **How long does it take?** Usually under an hour, sometimes up to 24 to 48 hours. During the switch, some people see the old site and some see the new one. That's normal.
 

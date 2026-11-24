@@ -65,7 +65,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 
 ## External links
 - Online ordering (Square): [ORDER_URL — TODO] Online ordering runs on Square Online, which stays up at its free .square.site address (find it in Square Dashboard → Online → Website → Domains). Ordering is turned off for now; keep order buttons hidden until Sam sends that address.
-- Domain: kreungla.com was bought through Square; its DNS is at Register.com. Renews July 6, 2027 (keep auto-renew on in Square). Google Workspace email (MX records) must be left alone.
+- Domain: kreungla.com was bought through Square (Register.com behind the scenes; no separate Register.com login). DNS is managed in Square Dashboard → Online → Website → Domains. Netlify site address: kreung-site.netlify.app. Renews July 6, 2027 (keep auto-renew on in Square). Google Workspace email (MX records) must be left alone.
 - Gift cards (Square): not set up yet. Hide gift card links until Sam sets them up.
 - Instagram: https://www.instagram.com/kreung_la
 
