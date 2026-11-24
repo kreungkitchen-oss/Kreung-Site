@@ -1,0 +1,134 @@
+---
+/**
+ * Catering quantity calculator. Works without JavaScript as a plain table
+ * (25 / 50 / 100 / 150 guests). With JavaScript, a guest-count box adds a
+ * "Your event" column. Numbers come from `portions` in business.ts.
+ * TODO(Sam): portion numbers. Until they are in, the page is noindex and out of the sitemap.
+ */
+import GuideLayout from '../../components/GuideLayout.astro';
+import { portions, portionsReady, packages, policies, money } from '../../data/business';
+
+const published = '2026-11-24';
+const updated = '2026-11-24';
+const COLS = [25, 50, 100, 150];
+
+const fmt = (unit: string, perGuest: number | null, guests: number) => {
+  if (perGuest == null) return 'Coming soon';
+  const total = perGuest * guests;
+  if (unit === 'oz') return `${(Math.round((total / 16) * 10) / 10).toLocaleString('en-US')} lb`;
+  if (unit === 'cup') return `${Math.round(total).toLocaleString('en-US')} cups`;
+  return Math.ceil(total).toLocaleString('en-US');
+};
+const per = (unit: string, perGuest: number | null) =>
+  perGuest == null ? 'Coming soon' : unit === 'oz' ? `${perGuest} oz` : unit === 'cup' ? `${perGuest} cup` : `${perGuest}`;
+
+const minGuests = Math.ceil(policies.minimumDropoff / packages[0].price);
+
+const faqs = [
+  { q: 'How much food do I need for 50 people?', a: 'Use the table on this page. It shows how much chicken, skewers, sides and rice we plan for 50 guests, based on our own catering portions. You can change the guest count to see your number.' },
+  { q: 'Should I order extra food?', a: 'Get an accurate headcount first. Then order close to it, because over-ordering by a lot raises your cost without making anyone happier.' },
+  { q: 'How many proteins should I pick for a group?', a: 'Our Classic package has 1 protein, Signature has 2 and The Full Experience has all 4 meats. Two proteins, with tofu skewers as one of them, is an easy way to cover vegan guests.' },
+  { q: 'What is the minimum order for catering?', a: `Our minimum is ${money(policies.minimumDropoff)} for pickup and drop-off. At $${packages[0].price} per person, that is ${minGuests} guests on the Classic package.` },
+  { q: 'Do I have to work out the food myself?', a: 'No. Tell us your guest count in the estimator, and we plan the amounts for you. The calculator is here so you know what to expect.' },
+];
+---
+<GuideLayout
+  title="How Much Food for 50 People? Catering Calculator | Kreung LA"
+  description="How much food to order for 50 people: pounds of chicken, skewers, sides and rice, with a calculator for any guest count. From Kreung LA catering."
+  path="/guides/how-much-food-for-50-people"
+  h1="How Much Food Do You Need for 50 People?"
+  crumb="How Much Food for 50 People"
+  lede="A quick calculator for catering amounts. Put in your guest count and see how much chicken, skewers, sides and rice to plan for."
+  datePublished={published}
+  dateUpdated={updated}
+  noindex={!portionsReady}
+  takeaways={[
+    'Start with an accurate headcount. Every amount on this page scales from it.',
+    'The table shows our own portions per guest, for proteins, sides, rice and sauces.',
+    'Pick 1 or 2 proteins, or all 4 meats with The Full Experience. Tofu skewers cover vegan guests.',
+    `Our minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, so plan for at least ${minGuests} guests on the Classic package.`,
+  ]}
+  related={['/catering/corporate', '/catering/menu', '/guides/catering-cost-los-angeles', '/guides/office-lunch-ideas-los-angeles']}
+  compare={['packages']}
+  faqs={faqs}
+  ctaLabel="Get a catering quote"
+  ctaHref="/catering/corporate#estimate"
+  ctaHeading="Let us do the math."
+  ctaText="Tell us your guest count. We plan the food and reply within 24 hours."
+>
+  <h2>Food calculator</h2>
+  {!portionsReady && <p><span class="todo">Coming soon: our portion numbers are being confirmed.</span></p>}
+  <div class="calc" data-calc>
+    <label class="calc__l" for="calc-guests">Your guest count</label>
+    <input id="calc-guests" type="number" inputmode="numeric" min="1" step="1" value="50" class="calc__in" data-calc-in aria-describedby="calc-help" />
+    <p id="calc-help" class="calc__help">The "Your event" column updates as you type.</p>
+  </div>
+  <div class="tbl" role="region" aria-labelledby="calc-cap" tabindex="0">
+    <table>
+      <caption id="calc-cap">How much food to plan, by guest count</caption>
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Per guest</th>
+          {COLS.map((n) => <th scope="col">{n} guests</th>)}
+          <th scope="col" class="calc__col" data-calc-col>Your event (<span data-calc-n>50</span>)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {portions.map((x) => (
+          <tr>
+            <th scope="row">{x.item}</th>
+            <td>{per(x.unit, x.perGuest)}</td>
+            {COLS.map((n) => <td>{fmt(x.unit, x.perGuest, n)}</td>)}
+            <td class="calc__col" data-calc-cell data-unit={x.unit} data-per={x.perGuest ?? ''}>{fmt(x.unit, x.perGuest, 50)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="small">Protein amounts assume every guest gets each protein listed. If you pick 2 proteins, use the rows for those two.</p>
+  {/* TODO(Sam): confirm how protein amounts change for 1, 2 or 4 proteins. */}
+
+  <h2>How to use these numbers</h2>
+  <ul>
+    <li><strong>Count your guests.</strong> Get a real headcount before you order.</li>
+    <li><strong>Pick your proteins.</strong> Choose 1 (Classic), 2 (Signature) or all 4 meats (The Full Experience).</li>
+    <li><strong>Check dietary needs.</strong> Our tofu skewers are vegan, and our food has no dairy or peanuts.</li>
+    <li><strong>Get a quote.</strong> Put your guest count in our <a href="/catering/corporate#estimate">estimator</a>, and we plan the amounts for you.</li>
+  </ul>
+  <p>Want the price too? See <a href="/catering/pricing">our catering prices</a>.</p>
+</GuideLayout>
+
+<script>
+  const box = document.querySelector<HTMLInputElement>('[data-calc-in]');
+  const n = document.querySelector('[data-calc-n]');
+  const update = () => {
+    const g = Math.max(0, Math.floor(Number(box?.value) || 0));
+    if (n) n.textContent = String(g);
+    document.querySelectorAll<HTMLElement>('[data-calc-cell]').forEach((td) => {
+      const per = td.dataset.per === '' ? null : Number(td.dataset.per);
+      if (per == null) { td.textContent = 'Coming soon'; return; }
+      const total = per * g;
+      td.textContent = td.dataset.unit === 'oz' ? `${(Math.round((total / 16) * 10) / 10).toLocaleString('en-US')} lb`
+        : td.dataset.unit === 'cup' ? `${Math.round(total).toLocaleString('en-US')} cups`
+        : Math.ceil(total).toLocaleString('en-US');
+    });
+  };
+  document.documentElement.classList.add('calc-on');
+  box?.addEventListener('input', update);
+  update();
+</script>
+
+<style>
+  .calc { display: none; margin: 0 0 16px; }
+  :global(html.calc-on) .calc { display: grid; gap: 6px; max-width: 320px; }
+  .calc__col { display: none; }
+  :global(html.calc-on) .calc__col { display: table-cell; background: var(--yellow); font-weight: 800; }
+  .calc__l { font-weight: 800; }
+  .calc__in { height: 52px; font-size: 20px; padding: 0 14px; border: 2.5px solid var(--plum); border-radius: 12px; background: #fff; color: var(--plum); }
+  .calc__help { margin: 0; font-size: 15px; }
+  .tbl { overflow-x: auto; margin: 0 0 12px; }
+  .tbl:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+  .tbl table { min-width: 640px; }
+  caption { text-align: left; font-weight: 800; padding: 0 0 8px; }
+</style>

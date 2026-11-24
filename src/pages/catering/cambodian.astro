@@ -1,21 +1,27 @@
 ---
-import NichePage from '../components/NichePage.astro';
-import { policies, khmer, kreungIngredients } from '../data/business';
-import photo from '../assets/photos/plate-combo.jpg';
+import NichePage from '../../components/NichePage.astro';
+import { policies, khmer, kreungIngredients } from '../../data/business';
+import photo from '../../assets/photos/plate-combo.jpg';
 
 const faqs = [
   { q: 'What is Cambodian BBQ?', a: 'Cambodian street BBQ is meat grilled over fire after soaking in kreung, an herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. We serve it with rice, coconut corn, pickled vegetables and house sauces.' },
   { q: 'What comes with the meat?', a: 'Every package comes with rice, coconut corn, pickled vegetables and house sauces. The Full Experience comes with coconut lime leaf rice.' },
-  { q: 'How is Cambodian food different from Thai food?', a: 'They share some ingredients, like lemongrass and galangal. Cambodian cooking is built on herb pastes like kreung, with fresh and pickled sides on the plate. Our guide on Cambodian vs. Thai food explains more.' },
+  { q: 'How is Cambodian food different from Thai food?', a: 'They share some ingredients, like lemongrass and galangal. Cambodian cooking is built on herb pastes like kreung, with fresh and pickled sides on the plate, and our guide on Cambodian vs. Thai food explains more.' },
   { q: 'How much does Cambodian catering cost?', a: `Our packages are $20, $25 and $33 per person. The minimum is $1,000 for pickup and drop-off and $2,000 for our grill on-site.` },
   { q: 'Do you have vegan Cambodian dishes?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
   { q: 'Where in LA do you cater?', a: `We are based in Culver City and deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
 ];
 ---
 <NichePage
+  published="2026-11-24"
+  updated="2026-11-24"
+  serviceName="Cambodian catering in Los Angeles"
+  takeaways={["Kreung LA is a Cambodian family business in Culver City. We grill meats marinated in kreung, a Cambodian herb paste.", "Packages are $20, $25 and $33 per person, for 30 to 300+ guests.", "The minimum is $1,000 for pickup and drop-off, and $2,000 for our grill on-site.", "Our tofu skewers are vegan, and our food has no dairy or peanuts.", "Book at least 2 weeks ahead. We reply within 24 hours."]}
+  related={["/catering/southeast-asian", "/catering/menu", "/guides/what-is-kreung", "/guides/cambodian-vs-thai-food"]}
+  button="Get a Cambodian catering quote"
   title="Cambodian Catering in Los Angeles | Kreung LA"
   description="Real Cambodian BBQ catering in LA: kreung-marinated meats grilled over fire, with rice, coconut corn and pickled veggies. 30 to 300+ guests."
-  path="/cambodian-catering-los-angeles"
+  path="/catering/cambodian"
   crumb="Cambodian Catering"
   h1="Cambodian Catering in Los Angeles"
   lede="Real Khmer flavor for your party, office or celebration. Fire-grilled meats marinated in kreung, inspired by the dishes of Sam's mother, Mak."
@@ -24,7 +30,6 @@ const faqs = [
   estimateType="Private celebration"
   reviewKeys={['repeatClient', 'pasqual', 'randall']}
   faqs={faqs}
-  faqHeading="Cambodian catering questions"
   ctaHeading="Bring Cambodian BBQ to your table."
 >
   <div class="cols">

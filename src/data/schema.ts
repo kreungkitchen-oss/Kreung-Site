@@ -1,5 +1,5 @@
 /** JSON-LD builders. Only use facts from business.ts. */
-import { business, BUSINESS_ID, SITE_URL, ratings, videos } from './business';
+import { business, BUSINESS_ID, SITE_URL, ratings, videos, packages, policies, money } from './business';
 
 export const businessEntity = () => ({
   '@context': 'https://schema.org',
@@ -55,14 +55,14 @@ export const breadcrumbList = (items: { name: string; path: string }[]) => ({
   })),
 });
 
-export const article = (o: { title: string; description: string; path: string; datePublished: string }) => ({
+export const article = (o: { title: string; description: string; path: string; datePublished: string; dateModified?: string }) => ({
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: o.title,
   description: o.description,
   mainEntityOfPage: new URL(o.path, SITE_URL).href,
   datePublished: o.datePublished,
-  dateModified: o.datePublished,
+  dateModified: o.dateModified ?? o.datePublished,
   author: { '@type': 'Person', '@id': `${SITE_URL}/about#sam-oum`, name: 'Sam Oum', url: `${SITE_URL}/about` },
   publisher: { '@id': BUSINESS_ID },
   image: `${SITE_URL}/images/og-image.jpg`,
@@ -111,4 +111,30 @@ export const videoObject = () => ({
   ...(videos.cbs.uploadDate ? { uploadDate: videos.cbs.uploadDate } : {}),
   publisher: { '@type': 'Organization', name: videos.cbs.outlet },
   about: { '@id': BUSINESS_ID },
+});
+
+/**
+ * Service markup for every /catering/ page: provider = the business,
+ * areaServed = Los Angeles County, offer = the per-person package price range.
+ */
+const lowPrice = Math.min(...packages.map((p) => p.price));
+const highPrice = Math.max(...packages.map((p) => p.price));
+export const service = (o: { name: string; description: string; path: string; serviceType?: string }) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: o.name,
+  serviceType: o.serviceType ?? 'Catering',
+  description: o.description,
+  url: new URL(o.path, SITE_URL).href,
+  provider: { '@id': BUSINESS_ID },
+  areaServed: { '@type': 'AdministrativeArea', name: business.areaServed },
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'USD',
+    lowPrice,
+    highPrice,
+    offerCount: packages.length,
+    description: `Catering packages from $${lowPrice} to $${highPrice} per person. Minimum ${money(policies.minimumDropoff)} for pickup and drop-off, ${money(policies.minimumOnsite)} for our grill on-site.`,
+    priceSpecification: { '@type': 'UnitPriceSpecification', priceCurrency: 'USD', minPrice: lowPrice, maxPrice: highPrice, unitText: 'per person' },
+  },
 });

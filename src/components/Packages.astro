@@ -13,7 +13,7 @@ const H = `h${headingLevel}`;
       <ul>
         <li>{p.proteins === '1 protein' ? 'Choose 1 protein' : p.proteins === '2 proteins' ? 'Choose 2 proteins' : p.proteins}</li>
         <li>{p.sides}</li>
-        <li>{p.bestFor}</li>
+        <li class="bf"><b>Best for:</b> {p.bestFor}</li>
       </ul>
     </article>
   ))}

@@ -1,0 +1,36 @@
+---
+/**
+ * Author box + "Published" / "Last updated" dates, shown at the top of every
+ * catering page and guide. Dates come from each page's front matter
+ * (`const published = '2026-11-24'` etc.).
+ */
+import { Image } from 'astro:assets';
+import { people } from '../data/business';
+import headshot from '../assets/photos/sam-oum-headshot.jpg';
+
+interface Props { published: string; updated?: string }
+const { published, updated = published } = Astro.props;
+const fmt = (d: string) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const sam = people.sam;
+---
+<div class="author">
+  <Image src={headshot} alt="" width={64} height={64} widths={[64, 128]} sizes="64px" loading="eager" class="author__img" />
+  <div>
+    <p class="author__by">By <a href="/about#sam-oum">{sam.name}</a>, {sam.role}</p>
+    <p class="author__links">
+      <a href={sam.instagram} rel="noopener">Instagram</a>
+      {sam.linkedin && <> · <a href={sam.linkedin} rel="noopener">LinkedIn</a></>}
+    </p>
+    <p class="author__dates">
+      Published <time datetime={published}>{fmt(published)}</time> · Last updated <time datetime={updated}>{fmt(updated)}</time>
+    </p>
+  </div>
+</div>
+<style>
+  .author { display: flex; gap: 14px; align-items: center; margin-top: 22px; }
+  .author :global(.author__img) { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--plum); object-fit: cover; flex: none; }
+  .author p { margin: 0; font-size: 15px; line-height: 1.4; }
+  .author__by { font-weight: 800; }
+  .author__links a, .author__by a { font-weight: 800; }
+  .author__dates { font-weight: 600; }
+</style>

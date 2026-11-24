@@ -1,7 +1,7 @@
 ---
-import NichePage from '../components/NichePage.astro';
-import { policies, money, lunchClub } from '../data/business';
-import photo from '../assets/photos/event-office-lunch.jpg';
+import NichePage from '../../components/NichePage.astro';
+import { policies, money, lunchClub } from '../../data/business';
+import photo from '../../assets/photos/event-office-buffet-line.jpg';
 
 const faqs = [
   { q: 'What is the Office Lunch Club?', a: `${lunchClub.pitch} You pick a regular day, and Cambodian BBQ shows up for your team on schedule.` },
@@ -13,21 +13,25 @@ const faqs = [
 ];
 ---
 <NichePage
+  published="2026-11-24"
+  updated="2026-11-24"
+  serviceName="Recurring office lunch catering in Los Angeles"
+  takeaways={["The Office Lunch Club brings Cambodian BBQ to your team on a regular day, monthly or every other week.", "Lunch Club teams get first pick of dates on our calendar.", "Pricing starts from our regular packages: $20, $25 and $33 per person, with a $1,000 drop-off minimum per order.", "You can rotate the menu each time."]}
+  related={["/catering/corporate", "/guides/office-lunch-ideas-los-angeles", "/catering/menu", "/catering/pricing"]}
   title="Office Lunch Club: Recurring Catering in LA | Kreung LA"
   description="Recurring Cambodian BBQ catering for LA offices. Book a standing monthly or bi-weekly team lunch, with first pick of dates. Ask about the Lunch Club."
-  path="/office-lunch-club"
+  path="/catering/office-lunch-club"
   crumb="Office Lunch Club"
   h1="Office Lunch Club: Recurring Cambodian BBQ Catering"
   lede="Put lunch on autopilot. Book a standing Cambodian BBQ lunch for your team, monthly or every other week, and get first pick of dates."
   photo={photo}
-  photoAlt="Coworkers serving themselves from a Kreung LA lunch spread in a bright office"
+  photoAlt="A Kreung LA lunch buffet on a long office table: slow roasted pork belly, lemongrass beef skewers, lemongrass chicken thighs, coconut corn and sauces"
   button="Ask about the Lunch Club"
   estimateType="Corporate or office lunch"
   estimateNotes="I'm interested in the Office Lunch Club (recurring catering)."
   estimateHeading="Ask about the Lunch Club"
   reviewKeys={['rareBeauty', 'janeT', 'repeatClient']}
   faqs={faqs}
-  faqHeading="Lunch Club questions"
   ctaHeading="Lunch, handled. Every time."
   bodyTone="teal"
 >

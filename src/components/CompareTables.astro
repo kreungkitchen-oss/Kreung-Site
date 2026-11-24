@@ -1,0 +1,67 @@
+---
+/**
+ * Comparison tables built from business.ts:
+ *  - packages: Classic / Signature / The Full Experience side by side
+ *  - service:  drop-off vs our grill on-site
+ * Real <table> markup so it reads without JavaScript and works for screen readers.
+ */
+import { packages, packagesNote, policies, money } from '../data/business';
+interface Props { show?: ('packages' | 'service')[]; headingLevel?: 2 | 3 }
+const { show = ['packages', 'service'], headingLevel = 2 } = Astro.props;
+const H = `h${headingLevel}`;
+---
+<div class="cmp">
+  {show.includes('packages') && (
+    <div class="cmp__block">
+      <H class="cmp__h" id="cmp-packages">Compare packages</H>
+      <div class="tbl-wrap" role="region" aria-labelledby="cmp-packages" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">Package</th><th scope="col">Price per person</th><th scope="col">Proteins</th><th scope="col">Sides</th><th scope="col">Best for</th></tr></thead>
+          <tbody>
+            {packages.map((p) => (
+              <tr>
+                <th scope="row">{p.name}{p.popular && <span class="pop"> (most popular)</span>}</th>
+                <td>${p.price}</td>
+                <td>{p.proteins}</td>
+                <td>{p.sides}</td>
+                <td>{p.bestFor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp__note">{packagesNote}</p>
+    </div>
+  )}
+  {show.includes('service') && (
+    <div class="cmp__block">
+      <H class="cmp__h" id="cmp-service">Drop-off vs. on-site grill</H>
+      <div class="tbl-wrap" role="region" aria-labelledby="cmp-service" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">Detail</th><th scope="col">Drop-off</th><th scope="col">On-site grill</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Food minimum</th><td>{money(policies.minimumDropoff)}</td><td>{money(policies.minimumOnsite)}</td></tr>
+            <tr><th scope="row">How it works</th><td>We deliver hot food and set it up</td><td>Our team brings the grill, cooks and serves at your event</td></tr>
+            <tr><th scope="row">Delivery</th><td>From ${policies.deliveryFrom}, setup included ({policies.deliveryArea})</td><td>We come to you</td></tr>
+            <tr><th scope="row">Production fee</th><td>{policies.productionFeeDropoffPct}% for {policies.productionFeeDropoffThreshold}+ guests</td><td>{policies.productionFeeOnsitePct}%, starting at ${policies.productionFeeOnsiteMin}</td></tr>
+            <tr><th scope="row">Best for</th><td>Office lunches, meetings and crew meals</td><td>Weddings, parties and big company events</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cmp__note">Pickup has the same {money(policies.minimumDropoff)} minimum as drop-off. The production fee is a {policies.productionFeeNote.charAt(0).toLowerCase() + policies.productionFeeNote.slice(1)}</p>
+    </div>
+  )}
+</div>
+<style>
+  .cmp { display: grid; gap: clamp(28px, 4vw, 44px); }
+  .cmp__h { margin: 0 0 14px; }
+  .tbl-wrap { overflow-x: auto; border: 2.5px solid var(--plum); border-radius: 18px; background: var(--white); color: var(--plum); box-shadow: 6px 6px 0 var(--plum); }
+  .tbl-wrap:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; font-size: 16px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1.5px solid rgba(43, 27, 63, 0.18); vertical-align: top; }
+  thead th { background: var(--yellow); font-weight: 800; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  tbody th { font-weight: 800; }
+  .pop { font-weight: 600; font-size: 14px; }
+  .cmp__note { margin: 12px 0 0; font-weight: 600; font-size: 15px; }
+</style>

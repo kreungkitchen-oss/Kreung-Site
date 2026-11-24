@@ -1,13 +1,39 @@
-# Netlify redirects: old Square Online URLs -> new pages.
-# /corporate-catering and /catering keep their exact URLs (already indexed).
+# Netlify redirects. Every old URL points straight at its final page (no chains).
+# /catering keeps its exact URL (already indexed).
+
+# Catering pages moved under /catering/ (Nov 2026). /corporate-catering was
+# indexed on the old Square site, so this redirect matters most.
+/corporate-catering               /catering/corporate             301
+/cambodian-catering-los-angeles   /catering/cambodian             301
+/cambodian-catering               /catering/cambodian             301
+/southeast-asian-catering         /catering/southeast-asian       301
+/on-site-grill-catering           /catering/on-site-grill         301
+/production-catering              /catering/film-production       301
+/film-production-catering         /catering/film-production       301
+/aapi-heritage-month-catering     /catering/aapi-heritage-month   301
+/holiday-party-catering           /catering/holiday-party         301
+/office-lunch-club                /catering/office-lunch-club     301
+/catering-pricing                 /catering/pricing               301
+/catering-menu                    /catering/menu                  301
+/catering/production              /catering/film-production       301
+
+# Guides that may get linked without the /guides/ folder.
+/what-is-kreung                   /guides/what-is-kreung                   301
+/cambodian-vs-thai-food           /guides/cambodian-vs-thai-food           301
+/office-lunch-ideas-los-angeles   /guides/office-lunch-ideas-los-angeles   301
+/catering-cost-los-angeles        /guides/catering-cost-los-angeles        301
+/how-much-food-for-50-people      /guides/how-much-food-for-50-people      301
 
 # Astro names the sitemap sitemap-index.xml; this makes /sitemap.xml work too.
 /sitemap.xml         /sitemap-index.xml    301
 
+# The rewards sign-up moved to Square Loyalty.
+/rewards-thanks      /rewards              301
+
 /contact-us          /catering             301
 /contact             /catering             301
-/menu                /catering-menu        301
-/catering-packages   /catering-pricing     301
+/menu                /catering/menu        301
+/catering-packages   /catering/pricing     301
 /about-us            /about                301
 /our-story           /about                301
 /locations           /find-us              301

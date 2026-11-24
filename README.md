@@ -32,7 +32,7 @@ Merge a change into `main` on GitHub and Netlify publishes it in a minute or two
 
 | Folder / file | What it is |
 | --- | --- |
-| `src/pages/` | One file per page. The file name is the web address (`catering-menu.astro` → `/catering-menu`). |
+| `src/pages/` | One file per page. The file name is the web address (`catering/menu.astro` → `/catering/menu`). |
 | `src/pages/guides/` | The four how-to guides |
 | `src/components/` | Shared pieces: header, footer, estimator, FAQ, packages, reviews, the scroll color flood, the stamp logo |
 | `src/data/business.ts` | All business facts (see above) |
@@ -50,7 +50,6 @@ Merge a change into `main` on GitHub and Netlify publishes it in a minute or two
 Two Netlify Forms, no extra services:
 
 - `catering-quote`: the quote request with the price estimator. Sends people to `/thanks`.
-- `rewards-signup`: Kreung Rewards sign-up. Sends people to `/rewards-thanks`.
 
 Both use a hidden honeypot field to block spam. Set up email notifications in Netlify (see `docs/DEPLOY.md`, Step 2).
 
@@ -70,4 +69,4 @@ Ground rules (details in `CLAUDE.md`):
 - Static output only. Headings, copy, prices, FAQs and contact info must be in the HTML, never added by JavaScript. JavaScript is only for extras (estimator, scroll colors, mortar animation, mobile menu, hero video start).
 - WCAG 2.1 AA: one H1 per page, labels on every field, 4.5:1 contrast, keyboard access, respects reduced motion.
 - Never invent facts. Anything unknown gets a `TODO(Sam)` in the code and a line in `TODO.md`.
-- `/corporate-catering` must keep that exact URL.
+- `/catering/corporate` must keep that exact URL.

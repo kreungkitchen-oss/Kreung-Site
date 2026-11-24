@@ -1,38 +1,56 @@
 ---
 import { Image } from 'astro:assets';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Packages from '../components/Packages.astro';
-import ProofBar from '../components/ProofBar.astro';
-import Reviews from '../components/Reviews.astro';
-import Faq from '../components/Faq.astro';
-import Estimator from '../components/Estimator.astro';
-import CtaBand from '../components/CtaBand.astro';
-import { policies, money, cateringMenu, press, clientNote } from '../data/business';
-import office from '../assets/photos/event-office-lunch.jpg';
-import skewers from '../assets/photos/food-skewers-tray.jpg';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Packages from '../../components/Packages.astro';
+import ProofBar from '../../components/ProofBar.astro';
+import Reviews from '../../components/Reviews.astro';
+import Faq from '../../components/Faq.astro';
+import Estimator from '../../components/Estimator.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import AuthorBox from '../../components/AuthorBox.astro';
+import KeyTakeaways from '../../components/KeyTakeaways.astro';
+import CompareTables from '../../components/CompareTables.astro';
+import StickyCta from '../../components/StickyCta.astro';
+import Related from '../../components/Related.astro';
+import { service } from '../../data/schema';
+import { policies, money, cateringMenu, press, clientNote } from '../../data/business';
+import LoopVideo from '../../components/LoopVideo.astro';
+import office from '../../assets/photos/event-rare-beauty-office.jpg';
+
+const published = '2026-11-24';
+const updated = '2026-11-24';
+const cta = 'Get a corporate catering quote';
+const takeaways = [
+  'Packages are $20, $25 and $33 per person. Most office lunches pick the $25 Signature package.',
+  `The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.`,
+  `We deliver and set up across ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom}.`,
+  `We feed ${policies.guestsLabel} guests. Book at least ${policies.leadTimeDays} days ahead.`,
+  'Teams at SpaceX, Adobe, Amazon and Live Nation have booked us.',
+];
 
 const faqs = [
   { q: 'How much does corporate catering cost?', a: `Our packages are $20, $25 and $33 per person. Most office lunches pick the $25 Signature package with 2 proteins. Delivery starts at $${policies.deliveryFrom}, and sales tax applies.` },
-  { q: 'What is the minimum order for office catering?', a: `The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+  { q: 'What is the minimum order for office catering?', a: `The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site. At $20 per person, that is 50 guests on the Classic package.` },
   { q: 'How far ahead do we need to book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
   { q: 'Do you deliver and set up?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
-  { q: 'Is there a production fee?', a: `Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests have a ${policies.productionFeeDropoffPct}% production fee. On-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
-  { q: 'Can you handle vegan and allergy needs?', a: `Yes. Our tofu skewers are vegan. ${policies.allergyNote} Tell us about your team's needs when you ask for a quote.` },
-  { q: 'How many people can you feed?', a: `We cater for ${policies.guestsLabel} guests, from small team lunches to company-wide events.` },
+  { q: 'Is there a production fee?', a: `Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests have a ${policies.productionFeeDropoffPct}% production fee, and on-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
+  { q: 'Can you handle vegan and allergy needs?', a: `Yes. Our tofu skewers are vegan, and our food contains no dairy or peanuts. Some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil.` },
+  { q: 'How many people can you feed?', a: `We cater for ${policies.guestsLabel} guests. That covers small team lunches up to company-wide events.` },
   { q: 'Can we add drinks?', a: `Yes. ${cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B')} are available separately.` },
 ];
 
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Catering', path: '/catering' },
-  { name: 'Corporate Catering', path: '/corporate-catering' },
+  { name: 'Corporate Catering', path: '/catering/corporate' },
 ];
 ---
 <BaseLayout
   title="Corporate Catering in Los Angeles | Kreung LA"
   description="Cambodian BBQ catering for LA offices and teams. From $20 per person, 30 to 300+ guests, delivered and set up. See a price now, quote in 24 hours."
-  path="/corporate-catering"
+  path="/catering/corporate"
+  jsonLd={[service({ name: 'Corporate catering in Los Angeles', description: 'Cambodian BBQ catering for LA offices and teams, delivered and set up.', path: '/catering/corporate' })]}
 >
   <section class="sec s-yellow page-hero">
     <div class="wrap split split--wide">
@@ -41,14 +59,19 @@ const crumbs = [
         <h1>Corporate Catering in Los Angeles: Cambodian BBQ for Your Team</h1>
         <p class="lede">Team lunches, all-hands, client days and office parties. We bring hot, fire-grilled food and set it up, so you can get back to work. Packages from $20 per person.</p>
         <div class="btn-row">
-          <a class="btn" href="#estimate">Get your estimate</a>
-          <a class="btn btn--o" href="/catering-menu">See the menu</a>
+          <a class="btn" href="#estimate">{cta}</a>
+          <a class="btn btn--o" href="/catering/menu">See the menu</a>
         </div>
+        <AuthorBox published={published} updated={updated} />
       </div>
       <figure class="photo">
-        <Image src={office} alt="Coworkers serving themselves from a Kreung LA catering spread at an office lunch" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+        <Image src={office} alt="Kreung LA setting up a catering spread of rice, coconut corn and sides at Rare Beauty HQ" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
       </figure>
     </div>
+  </section>
+
+  <section class="sec sec--tight s-cream">
+    <div class="wrap"><KeyTakeaways items={takeaways} cta={{ label: cta, href: '#estimate' }} /></div>
   </section>
 
   <section class="sec sec--tight s-plum" aria-label="Clients and ratings">
@@ -65,13 +88,11 @@ const crumbs = [
           <li>All-hands, offsites and client days</li>
           <li>Holiday parties and team celebrations</li>
           <li>Heritage month events and culture days</li>
-          <li>Film, TV and studio crews (see <a href="/production-catering">production catering</a>)</li>
+          <li>Film, TV and studio crews (see <a href="/catering/film-production">production catering</a>)</li>
         </ul>
         <p>For many of your guests, it will be their first taste of Cambodian food. Bold, herby and smoky from the grill.</p>
       </div>
-      <figure class="photo">
-        <Image src={skewers} alt="A tray of Kreung LA beef skewers glazed and charred from the grill" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" />
-      </figure>
+      <LoopVideo class="corp-v" src="/video/office-lunch-service.mp4" poster="/video/office-lunch-service.webp" width={540} height={960} caption="Lunch service at Rare Beauty HQ." />
     </div>
   </section>
 
@@ -82,8 +103,12 @@ const crumbs = [
         <p class="lede">Priced per person.</p>
       </div>
       <Packages />
-      <p class="dl"><a href="/catering-pricing">How pricing works</a> · <a href="/catering-menu">Full catering menu</a></p>
+      <p class="dl"><a href="/catering/pricing">How pricing works</a> · <a href="/catering/menu">Full catering menu</a></p>
     </div>
+  </section>
+
+  <section class="sec s-cream" aria-label="Comparison tables">
+    <div class="wrap"><CompareTables /></div>
   </section>
 
   <section class="sec s-teal" aria-labelledby="how-h">
@@ -126,7 +151,7 @@ const crumbs = [
           <p>{cateringMenu.drinksNote} {cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B')}.</p>
         </div>
       </div>
-      <p class="more-faq"><a href="/catering-menu">See the full catering menu</a></p>
+      <p class="more-faq"><a href="/catering/menu">See the full catering menu</a></p>
     </div>
   </section>
 
@@ -143,19 +168,22 @@ const crumbs = [
     </div>
   </section>
 
-  <Estimator defaultType="Corporate or office lunch" heading="Get your estimate" />
+  <Estimator defaultType="Corporate or office lunch" heading={cta} />
 
   <section class="sec s-mint">
     <div class="wrap">
-      <Faq faqs={faqs} heading="Corporate catering questions" />
-      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering-pricing">Pricing</a> · <a href="/catering-menu">Menu</a> · <a href="/catering">All catering</a></p>
+      <Faq faqs={faqs} />
+      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering/pricing">Pricing</a> · <a href="/catering/menu">Menu</a> · <a href="/catering">All catering</a></p>
     </div>
   </section>
 
-  <CtaBand heading="Lunch your team will talk about." text="See a price in a minute. We reply within 24 hours." href="#estimate" label="Get your estimate" />
+  <CtaBand heading="Lunch your team will talk about." text="See a price in a minute. We reply within 24 hours." href="#estimate" label={cta} />
+  <Related paths={['/catering/office-lunch-club', '/catering/film-production', '/guides/office-lunch-ideas-los-angeles', '/guides/how-much-food-for-50-people']} />
+  <StickyCta label={cta} href="#estimate" />
 </BaseLayout>
 
 <style>
+  :global(.corp-v) { max-width: 360px; width: 100%; justify-self: center; }
   .rev2 { display: block; }
   .rev2 :global(.reviews) { grid-template-columns: 1fr; }
   @media (min-width: 900px) { .rev2 :global(.reviews) { grid-template-columns: 1fr 1fr; } }

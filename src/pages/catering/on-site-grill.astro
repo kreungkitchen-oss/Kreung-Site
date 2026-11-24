@@ -1,21 +1,28 @@
 ---
-import NichePage from '../components/NichePage.astro';
-import { policies, money } from '../data/business';
-import photo from '../assets/photos/grill-wide.jpg';
+import NichePage from '../../components/NichePage.astro';
+import { policies, money } from '../../data/business';
+import photo from '../../assets/photos/grill-wide.jpg';
 
 const faqs = [
-  { q: 'What is the minimum for on-site grilling?', a: `The minimum is ${money(policies.minimumOnsite)} for our grill on-site.` },
-  { q: 'Is there a production fee?', a: `Yes. On-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
+  { q: 'What is the minimum for on-site grilling?', a: `The minimum is ${money(policies.minimumOnsite)} in food for our grill on-site. Pickup and drop-off have a lower ${money(policies.minimumDropoff)} minimum.` },
+  { q: 'Is there a production fee?', a: `Yes. On-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}. It is a one-time charge, not a gratuity.` },
   { q: 'What events is live grilling good for?', a: 'Company events, parties and weddings. Anywhere you want the smell of the grill and food served hot off the fire.' },
-  { q: 'How many guests can you grill for?', a: `We cater for ${policies.guestsLabel} guests.` },
-  { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks).` },
-  { q: 'What space do you need?', a: 'Tell us about your venue when you ask for a quote, and we will confirm the space and setup we need.' },
+  { q: 'How many guests can you grill for?', a: `We cater for ${policies.guestsLabel} guests. Tell us your headcount when you ask for a quote.` },
+  { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks). ${policies.responseTime}` },
+  { q: 'What space do you need?', a: 'Tell us about your venue when you ask for a quote. We will confirm the space and setup we need for the grill.' },
 ];
 ---
 <NichePage
+  published="2026-11-24"
+  updated="2026-11-24"
+  serviceName="On-site BBQ grill catering in Los Angeles"
+  takeaways={["We bring our grill and our team, then cook and serve at your event.", "The food minimum is $2,000 for our grill on-site.", "On-site cooking has a 20% production fee, starting at $400. It is a one-time charge, not a gratuity.", "Live grilling works well for company events, parties and weddings.", "Book at least 2 weeks ahead, and tell us about your venue."]}
+  related={["/catering/holiday-party", "/catering/corporate", "/catering/pricing", "/catering/menu"]}
+  button="Get an on-site grill quote"
+  compare={["service", "packages"]}
   title="Live BBQ Grill Catering for LA Events | Kreung LA"
   description="We bring the grill and cook Cambodian BBQ live at your LA event. $2,000 minimum, 20% production fee from $400. Company events, parties, weddings."
-  path="/on-site-grill-catering"
+  path="/catering/on-site-grill"
   crumb="On-Site Grill"
   heroFacts={`From $20 per person · ${policies.guestsLabel} guests · ${money(policies.minimumOnsite)} minimum on-site`}
   h1="Live BBQ Grill Catering for LA Events"
@@ -26,7 +33,6 @@ const faqs = [
   estimateService="On-site grill"
   reviewKeys={['janeT', 'repeatClient', 'randall']}
   faqs={faqs}
-  faqHeading="On-site grill questions"
   ctaHeading="Fire up your event."
   bodyTone="orange"
 >

@@ -22,10 +22,10 @@ import samChristina from '../assets/photos/sam-christina-wedding.jpg';
 const poster = await getImage({ src: heroStill, width: 720, format: 'webp' });
 
 const doors = [
-  { href: '/corporate-catering', title: 'Corporate catering', text: 'Team lunches and office events, dropped off hot and set up.' },
-  { href: '/on-site-grill-catering', title: 'On-site grill', text: 'We bring the fire and grill for your guests, live.' },
-  { href: '/production-catering', title: 'Production & studio', text: 'Crew meals for film, TV and music sets.' },
-  { href: '/office-lunch-club', title: 'Office Lunch Club', text: 'A standing Cambodian BBQ lunch on your calendar.' },
+  { href: '/catering/corporate', title: 'Corporate catering', text: 'Team lunches and office events, dropped off hot and set up.' },
+  { href: '/catering/on-site-grill', title: 'On-site grill', text: 'We bring the fire and grill for your guests, live.' },
+  { href: '/catering/film-production', title: 'Production & studio', text: 'Crew meals for film, TV and music sets.' },
+  { href: '/catering/office-lunch-club', title: 'Office Lunch Club', text: 'A standing Cambodian BBQ lunch on your calendar.' },
   // Online ordering is off for now (Sam, 2026-11-24). Shows automatically once links.order is set.
   ...(links.order ? [{ href: links.order, title: 'Order ahead', text: 'Order online through Square.' }] : []),
   // Gift cards hidden until Sam sets them up in Square (Sam, 2026-11-24). Re-add when links.giftCards is set.
@@ -71,7 +71,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
         We cater for {policies.guestsLabel} guests, and you can find us at three weekly markets across LA.
       </p>
       <div class="btn-row cta">
-        <a class="btn" href="/corporate-catering#estimate">Get a catering quote</a>
+        <a class="btn" href="/catering/corporate#estimate">Get a catering quote</a>
         <a class="btn btn--o" href="/find-us">Find us this week</a>
       </div>
       <span class="cue" aria-hidden="true"><span>Keep scrolling. It gets hotter.</span><span class="arrow"></span></span>
@@ -131,7 +131,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
     <div class="wrap">
       <h2 id="pk-h" class="pk-h" data-step>What are you planning?</h2>
       <Packages steps />
-      <p class="dl" data-step>Delivery covers {policies.deliveryArea}, from ${policies.deliveryFrom}, setup included. <a href="/catering-pricing">How pricing works</a></p>
+      <p class="dl" data-step>Delivery covers {policies.deliveryArea}, from ${policies.deliveryFrom}, setup included. <a href="/catering/pricing">How pricing works</a></p>
     </div>
   </section>
 
@@ -219,16 +219,8 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
         <div>
           <h2 class="disp d-m">Get $5 off. Join Kreung Rewards.</h2>
           <p>{rewards.joinOffer}. {rewards.earn}</p>
-          <p><a class="inline-link" href={links.rewardsInfo} target="_blank" rel="noopener">How rewards work<span class="visually-hidden"> (opens in a new tab)</span></a></p>
         </div>
-        <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
-          <input type="hidden" name="form-name" value="rewards-signup" />
-          <input type="hidden" name="name" value="" />
-          <p class="visually-hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-          <label class="visually-hidden" for="rw-email">Email address</label>
-          <input id="rw-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required />
-          <button class="btn btn--plum" type="submit">Join and get $5 off</button>
-        </form>
+        <a class="btn btn--plum" href={links.rewardsJoin} rel="noopener">Join and get $5 off<span class="visually-hidden"> (Kreung Rewards on Square)</span></a>
       </div>
     </div>
   </section>
@@ -238,12 +230,12 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
     <div class="wrap wrap--narrow">
       <div class="head"><h2 id="faq-h">Good to know</h2></div>
       <Faq faqs={faqs} heading="" />
-      <p class="more-links"><a href="/faq">All FAQs</a> · <a href="/catering-pricing">Catering pricing</a> · <a href="/catering">Catering</a></p>
+      <p class="more-links"><a href="/faq">All FAQs</a> · <a href="/catering/pricing">Catering pricing</a> · <a href="/catering">Catering</a></p>
     </div>
   </section>
 
   <!-- 12. FINAL CTA -->
-  <CtaBand heading="Ready to feed your crew?" text="Tell us your date and headcount. We reply within 24 hours, usually the same day." href="/corporate-catering#estimate" label="Get a catering quote" />
+  <CtaBand heading="Ready to feed your crew?" text="Tell us your date and headcount. We reply within 24 hours, usually the same day." href="/catering/corporate#estimate" label="Get a catering quote" />
 </BaseLayout>
 
 <style>
@@ -308,8 +300,8 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   .club { margin-top: clamp(48px, 7vw, 96px); background: var(--yellow); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 26px; padding: clamp(24px, 5vw, 56px); display: grid; gap: 24px; align-items: center; box-shadow: 8px 10px 0 var(--plum); }
   .club h2 { margin: 0 0 10px; }
   .club p { margin: 0; }
-  .club form { display: flex; gap: 10px; flex-wrap: wrap; }
-  .club input[type='email'] { flex: 1 1 220px; min-width: 0; height: 56px; border: 2.5px solid var(--plum); border-radius: 999px; padding: 0 20px; font: 500 17px var(--f-text); background: #fff; color: var(--plum); }
+  .club > .btn { justify-self: start; }
+  @media (min-width: 860px) { .club > .btn { justify-self: center; } }
   @media (min-width: 860px) { .club { grid-template-columns: 1fr 1fr; } }
 
   .more-links { margin-top: 22px; font-weight: 700; }

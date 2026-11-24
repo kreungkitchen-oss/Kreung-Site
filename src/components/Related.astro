@@ -1,0 +1,27 @@
+---
+/** "Related pages" links at the bottom of catering pages and guides. Names come from src/data/pages.ts. */
+import { pageInfo } from '../data/pages';
+import { portionsReady } from '../data/business';
+import { tone } from '../data/tones';
+interface Props { paths: string[] }
+const items = Astro.props.paths.map((p) => ({ path: p, ...pageInfo[p] })).filter((x) => x.name)
+  // Hide the food calculator until its portion numbers are in.
+  .filter((x) => portionsReady || x.path !== '/guides/how-much-food-for-50-people');
+---
+<nav class="sec sec--tight related" {...tone('teal')} aria-labelledby="rel-h">
+  <div class="wrap">
+    <h2 id="rel-h">Related pages</h2>
+    <ul>
+      {items.map((x) => <li><a href={x.path}><b>{x.name}</b><span>{x.blurb}</span></a></li>)}
+    </ul>
+  </div>
+</nav>
+<style>
+  .related h2 { margin: 0 0 18px; }
+  .related ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .related a { display: grid; gap: 4px; height: 100%; padding: 16px 18px; background: var(--white); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 16px; text-decoration: none; box-shadow: 4px 4px 0 var(--plum); }
+  .related a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--plum); }
+  .related a:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+  .related b { font-size: 18px; }
+  .related span { font-size: 15px; }
+</style>

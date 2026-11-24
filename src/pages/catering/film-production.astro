@@ -1,21 +1,27 @@
 ---
-import NichePage from '../components/NichePage.astro';
-import { policies, money } from '../data/business';
-import photo from '../assets/photos/serving-line.jpg';
+import NichePage from '../../components/NichePage.astro';
+import { policies, money } from '../../data/business';
+import photo from '../../assets/photos/serving-line.jpg';
 
 const faqs = [
   { q: 'Do you cater film and TV crews?', a: 'Yes. Teams at Sony Pictures, DreamWorks and Live Nation have booked us. We drop off hot food and set it up so your crew can eat and get back to work.' },
   { q: 'Can you deliver to a set or studio lot?', a: `We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup. Send us your call time and location when you ask for a quote.` },
   { q: 'How much notice do you need?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
-  { q: 'What is the minimum order?', a: `${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.` },
+  { q: 'What is the minimum order?', a: `The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site. Delivery starts at $${policies.deliveryFrom}, and sales tax applies.` },
   { q: 'Is there a production fee for big crews?', a: `Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests have a ${policies.productionFeeDropoffPct}% production fee. ${policies.productionFeeNote}` },
-  { q: 'Can you handle dietary needs on a crew?', a: `Yes. Our tofu skewers are vegan, and our food contains no dairy or peanuts. ${policies.allergyNote}` },
+  { q: 'Can you handle dietary needs on a crew?', a: `Yes. Our tofu skewers are vegan, and our food contains no dairy or peanuts. Some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil.` },
 ];
 ---
 <NichePage
+  published="2026-11-24"
+  updated="2026-11-24"
+  serviceName="Film and production catering in Los Angeles"
+  takeaways={["Crews and teams at Sony Pictures, DreamWorks and Live Nation have booked us. Live Nation booked us 4 times in 12 months.", "We drop off hot food and set it up. Delivery starts at $75 and covers most of LA County.", "The minimum is $1,000 for drop-off. Orders for 100+ guests have a 10% production fee.", "Tofu skewers are vegan, and our food has no dairy or peanuts.", "Book at least 2 weeks ahead and send us your call time."]}
+  related={["/catering/corporate", "/catering/on-site-grill", "/guides/how-much-food-for-50-people", "/catering/pricing"]}
+  button="Get a crew catering quote"
   title="Film, TV & Studio Catering in Los Angeles | Kreung LA"
   description="Crew meals for LA film, TV, music and photo shoots. Cambodian BBQ dropped off hot and set up. Trusted by Sony Pictures, DreamWorks and Live Nation."
-  path="/production-catering"
+  path="/catering/film-production"
   crumb="Production Catering"
   h1="Film, TV & Studio Catering in Los Angeles"
   lede="Crew meals that show up hot and on time. We drop off and set up Cambodian BBQ for film, TV, music and photo shoots across LA."
@@ -25,7 +31,6 @@ const faqs = [
   reviewKeys={['repeatClient', 'rareBeauty', 'janeT']}
   proofHeading="Booked by crews and teams at"
   faqs={faqs}
-  faqHeading="Production catering questions"
   ctaHeading="Feed the crew."
   bodyTone="teal"
 >
@@ -40,7 +45,7 @@ const faqs = [
         <li>Book at least {policies.leadTimeDays} days out.</li>
         <li>We deliver, set up and get out of your way.</li>
       </ol>
-      <p>Need a big hot lunch on location? Ask about our <a href="/on-site-grill-catering">on-site grill</a>.</p>
+      <p>Need a big hot lunch on location? Ask about our <a href="/catering/on-site-grill">on-site grill</a>.</p>
     </div>
     <div class="card card--line">
       <h3>Trusted on set</h3>

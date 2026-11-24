@@ -34,6 +34,37 @@ export const business = {
 
 /** External links. TODO(Sam): Square ordering and gift card links. */
 /**
+ * Catering portions per guest, used by the "How much food for 50 people"
+ * calculator (/guides/how-much-food-for-50-people).
+ * TODO(Sam): fill in perGuest for each row. Until every row has a number, the
+ * calculator shows "coming soon", and the page stays out of search and the sitemap.
+ * unit 'oz' totals are shown in pounds; 'count' and 'cup' totals as-is.
+ */
+export type Portion = { item: string; group: 'Proteins' | 'Sides' | 'Rice' | 'Sauces'; unit: 'oz' | 'count' | 'cup'; perGuest: number | null; note?: string };
+export const portions: Portion[] = [
+  { item: 'Grilled lemongrass chicken', group: 'Proteins', unit: 'oz', perGuest: null },
+  { item: 'Beef skewers', group: 'Proteins', unit: 'count', perGuest: null },
+  { item: 'Tofu skewers (vegan)', group: 'Proteins', unit: 'count', perGuest: null },
+  { item: 'Short rib', group: 'Proteins', unit: 'oz', perGuest: null },
+  { item: 'Slow roasted pork belly', group: 'Proteins', unit: 'oz', perGuest: null },
+  { item: 'Coconut chive corn salad', group: 'Sides', unit: 'oz', perGuest: null },
+  { item: 'Pickled vegetables', group: 'Sides', unit: 'oz', perGuest: null },
+  { item: 'Rice', group: 'Rice', unit: 'oz', perGuest: null },
+  { item: 'House sauces', group: 'Sauces', unit: 'oz', perGuest: null },
+];
+export const portionsReady = portions.every((x) => typeof x.perGuest === 'number');
+
+/** Author info for the author box on catering pages and guides. */
+export const people = {
+  sam: {
+    name: 'Sam Oum',
+    role: 'founder',
+    instagram: 'https://www.instagram.com/kreung_la',
+    linkedin: '', // TODO(Sam): add your LinkedIn URL and it shows in every author box
+  },
+};
+
+/**
  * Search engine verification codes (meta tag method). Leave blank if you
  * verify Google Search Console with a DNS TXT record instead (recommended).
  * Paste only the code from inside content="...", not the whole tag.
@@ -49,7 +80,7 @@ export const links = {
   giftCards: '', // Not set up yet in Square (Sam, 2026-11-24). Gift card links stay hidden until this is filled in.
   instagram: business.instagram.url,
   yelp: business.yelp.url,
-  rewardsInfo: 'https://squareup.com/loyalty/3PMJRQ6KW741N', // "How rewards work" (Square Loyalty, from Sam 2026-11-24)
+  rewardsJoin: 'https://squareup.com/loyalty/3PMJRQ6KW741N', // Kreung Rewards runs on Square Loyalty; "Join" buttons go here (from Sam 2026-11-24)
 };
 
 /**
@@ -209,6 +240,7 @@ export const cateringMenu = {
     { name: 'Beef skewers', vegan: false },
     { name: 'Tofu skewers', vegan: true },
     { name: 'Short rib', vegan: false },
+    { name: 'Slow roasted pork belly', vegan: false, note: 'Slow roasted, then finished on the grill.' },
   ],
   sides: [
     { name: 'Coconut chive corn salad' },
@@ -259,11 +291,11 @@ export const clientTiles: Client[] = [
   { name: 'Cedars-Sinai', logo: '/images/clients/client-cedars-sinai.svg', w: 99, h: 32 },
   { name: 'Shamrock Capital', logo: '/images/clients/client-shamrock-capital.svg', w: 225, h: 62 },
   { name: 'Truist', logo: '/images/clients/client-truist.svg', w: 250, h: 58 },
-  { name: 'Rare Beauty' },
-  { name: 'Altruist' },
-  { name: 'Causeway Capital Management' },
+  { name: 'Rare Beauty', logo: '/images/clients/client-rare-beauty.svg', w: 206, h: 43 },
+  { name: 'Altruist', logo: '/images/clients/client-altruist.svg', w: 85, h: 26 },
+  { name: 'Causeway Capital Management', logo: '/images/clients/client-causeway-capital.svg', w: 205, h: 90 },
   { name: 'Karney Properties' },
-  { name: 'Layla Bagels' },
+  { name: 'Layla Bagels', logo: '/images/clients/client-layla-bagels.webp', w: 320, h: 180 },
 ];
 export const clients = clientTiles.map((c) => c.name);
 export const clientNote = 'Live Nation has booked us 4 times in 12 months.';
@@ -344,7 +376,7 @@ export const marketContext = {
 export const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 
 /**
- * Seasonal holiday special shown on /holiday-party-catering.
+ * Seasonal holiday special shown on /catering/holiday-party.
  * TODO(Sam): confirm the offer (example idea from the plan: feeds 20 for $500 + tax).
  * Set `active: true` and fill in the fields to show it; set it back to false to hide it.
  */
