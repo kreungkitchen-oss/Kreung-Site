@@ -14,7 +14,8 @@ import { cateringMenu, policies, khmer } from '../../data/business';
 import { menuSchema, service } from '../../data/schema';
 import plate from '../../assets/photos/plate-combo.jpg';
 import chicken from '../../assets/photos/grill-chicken.jpg';
-import skewers from '../../assets/photos/food-skewers-tray.jpg';
+import spread from '../../assets/photos/food-catering-spread.jpg';
+import LoopVideo from '../../components/LoopVideo.astro';
 
 const meatNote = 'Fire-grilled and marinated in kreung.';
 const sections = [
@@ -119,7 +120,11 @@ const crumbs = [
       <h2 id="photos-h">Straight off the grill</h2>
       <div class="grid grid--2 pics">
         <figure class="photo"><Image src={chicken} alt="Kreung chicken thighs charring over the flames" widths={[480, 800]} sizes="(min-width: 960px) 560px, 100vw" /></figure>
-        <figure class="photo"><Image src={skewers} alt="A tray of glazed Kreung LA beef skewers" widths={[480, 800]} sizes="(min-width: 960px) 560px, 100vw" /></figure>
+        <figure class="photo"><Image src={spread} alt="A Kreung LA catering spread: skewers, grilled chicken, pickled vegetables, coconut corn, rice and house sauces" widths={[480, 800]} sizes="(min-width: 960px) 560px, 100vw" /></figure>
+      </div>
+      <div class="grid grid--2 loops">
+        <LoopVideo src="/video/short-rib-tray.mp4" poster="/video/short-rib-tray.webp" width={432} height={768} caption="Short rib, off the grill and into the tray." />
+        <LoopVideo src="/video/skewers-tray.mp4" poster="/video/skewers-tray.webp" width={432} height={768} caption="Skewers fresh off the grill." />
       </div>
     </div>
   </section>
@@ -164,6 +169,8 @@ const crumbs = [
   .allergy p { margin: 0; }
   .pics { margin-top: 28px; }
   .pics .photo { aspect-ratio: 4 / 3; }
+  .loops { margin-top: 28px; }
+  .loops :global(.loopv) { max-width: 360px; width: 100%; justify-self: center; }
   @media (min-width: 760px) { .menu-grid { grid-template-columns: repeat(2, 1fr); } .menu-grid .big { grid-row: span 2; } }
   @media (min-width: 1040px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
 </style>

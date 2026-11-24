@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import GuideLayout from '../../components/GuideLayout.astro';
+import trays from '../../assets/photos/event-office-trays.jpg';
 import { marketContext } from '../../data/business';
 
 const faqs = [
@@ -38,6 +40,10 @@ const faqs = [
   </ol>
 
   <h2>Lunch formats that work</h2>
+  <figure class="photo guide-photo">
+    <Image src={trays} alt="A family-style office lunch: trays of skewers, grilled chicken and coconut corn lined up on a counter" widths={[480, 800]} sizes="(min-width: 760px) 640px, 100vw" />
+    <figcaption>A family-style spread we set up for an office lunch.</figcaption>
+  </figure>
   <h3>Individual boxed meals</h3>
   <p>Easy to hand out and good for meetings. They can feel a bit stiff, and leftovers are hard to share. Best for training days and working lunches.</p>
   <h3>Family-style buffet</h3>
@@ -78,3 +84,8 @@ const faqs = [
   <p>Full disclosure: this is our business. If you want something new that still feels familiar, Cambodian BBQ is a strong pick for a team lunch. At Kreung LA we serve fire-grilled meats marinated in kreung, a Cambodian herb paste, with rice, coconut corn, pickled vegetables and house sauces. Our tofu skewers are vegan, and our food has no dairy or peanuts.</p>
   <p>We do drop-off catering with setup across most of LA County, and we can bring our grill on-site for bigger events. Packages run $20 to $33 per person, for 30 to 300+ guests. See our <a href="/catering/corporate">corporate catering</a>, <a href="/catering/pricing">pricing</a> or the <a href="/catering/office-lunch-club">Office Lunch Club</a> for recurring lunches.</p>
 </GuideLayout>
+
+<style>
+  .guide-photo { margin: 8px 0 24px; max-width: 520px; }
+  .guide-photo figcaption { background: var(--white); color: var(--plum); padding: 10px 14px; font-size: 15px; font-weight: 600; }
+</style>

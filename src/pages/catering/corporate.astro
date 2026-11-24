@@ -15,8 +15,8 @@ import StickyCta from '../../components/StickyCta.astro';
 import Related from '../../components/Related.astro';
 import { service } from '../../data/schema';
 import { policies, money, cateringMenu, press, clientNote } from '../../data/business';
-import office from '../../assets/photos/event-office-lunch.jpg';
-import skewers from '../../assets/photos/food-skewers-tray.jpg';
+import LoopVideo from '../../components/LoopVideo.astro';
+import office from '../../assets/photos/event-rare-beauty-office.jpg';
 
 const published = '2026-11-24';
 const updated = '2026-11-24';
@@ -65,7 +65,7 @@ const crumbs = [
         <AuthorBox published={published} updated={updated} />
       </div>
       <figure class="photo">
-        <Image src={office} alt="Coworkers serving themselves from a Kreung LA catering spread at an office lunch" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+        <Image src={office} alt="Kreung LA setting up a catering spread of rice, coconut corn and sides at the Rare Beauty office" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
       </figure>
     </div>
   </section>
@@ -92,9 +92,7 @@ const crumbs = [
         </ul>
         <p>For many of your guests, it will be their first taste of Cambodian food. Bold, herby and smoky from the grill.</p>
       </div>
-      <figure class="photo">
-        <Image src={skewers} alt="A tray of Kreung LA beef skewers glazed and charred from the grill" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" />
-      </figure>
+      <LoopVideo class="corp-v" src="/video/office-lunch-service.mp4" poster="/video/office-lunch-service.webp" width={540} height={960} caption="Lunch service at a client's office." />
     </div>
   </section>
 
@@ -185,6 +183,7 @@ const crumbs = [
 </BaseLayout>
 
 <style>
+  :global(.corp-v) { max-width: 360px; width: 100%; justify-self: center; }
   .rev2 { display: block; }
   .rev2 :global(.reviews) { grid-template-columns: 1fr; }
   @media (min-width: 900px) { .rev2 :global(.reviews) { grid-template-columns: 1fr 1fr; } }
