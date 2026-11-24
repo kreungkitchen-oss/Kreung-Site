@@ -15,6 +15,7 @@ import { business, policies, links, press, story, rewards, money, khmer, kreungI
 import logo from '../assets/brand/logo-horizontal.png';
 import heroStill from '../assets/photos/grill-sausage-flames.jpg';
 import spread from '../assets/photos/event-backyard-spread.jpg';
+import makPhoto from '../assets/photos/mak.jpg';
 import booth from '../assets/photos/market-booth.jpg';
 import samChristina from '../assets/photos/sam-christina-wedding.jpg';
 
@@ -177,6 +178,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
     <div class="wrap split story">
       <div class="collage">
         <figure class="photo"><Image src={samChristina} alt="Sam and Christina of Kreung LA in their black Kreung shirts" widths={[480, 800]} sizes="(min-width: 960px) 520px, 100vw" /></figure>
+        <figure class="mak-snap"><Image src={makPhoto} alt="Sam's mother, Mak, smiling in a green lace top" widths={[220, 440]} sizes="200px" /><figcaption>Mak</figcaption></figure>
         <span class="kh mak" lang="km" aria-hidden="true">{khmer.mak}</span>
       </div>
       <div>
@@ -290,7 +292,10 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   /* Story */
   .collage { position: relative; }
   .collage .photo { box-shadow: 10px 10px 0 var(--pink); }
-  .collage :global(img) { aspect-ratio: 4 / 5; }
+  .collage .photo :global(img) { aspect-ratio: 4 / 5; }
+  .mak-snap { position: absolute; left: -4%; bottom: -8%; width: clamp(120px, 34%, 200px); margin: 0; background: var(--cream); color: var(--plum); padding: 8px 8px 6px; border-radius: 4px; box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35); transform: rotate(-5deg); }
+  .mak-snap :global(img) { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; object-position: 50% 30%; border-radius: 2px; }
+  .mak-snap figcaption { text-align: center; font-weight: 800; font-size: 14px; margin-top: 4px; }
   .mak { position: absolute; right: -2%; bottom: -6%; font-size: clamp(54px, 9vw, 96px); color: var(--yellow); -webkit-text-stroke: 3px var(--plum); paint-order: stroke fill; text-shadow: 4px 4px 0 var(--plum); transform: rotate(-8deg); }
   .sq { font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: clamp(26px, 3vw, 38px); line-height: 1.02; margin: 6px 0 6px; text-shadow: -3px 0 0 rgba(47, 149, 161, 0.75), 3px 2px 0 rgba(199, 86, 130, 0.75); }
   .who { font-weight: 700; opacity: 0.8; margin-bottom: 18px; }

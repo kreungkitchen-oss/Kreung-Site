@@ -27,7 +27,7 @@ const MUST = {
   'aapi-heritage-month-catering.html': ['May', 'Khao-I-Dang'],
   'office-lunch-club.html': ['Ask about the Lunch Club'],
   'about.html': ['Khao-I-Dang', 'January 1, 2024', 'Mak'],
-  'find-us.html': ['1036 Broxton Ave', '12775 Millennium Dr', '777 S Alameda St', '$7'],
+  'find-us.html': ['1036 Broxton Ave', '12775 Millennium Dr', '777 S Alameda St', 'The Sampler', '$25', '$16.50', '$19', '$7', 'Lemonade'],
   'press.html': ['Los Angeles Times', 'L.A. TACO', 'CBS News Los Angeles', 'Follow My Gut'],
   'rewards.html': ['$5 off', '$15 minimum'],
   'thanks.html': ['24 hours'],

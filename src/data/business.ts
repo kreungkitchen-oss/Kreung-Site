@@ -57,7 +57,7 @@ export const videos = {
     description: 'A CBS News Los Angeles segment on Kreung LA, the Cambodian street BBQ caterer in Culver City, sharing Cambodian cuisine.',
     player: `${STREAM}/f7f58326bcbddb0d8599ac0a488bd043/iframe?preload=metadata`,
     poster: `${STREAM}/f7f58326bcbddb0d8599ac0a488bd043/thumbnails/thumbnail.jpg?width=1000`,
-    uploadDate: '', // TODO(Sam): date the CBS segment aired (YYYY-MM-DD), helps Google show the video in search
+    uploadDate: '2026-05', // aired May 2026 (Sam, 2026-11-24); exact day unknown
   },
   heroBg: {
     desktop: 'bab5381544b22a2f7ae1a76cb9c7db48',
@@ -122,15 +122,37 @@ export const marketNote =
 export const mapsUrl = (m: Market) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${m.name}, ${m.address}`)}`;
 
-/** Market menu. TODO(Sam): plate prices. */
-export const marketMenu = [
-  { name: 'Chicken Plate', detail: 'Grilled kreung chicken thigh', price: null },
-  { name: 'Skewer Plate', detail: 'Two beef skewers', price: null },
-  { name: 'Sampler Plate', detail: 'Chicken thigh, one skewer and pork belly', price: null },
-  { name: 'Pork Belly Plate', detail: 'Grilled pork belly', price: null },
-  { name: 'Short rib', detail: 'By the rib', price: 7 },
-] as const;
-export const marketMenuNote = 'Every plate comes with coconut corn and pickled veggies.';
+/** Market menu and prices, from Sam's market menu board (sent 2026-11-24). */
+export type MenuItem = { name: string; detail?: string; price: number; deal?: string; badge?: string };
+export const marketMenu: MenuItem[] = [
+  { name: 'The Sampler', detail: 'Chicken, pork belly and a beef skewer. Our three most popular meats on one plate.', price: 25, badge: 'New here? Start here' },
+  { name: 'Lemongrass Chicken Plate', detail: 'Grilled kreung chicken thigh.', price: 16.5, badge: 'Best seller' },
+  { name: 'Lemongrass Beef Skewer Plate', detail: 'Two beef skewers, marinated in kreung.', price: 19 },
+  { name: 'Pork Belly Plate', detail: 'Slow roasted and finished on the grill.', price: 16.5 },
+];
+export const marketMenuNote = 'Every plate comes with white rice, coconut corn and pickled veggies.';
+export const marketAddOns: MenuItem[] = [
+  { name: 'Add a short rib to any plate', price: 7 },
+  { name: 'Upgrade to coco-lime leaf rice', price: 2 },
+];
+export const marketSmallBites: MenuItem[] = [
+  { name: 'Pork belly', price: 6.5 },
+  { name: 'Chicken thigh', price: 6.5 },
+  { name: 'Beef skewer', price: 7, deal: '3 for $18' },
+  { name: 'Short rib', price: 8, deal: '2 for $15' },
+  { name: 'Pickled veggies', price: 4.5 },
+  { name: 'Coconut corn', price: 4.5 },
+  { name: 'Coco-lime leaf rice', price: 4.5 },
+  { name: 'White rice', price: 3.5 },
+  { name: 'Extra sauce', price: 0.75 },
+];
+export const marketDrinks: MenuItem[] = [
+  { name: 'Lemonade', price: 7 },
+  { name: 'Soda', price: 2.5 },
+  { name: 'Bottled water', price: 3.5 },
+];
+/** Formats menu prices: $25, $16.50 */
+export const menuPrice = (n: number) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`);
 
 export type PackageId = 'classic' | 'signature' | 'full';
 export const packages: {

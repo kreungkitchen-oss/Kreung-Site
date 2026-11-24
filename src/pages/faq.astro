@@ -42,7 +42,7 @@ const groups = [
     heading: 'Markets & Ordering',
     faqs: [
       { q: 'Where can I find you each week?', a: `${markets.map((m) => `${m.day}: ${m.name}, ${m.address}, ${m.hours}`).join('. ')}. ${marketNote}` },
-      { q: 'What do you serve at the markets?', a: `Chicken plates, skewer plates, sampler plates, pork belly plates and short rib by the rib. ${marketMenuNote}` },
+      { q: 'What do you serve at the markets?', a: `The Sampler ($25), Lemongrass Chicken Plate ($16.50), Lemongrass Beef Skewer Plate ($19) and Pork Belly Plate ($16.50). Add a short rib to any plate for $7. ${marketMenuNote} The full menu is on our Find Us page.` },
       // TODO(Sam): add 'Can I order online?' once Square online ordering is turned back on.
       ...(links.order ? [{ q: 'Can I order online?', a: 'Yes. Online ordering is through our Square store.' }] : []),
       { q: 'Do you have a rewards program?', a: `Yes, ${rewards.name}. You get ${rewards.joinOffer.replace(' when you join', '')} when you join. ${rewards.earn}` },

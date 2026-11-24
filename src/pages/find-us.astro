@@ -4,7 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Markets from '../components/Markets.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { marketMenu, marketMenuNote, links, business, rewards, money } from '../data/business';
+import { marketMenu, marketMenuNote, marketAddOns, marketSmallBites, marketDrinks, menuPrice, policies, links, business, rewards } from '../data/business';
+import LoopVideo from '../components/LoopVideo.astro';
+import team from '../assets/photos/market-team.jpg';
 import { tone } from '../data/tones';
 import booth from '../assets/photos/market-booth.jpg';
 
@@ -37,6 +39,13 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Find Us', path: '/find-us'
     <div class="wrap">
       <h2 id="mk-h">Weekly markets</h2>
       <Markets />
+      <div class="atmarket">
+        <figure class="photo">
+          <Image src={team} alt="The Kreung LA crew in gray Kreung shirts, smiling in front of the teal Kreung LA market tent" widths={[480, 800, 1100]} sizes="(min-width: 960px) 640px, 100vw" />
+          <figcaption>The Kreung LA crew at our market booth.</figcaption>
+        </figure>
+        <LoopVideo src="/video/market-line.mp4" poster="/video/market-line.webp" width={480} height={640} caption="A line at the Kreung LA booth on market day." />
+      </div>
     </div>
   </section>
 
@@ -44,15 +53,39 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Find Us', path: '/find-us'
     <div class="wrap">
       <h2 id="menu-h">Market menu</h2>
       <p class="lede">{marketMenuNote}</p>
-      <ul class="mmenu">
-        {marketMenu.map((m) => (
-          <li>
-            <div><b>{m.name}</b><span>{m.detail}</span></div>
-            {/* TODO(Sam): plate prices */}
-            <strong class="price">{m.price != null ? money(m.price) : <span class="todo">Price TBD</span>}</strong>
-          </li>
-        ))}
-      </ul>
+      <div class="menu-grid">
+        <div>
+          <h3 class="mh">Plates</h3>
+          <ul class="mmenu">
+            {marketMenu.map((m) => (
+              <li>
+                <div>{m.badge && <span class="mbadge">{m.badge}</span>}<b>{m.name}</b><span class="d">{m.detail}</span></div>
+                <strong class="price">{menuPrice(m.price)}</strong>
+              </li>
+            ))}
+          </ul>
+          <ul class="addons">
+            {marketAddOns.map((m) => <li><b>{m.name}</b> <span class="price">+{menuPrice(m.price)}</span></li>)}
+          </ul>
+        </div>
+        <LoopVideo class="plates-v" src="/video/market-plates.mp4" poster="/video/market-plates.webp" width={540} height={960} caption="Plates hot off the grill at the market." />
+      </div>
+
+      <div class="menu-cols">
+        <div>
+          <h3 class="mh">Small bites and add-ons</h3>
+          <ul class="plist">
+            {marketSmallBites.map((m) => <li><span>{m.name}{m.deal && <em> ({m.deal})</em>}</span><span class="dots" aria-hidden="true"></span><b>{menuPrice(m.price)}</b></li>)}
+          </ul>
+        </div>
+        <div>
+          <h3 class="mh">Drinks</h3>
+          <ul class="plist">
+            {marketDrinks.map((m) => <li><span>{m.name}</span><span class="dots" aria-hidden="true"></span><b>{menuPrice(m.price)}</b></li>)}
+          </ul>
+          <p class="allergy"><b>Allergy note:</b> {policies.allergyNote}</p>
+        </div>
+      </div>
       <p class="small">Want it for a crowd? <a href="/catering">See catering</a>. Join <a href="/rewards">{rewards.name}</a> for {rewards.joinOffer.toLowerCase()}.</p>
     </div>
   </section>
@@ -63,10 +96,29 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Find Us', path: '/find-us'
 <style>
   .note { margin-top: 24px; font-weight: 600; }
   .note a, .small a { font-weight: 800; }
-  .mmenu { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; max-width: 760px; }
+  .atmarket { display: grid; gap: 24px; margin-top: 36px; align-items: start; }
+  .atmarket figcaption { margin-top: 12px; font-size: 15px; font-weight: 600; }
+  @media (min-width: 860px) { .atmarket { grid-template-columns: 1.6fr 1fr; } }
+  .mh { font-size: 24px; margin: 0 0 12px; }
+  .menu-grid { display: grid; gap: 28px; margin: 24px 0 36px; align-items: start; }
+  @media (min-width: 860px) { .menu-grid { grid-template-columns: 1.5fr 1fr; } }
+  .plates-v { max-width: 380px; justify-self: center; width: 100%; }
+  .mmenu { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 12px; }
   .mmenu li { display: flex; justify-content: space-between; align-items: center; gap: 16px; background: var(--white); border: 2.5px solid var(--plum); border-radius: 18px; padding: 16px 20px; }
-  .mmenu li div { display: grid; }
+  .mmenu li div { display: grid; gap: 2px; }
   .mmenu b { font-size: 19px; }
-  .mmenu span:not(.todo) { color: var(--muted); }
+  .mmenu .d { color: var(--muted); }
+  .mbadge { justify-self: start; background: var(--pink-d, #bb3e6f); color: #fff; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; border-radius: 999px; padding: 3px 10px; margin-bottom: 4px; }
   .price { font-size: 20px; white-space: nowrap; }
+  .addons { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .addons li { background: var(--yellow); border: 2px dashed var(--plum); border-radius: 14px; padding: 10px 16px; display: flex; justify-content: space-between; gap: 12px; }
+  .addons .price { font-size: 17px; font-weight: 800; }
+  .menu-cols { display: grid; gap: 28px; }
+  @media (min-width: 860px) { .menu-cols { grid-template-columns: 1fr 1fr; } }
+  .plist { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .plist li { display: flex; align-items: baseline; gap: 8px; font-size: 17px; }
+  .plist em { font-style: normal; color: var(--muted); font-size: 15px; }
+  .plist .dots { flex: 1; border-bottom: 2px dotted currentColor; opacity: 0.35; transform: translateY(-4px); }
+  .allergy { margin-top: 20px; font-size: 15px; }
+  .small { margin-top: 28px; }
 </style>
