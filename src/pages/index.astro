@@ -10,7 +10,7 @@ import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { tone } from '../data/tones';
 import PressGrid from '../components/PressGrid.astro';
-import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients } from '../data/business';
+import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients, videos } from '../data/business';
 
 import logo from '../assets/brand/logo-horizontal.png';
 import heroStill from '../assets/photos/grill-sausage-flames.jpg';
@@ -48,10 +48,8 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   <!-- 1. HERO (matches the current kreungla.com hero) -->
   <section class="sec hero" {...tone('yellow')} style={`${tone('yellow').style};--vo:.3`}>
     <div class="bgv" aria-hidden="true">
-      <video muted loop playsinline preload="none" data-hero-video poster={poster.src} tabindex="-1">
-        <source src="/video/hero-grill.mp4" type="video/mp4" />
-      </video>
       <img src={poster.src} alt="" width="720" height="1280" />
+      <div class="bgv__frame" data-hero-video data-desktop={videos.heroBg.desktop} data-mobile={videos.heroBg.mobile} data-stream={videos.stream}></div>
     </div>
     <div class="wrap hero__inner">
       <div class="cover">
@@ -87,7 +85,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
 
   <!-- 2. PROOF BAR -->
   <section class="sec sec--tight proof-sec" {...tone('cream')} aria-label="Clients and ratings">
-    <div class="wrap"><ProofBar /></div>
+    <div class="wrap"><ProofBar note /></div>
   </section>
 
   <!-- 3. KREUNG EXPLAINED + POUND THE KREUNG -->
@@ -219,6 +217,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
         <div>
           <h2 class="disp d-m">Get $5 off. Join Kreung Rewards.</h2>
           <p>{rewards.joinOffer}. {rewards.earn}</p>
+          <p><a class="inline-link" href={links.rewardsInfo} target="_blank" rel="noopener">How rewards work<span class="visually-hidden"> (opens in a new tab)</span></a></p>
         </div>
         <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
           <input type="hidden" name="form-name" value="rewards-signup" />
@@ -311,12 +310,35 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   .more-links { margin-top: 22px; font-weight: 700; }
 </style>
 <script>
-  // Start the hero video only after the page has loaded, so it doesn't slow the first paint.
-  // Skipped for reduced motion and data saver. The poster image shows otherwise.
-  const v = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  // Halftone background video from Cloudflare Stream (same as the current site).
+  // Loads after the page so it doesn't slow the first paint. Skipped for reduced
+  // motion and data saver; the still image shows instead.
+  const box = document.querySelector<HTMLElement>('[data-hero-video]');
   const saveData = (navigator as any).connection?.saveData;
-  if (v && !saveData && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const start = () => setTimeout(() => { v.preload = 'auto'; v.play().catch(() => {}); }, 300);
-    if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+  if (box && !saveData && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const start = () => {
+      const mobile = innerWidth < 700;
+      const ratio = mobile ? 9 / 16 : 16 / 9;
+      const f = document.createElement('iframe');
+      f.src = `${box.dataset.stream}/${mobile ? box.dataset.mobile : box.dataset.desktop}/iframe?muted=true&autoplay=true&loop=true&controls=false&preload=auto`;
+      f.allow = 'autoplay; encrypted-media';
+      f.title = '';
+      f.tabIndex = -1;
+      f.setAttribute('aria-hidden', 'true');
+      f.addEventListener('load', () => setTimeout(() => box.parentElement?.classList.add('is-playing'), 800), { once: true });
+      box.appendChild(f);
+      // Cover the hero like object-fit: cover.
+      const fit = () => {
+        const w = box.clientWidth, h = box.clientHeight;
+        let fw = w, fh = w / ratio;
+        if (fh < h) { fh = h; fw = h * ratio; }
+        f.style.width = fw + 'px';
+        f.style.height = fh + 'px';
+      };
+      fit();
+      new ResizeObserver(fit).observe(box);
+    };
+    if (document.readyState === 'complete') setTimeout(start, 300);
+    else addEventListener('load', () => setTimeout(start, 300), { once: true });
   }
 </script>

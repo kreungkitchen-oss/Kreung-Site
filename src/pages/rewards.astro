@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { rewards } from '../data/business';
+import { rewards, links } from '../data/business';
 import { tone } from '../data/tones';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Kreung Rewards', path: '/rewards' }];
@@ -46,8 +46,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Kreung Rewards', path: '/r
         <li><b>Visit.</b> {rewards.earn}</li>
         <li><b>Save.</b> Points add up to more Cambodian BBQ.</li>
       </ol>
-      {/* TODO(Sam): how members redeem the $5 and their points (e.g. Square loyalty by phone number?) */}
-      <p><span class="todo">How to redeem: details coming soon</span></p>
+      <p><a href={links.rewardsInfo} target="_blank" rel="noopener">How rewards work<span class="visually-hidden"> (opens in a new tab)</span></a></p>
     </div>
   </section>
 
