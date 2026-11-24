@@ -22,7 +22,6 @@ Everything the site still needs from Sam before (or after) launch. Each item is 
 | 9 | **Gift cards**: off for now. Add the Square gift card link if you set them up. | Hidden | `links.giftCards` in `src/data/business.ts` |
 | 10 | **More client logos** (Rare Beauty, Altruist, Causeway, Karney, Layla Bagels show as text tiles) | Client tiles | Add an SVG to `public/images/clients/` and fill in `clientTiles` in `src/data/business.ts` |
 | 11 | **Higher-resolution stacked logo** (current file is 288px wide) | Stamp logo and footer | `src/assets/brand/` |
-| 12 | **Two new Google Form options** for "How did you hear about us?": "ChatGPT or other AI" and "Catering marketplace". Until they exist, those answers go in as Other (the real answer is in the details box). Also check the Google Form's question order matches the field list. | Google Form responses | Add the options in the Google Form, then update `SOURCE` in `src/data/googleForm.ts` |
 
 ## Before go-live housekeeping
 

@@ -44,15 +44,15 @@ export const SERVICE_TEXT: Record<string, string> = {
   'On-site grill': 'On-site cooking + staffed service — $2,000 food & beverage minimum + 20% production fee ($400 minimum)',
 };
 
-/** "How did you hear about us?" → Google Form option. Two have no match yet and go in as Other. */
+/** "How did you hear about us?" → Google Form option (Sam added the AI and marketplace options, Nov 24, 2026). */
 export const SOURCE: Record<string, string> = {
   Google: 'Google / Yelp',
   Yelp: 'Google / Yelp',
   Instagram: 'Instagram',
   Referral: 'Friend / Referral',
   'Saw us at a market': 'Farmers Market',
-  'ChatGPT or other AI': 'Other', // no matching Google Form option yet
-  'Catering marketplace': 'Other', // no matching Google Form option yet
+  'ChatGPT or other AI': 'ChatGPT or other AI',
+  'Catering marketplace': 'Catering marketplace',
   Other: 'Other',
 };
 
