@@ -8,6 +8,12 @@ import Markets from '../components/Markets.astro';
 import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
+import { tone } from '../data/tones';
+import laTimes from '../assets/press/press-la-times.png';
+import timeOut from '../assets/press/press-time-out.png';
+import laTaco from '../assets/press/press-la-taco.png';
+import fmg from '../assets/press/press-follow-my-gut.png';
+const pressLogos: Record<string, ImageMetadata> = { 'Los Angeles Times': laTimes, 'Time Out Los Angeles': timeOut, 'L.A. TACO': laTaco, 'Follow My Gut': fmg };
 import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients } from '../data/business';
 
 import logo from '../assets/brand/logo-horizontal.png';
@@ -15,7 +21,6 @@ import heroStill from '../assets/photos/grill-sausage-flames.jpg';
 import spread from '../assets/photos/event-backyard-spread.jpg';
 import booth from '../assets/photos/market-booth.jpg';
 import samChristina from '../assets/photos/sam-christina-wedding.jpg';
-import samLine from '../assets/photos/sam-market-line.jpg';
 
 const poster = await getImage({ src: heroStill, width: 720, format: 'webp' });
 
@@ -44,7 +49,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
 ---
 <BaseLayout title={title} description={description} path="/">
   <!-- 1. HERO (matches the current kreungla.com hero) -->
-  <section class="sec s-yellow hero" style="--vo:.3">
+  <section class="sec hero" {...tone('yellow')} style={`${tone('yellow').style};--vo:.3`}>
     <div class="bgv" aria-hidden="true">
       <video autoplay muted loop playsinline preload="none" poster={poster.src} tabindex="-1">
         <source src="/video/hero-grill.mp4" type="video/mp4" />
@@ -54,9 +59,11 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
     <div class="wrap hero__inner">
       <div class="cover">
         <span class="kh-big kh" lang="km" aria-hidden="true">{khmer.kreung}</span>
-        <figure class="disc">
-          <Image src={samLine} alt="Sam of Kreung LA giving a thumbs up at a pop-up with a line of guests behind him" width={300} height={300} loading="eager" />
-        </figure>
+        <picture class="disc">
+          <source srcset="/images/hero/halftone-disc-still.webp" media="(prefers-reduced-motion: reduce)" type="image/webp" />
+          <source srcset="/images/hero/halftone-disc.webp" type="image/webp" />
+          <img src="/images/hero/halftone-disc.gif" alt="Halftone portraits of Sam and Christina, with a Khmer mask and an LA hand sign" width="480" height="480" loading="eager" />
+        </picture>
         <p class="seal est-seal">Est. 2024<br />{business.city}</p>
         <Image class="logo" src={logo} alt="Kreung LA" width={383} height={105} densities={[1, 2]} loading="eager" />
         <span class="star s1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="currentColor" /></svg></span>
@@ -82,28 +89,28 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   </div>
 
   <!-- 2. PROOF BAR -->
-  <section class="sec sec--tight s-plum proof-sec" aria-label="Clients and ratings">
+  <section class="sec sec--tight proof-sec" {...tone('cream')} aria-label="Clients and ratings">
     <div class="wrap"><ProofBar /></div>
   </section>
 
   <!-- 3. KREUNG EXPLAINED + POUND THE KREUNG -->
-  <section class="sec s-orange halftone" aria-labelledby="kreung-h">
+  <section class="sec halftone" {...tone('orange')} data-pin aria-labelledby="kreung-h">
     <div class="wrap pound">
-      <div class="pound__ink" aria-hidden="true"><span class="kh">{khmer.kreung}</span></div>
+      <div class="pound__ink" aria-hidden="true" data-step><span class="kh">{khmer.kreung}</span></div>
       <div>
-        <h2 id="kreung-h">Pound the kreung!</h2>
-        <p class="lede">
+        <h2 id="kreung-h" data-step>Pound the kreung!</h2>
+        <p class="lede" data-step>
           Kreung (<span lang="km">{khmer.kreung}</span>) is the Cambodian herb paste behind our BBQ: lemongrass, galangal, turmeric,
           makrut lime leaves, garlic and shallots. It's the base of every marinade we make. Six ingredients. One bold flavor. Your turn.
         </p>
-        <KreungMortar />
-        <p><a class="inline-link" href="/guides/what-is-kreung">Learn more about kreung</a></p>
+        <div data-step><KreungMortar /></div>
+        <p data-step><a class="inline-link" href="/guides/what-is-kreung">Learn more about kreung</a></p>
       </div>
     </div>
   </section>
 
   <!-- 4. CATERING -->
-  <section class="sec s-plum" aria-labelledby="catering-h">
+  <section class="sec" {...tone('plum')} aria-labelledby="catering-h">
     <div class="wrap">
       <div class="split split--wide">
         <div class="head">
@@ -120,14 +127,20 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
         <div class="stat"><b>3</b><span>Packages, from $20 per person</span></div>
         <div class="stat"><b>24–48 hrs</b><span>To get your estimate</span></div>
       </div>
-      <h3 class="disp d-m pk-h">What are you planning?</h3>
-      <Packages />
-      <p class="dl">Delivery covers {policies.deliveryArea}, from ${policies.deliveryFrom}, setup included. <a href="/catering-pricing">How pricing works</a></p>
+    </div>
+  </section>
+
+  <!-- 4b. PACKAGES (pinned: cards deal in one by one) -->
+  <section class="sec" {...tone('teal')} data-pin aria-labelledby="pk-h">
+    <div class="wrap">
+      <h2 id="pk-h" class="pk-h" data-step>What are you planning?</h2>
+      <Packages steps />
+      <p class="dl" data-step>Delivery covers {policies.deliveryArea}, from ${policies.deliveryFrom}, setup included. <a href="/catering-pricing">How pricing works</a></p>
     </div>
   </section>
 
   <!-- 5. DOORS -->
-  <section class="sec s-cream" aria-labelledby="doors-h">
+  <section class="sec" {...tone('cream')} aria-labelledby="doors-h">
     <div class="wrap">
       <div class="head">
         <h2 id="doors-h">How can we feed you?</h2>
@@ -149,7 +162,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   </section>
 
   <!-- 6. FIND US -->
-  <section class="sec s-teal" aria-labelledby="find-h">
+  <section class="sec" {...tone('pink')} aria-labelledby="find-h">
     <div class="wrap">
       <div class="split split--wide find-top">
         <div class="head">
@@ -165,7 +178,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   </section>
 
   <!-- 7. OUR STORY -->
-  <section class="sec s-sky" aria-labelledby="story-h">
+  <section class="sec" {...tone('plum')} aria-labelledby="story-h">
     <div class="wrap split story">
       <div class="collage">
         <figure class="photo"><Image src={samChristina} alt="Sam and Christina of Kreung LA in their black Kreung shirts" widths={[480, 800]} sizes="(min-width: 960px) 520px, 100vw" /></figure>
@@ -188,7 +201,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   </section>
 
   <!-- 8. REVIEWS -->
-  <section class="sec s-red" aria-labelledby="reviews-h">
+  <section class="sec" {...tone('yellow')} aria-labelledby="reviews-h">
     <div class="wrap">
       <div class="head">
         <h2 id="reviews-h">Don't take our word for it.</h2>
@@ -199,19 +212,23 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   </section>
 
   <!-- 9. PRESS + 10. REWARDS -->
-  <section class="sec s-mint" aria-labelledby="press-h">
+  <section class="sec" {...tone('teal')} aria-labelledby="press-h">
     <div class="wrap">
       <div class="head"><h2 id="press-h">As seen in</h2></div>
       <ul class="outlets" role="list">
-        {press.map((p) => (
-          <li>
-            {p.url ? (
-              <a class="outlet" href={p.url} rel="noopener"><b>{p.title ?? p.name}</b><span>{p.name}</span></a>
-            ) : (
-              <div class="outlet"><b>{p.title ?? p.name}</b><span>{p.name}</span></div>
-            )}
-          </li>
-        ))}
+        {press.map((p) => {
+          const logo = pressLogos[p.name];
+          const inner = (
+            <>
+              <span class={`plogo${logo ? '' : ' plogo--text'}`}>
+                {logo ? <Image src={logo} alt={p.name} width={96} height={96} densities={[1, 2]} /> : <span>{p.name}</span>}
+              </span>
+              <b>{p.title ?? p.name}</b>
+              {logo && <span class="pname">{p.name}</span>}
+            </>
+          );
+          return <li>{p.url ? <a class="outlet" href={p.url} rel="noopener">{inner}</a> : <div class="outlet">{inner}</div>}</li>;
+        })}
       </ul>
       <p><a class="inline-link" href="/press">Press and media</a></p>
 
@@ -232,7 +249,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   </section>
 
   <!-- 11. FAQ -->
-  <section class="sec s-cream" aria-labelledby="faq-h">
+  <section class="sec" {...tone('cream')} aria-labelledby="faq-h">
     <div class="wrap wrap--narrow">
       <div class="head"><h2 id="faq-h">Good to know</h2></div>
       <Faq faqs={faqs} heading="" />
@@ -250,8 +267,8 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   .hero__inner { display: grid; justify-items: center; text-align: center; }
   .cover { position: relative; width: min(100%, 780px); aspect-ratio: 1.45; margin-bottom: clamp(8px, 2vw, 20px); container-type: inline-size; }
   .kh-big { position: absolute; top: 2%; left: 50%; transform: translateX(-50%) rotate(-6deg); font-size: 30cqw; line-height: 1; color: var(--pink); -webkit-text-stroke: 3px var(--plum); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--teal); white-space: nowrap; pointer-events: none; }
-  .disc { position: absolute; width: 28%; left: 2%; top: 30%; border-radius: 50%; overflow: hidden; background: #60a84e; border: 3px solid var(--plum); }
-  .disc :global(img) { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; filter: grayscale(1) contrast(1.1); mix-blend-mode: multiply; }
+  .disc { position: absolute; width: 30%; left: 2%; top: 30%; border-radius: 50%; }
+  .disc img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 50%; }
   .est-seal { position: absolute; right: 3%; top: 30%; width: 22%; margin: 0; font-size: clamp(11px, 2.2cqw, 18px); transform: rotate(10deg); }
   .cover :global(.logo) { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 68%; height: auto; filter: drop-shadow(5px 6px 0 rgba(43, 27, 63, 0.35)); }
   .star { position: absolute; color: var(--cream); width: 5%; aspect-ratio: 1; }
@@ -279,7 +296,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
 
   /* Catering */
   .spread :global(img) { aspect-ratio: 4 / 3; }
-  .pk-h { margin: 0 0 28px; }
+  .pk-h { margin: 0 0 clamp(24px, 3vw, 40px); }
 
 
   .booth { box-shadow: 10px 10px 0 var(--yellow); }
@@ -306,7 +323,10 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   .outlet { width: 100%; display: grid; gap: 6px; align-content: start; background: var(--white); color: var(--plum); border-radius: var(--r-card); padding: 18px; text-decoration: none; border: 2.5px solid transparent; transition: transform 0.15s, box-shadow 0.15s; }
   a.outlet:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--plum); border-color: var(--plum); }
   .outlet b { font-size: 17px; line-height: 1.25; }
-  .outlet span { font-size: 14px; color: var(--muted); font-weight: 600; }
+  .outlet .pname { font-size: 14px; color: var(--muted); font-weight: 600; }
+  .plogo { justify-self: start; width: 72px; height: 72px; border-radius: 16px; background: var(--plum); display: grid; place-items: center; overflow: hidden; }
+  .plogo :global(img) { width: 100%; height: 100%; object-fit: contain; }
+  .plogo--text { width: auto; min-width: 72px; padding: 0 12px; color: var(--cream); font-weight: 900; font-stretch: 75%; text-transform: uppercase; font-size: 14px; line-height: 1.05; text-align: center; }
   @media (min-width: 960px) { .outlets { grid-template-columns: repeat(3, 1fr); } }
 
   .club { margin-top: clamp(48px, 7vw, 96px); background: var(--yellow); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 26px; padding: clamp(24px, 5vw, 56px); display: grid; gap: 24px; align-items: center; box-shadow: 8px 10px 0 var(--plum); }

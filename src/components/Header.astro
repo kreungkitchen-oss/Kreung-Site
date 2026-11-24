@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/brand/logo-horizontal.png';
+import Stamp from './Stamp.astro';
 const nav = [
   { href: '/catering', label: 'Catering' },
   { href: '/catering-menu', label: 'Menu' },
@@ -13,9 +12,8 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
 ---
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="brand" href="/" aria-label="Kreung LA home">
-      <Image src={logo} alt="Kreung LA" width={383} height={105} loading="eager" />
-    </a>
+    <Stamp />
+    <span class="brand-space" aria-hidden="true"></span>
     <nav id="site-nav" class="site-nav" aria-label="Main">
       <ul>
         {nav.map((n) => (
@@ -50,10 +48,9 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
 </script>
 
 <style>
-  .site-header { position: sticky; top: 0; z-index: 50; background: var(--yellow); color: var(--plum); border-bottom: 2.5px solid var(--plum); }
+  .site-header { position: relative; z-index: 50; background: var(--bg, var(--yellow)); color: var(--fg, var(--plum)); --bg: var(--yellow); --fg: var(--plum); }
   .site-header__inner { display: flex; align-items: center; gap: 12px; height: var(--header-h); }
-  .brand { display: flex; align-items: center; margin-right: auto; }
-  .brand img { height: 38px; width: auto; }
+  .brand-space { width: 70px; flex: none; margin-right: auto; }
   .header-actions { display: flex; align-items: center; gap: 10px; }
   /* Header buttons copy the current site: rounded box, plum outline, offset shadow */
   .hbtn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 16px; border: 3px solid var(--plum); border-radius: 14px; box-shadow: 4px 4px 0 var(--plum); font-weight: 700; font-size: 16px; text-decoration: none; background: #eb4872; color: var(--plum); transition: transform 0.15s, box-shadow 0.15s; }
@@ -88,6 +85,6 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
     .site-nav li a:not(.hbtn):hover { background: rgba(255, 255, 255, 0.5); }
     .site-nav__cta { margin: 0 0 0 14px; }
     .site-nav__cta .hbtn { width: auto; min-height: 50px; font-size: 18px; padding: 0 22px; }
-    .brand img { height: 52px; }
+    .brand-space { width: 110px; }
   }
 </style>

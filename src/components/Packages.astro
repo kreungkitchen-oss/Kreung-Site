@@ -1,12 +1,12 @@
 ---
 import { packages, packagesNote, policies, money } from '../data/business';
-interface Props { headingLevel?: 2 | 3 | 4; showMinimums?: boolean }
-const { headingLevel = 3, showMinimums = true } = Astro.props;
+interface Props { headingLevel?: 2 | 3 | 4; showMinimums?: boolean; steps?: boolean }
+const { headingLevel = 3, showMinimums = true, steps = false } = Astro.props;
 const H = `h${headingLevel}`;
 ---
 <div class="tiers">
   {packages.map((p) => (
-    <article class={`tier${p.popular ? ' pop' : ''}`}>
+    <article class={`tier${p.popular ? ' pop' : ''}`} data-step={steps ? '' : undefined}>
       {p.popular && <span class="badge">Most popular</span>}
       <H class="nm">{p.name}</H>
       <p class="pp">${p.price}<small>per person</small></p>

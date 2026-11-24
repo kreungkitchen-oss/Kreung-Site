@@ -9,6 +9,7 @@ import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import TextUs from '../components/TextUs.astro';
+import Flood from '../components/Flood.astro';
 import { businessEntity } from '../data/schema';
 
 interface Props {
@@ -37,6 +38,7 @@ const { jsonLd = [], ...seo } = Astro.props;
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <Flood />
     <Header />
     <main id="main" tabindex="-1">
       <slot />

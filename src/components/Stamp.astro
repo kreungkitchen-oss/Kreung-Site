@@ -1,0 +1,50 @@
+---
+/**
+ * Fixed postage-stamp logo, top-left. Links home. Its paper and ink colors
+ * follow the current section (via --f-fg / --f-bg from the color flood), so it
+ * stays readable on every background. Without JS: plum paper, cream ink.
+ */
+import { getImage } from 'astro:assets';
+import logo from '../assets/brand/logo-stacked.png';
+const img = await getImage({ src: logo, width: 288, format: 'webp' });
+// perforation holes along the edge of a 120 x 140 stamp
+const holes: [number, number][] = [];
+const r = 4.2, step = 12;
+for (let x = 6; x <= 114; x += step) { holes.push([x, 0], [x, 140]); }
+for (let y = 10; y <= 130; y += step) { holes.push([0, y], [120, y]); }
+---
+<a class="stamp" href="/" aria-label="Kreung LA home">
+  <svg viewBox="-2 -2 124 144" role="img" aria-hidden="true" focusable="false">
+    <defs>
+      <mask id="stamp-perf">
+        <rect x="-2" y="-2" width="124" height="144" fill="#fff" />
+        {holes.map(([x, y]) => <circle cx={x} cy={y} r={r} fill="#000" />)}
+      </mask>
+    </defs>
+    <g mask="url(#stamp-perf)">
+      <rect class="paper" x="0" y="0" width="120" height="140" />
+    </g>
+    <rect class="frame" x="10" y="10" width="100" height="120" rx="3" />
+    <image href={img.src} x="16" y="20" width="88" height="72.4" />
+    <text class="ink" x="60" y="110" text-anchor="middle">EST. 2024</text>
+    <text class="ink" x="60" y="121" text-anchor="middle">CULVER CITY</text>
+  </svg>
+</a>
+<style>
+  .stamp {
+    --paper: var(--f-fg, var(--plum));
+    --ink: var(--f-bg, var(--cream));
+    position: fixed; z-index: 60; left: max(10px, env(safe-area-inset-left)); top: 6px;
+    width: 62px; display: block; transform: rotate(-6deg); transform-origin: 30% 30%;
+    filter: drop-shadow(3px 4px 0 rgba(43, 27, 63, 0.35));
+    transition: transform 0.2s;
+  }
+  .stamp:hover { transform: rotate(-2deg) scale(1.04); }
+  .stamp:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 6px; }
+  .stamp svg { width: 100%; height: auto; overflow: visible; }
+  .paper { fill: var(--paper); }
+  .frame { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 4 3; }
+  .ink { fill: var(--ink); font: 900 10px/1 'Archivo Variable', Arial, sans-serif; font-stretch: 75%; letter-spacing: 0.08em; }
+  @media (min-width: 1040px) { .stamp { width: 92px; left: 18px; top: 10px; } }
+  @media print { .stamp { position: absolute; } }
+</style>

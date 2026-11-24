@@ -1,4 +1,5 @@
 ---
+import { tone } from '../data/tones';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-horizontal.png';
 import { business, markets, links, khmer } from '../data/business';
@@ -30,7 +31,7 @@ const guides = [
   ['/guides/catering-cost-los-angeles', 'Catering cost in LA'],
 ];
 ---
-<footer class="site-footer">
+<footer class="site-footer" {...tone('plum')}>
   <div class="wrap fgrid">
     <div class="fbrand">
       <Image src={logo} alt="Kreung LA" width={383} height={105} />
