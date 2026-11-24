@@ -276,3 +276,22 @@ export const marketContext = {
 };
 
 export const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+/**
+ * Seasonal holiday special shown on /holiday-party-catering.
+ * TODO(Sam): confirm the offer (example idea from the plan: feeds 20 for $500 + tax).
+ * Set `active: true` and fill in the fields to show it; set it back to false to hide it.
+ */
+export const holidaySpecial = {
+  active: false,
+  season: 'Holiday 2026',
+  title: '',
+  detail: '',
+  validThrough: '', // e.g. 'December 31, 2026'
+};
+
+/** Office Lunch Club. TODO(Sam): pricing, frequency options and terms. */
+export const lunchClub = {
+  name: 'Office Lunch Club',
+  pitch: 'A standing Cambodian BBQ lunch for your team, monthly or every other week.',
+};

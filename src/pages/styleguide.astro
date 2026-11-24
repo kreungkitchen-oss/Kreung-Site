@@ -2,7 +2,6 @@
 /* Temporary design-system page (noindex, left out of sitemap). Delete before launch. */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Packages from '../components/Packages.astro';
-import { edges, edgeMask } from '../data/edges';
 import { tone, tones, type ToneName } from '../data/tones';
 const colors = [
   ['--plum', '#2b1b3f'], ['--cream', '#fdf2db'], ['--yellow', '#f7d63b'], ['--orange', '#f4a100'], ['--pink', '#c75682'], ['--pink-d', '#9a3762'],
@@ -24,31 +23,6 @@ const pairs: [string, string, string, string][] = [
 ---
 <BaseLayout title="Style guide | Kreung LA" description="Kreung LA design system." noindex>
   <section class="sec s-yellow page-hero"><div class="wrap"><p class="eyebrow">Temporary page</p><h1>Design system</h1><p class="lede">Colors, type, buttons and cards for the Kreung LA site.</p></div></section>
-  <section class="sec" {...tone('cream')} id="edges" aria-labelledby="edges-h">
-    <div class="wrap">
-      <h2 id="edges-h">Pick a flood edge</h2>
-      <p class="lede">As you scroll, each section's color rises from the bottom of the screen. Which edge should it have? Tap one, then scroll down this page (or open the homepage) to see it move.</p>
-      <div class="edge-opts">
-        <figure class="edge-card">
-          <div class="edge-demo" style="--c:#2B1B3F">
-            <div class="em em-torn" aria-hidden="true"><i style={`--m:${edgeMask(edges.torn.rim)};background:#FDF2DB`}></i><i style={`--m:${edgeMask(edges.torn.front)}`}></i></div>
-            <div class="edge-fill"></div>
-          </div>
-          <figcaption><b>Option A: Torn poster</b><span>Like a 1960s gig poster ripped off a wall, with the paper's cream core showing.</span></figcaption>
-          <button class="btn btn--sm" type="button" data-pick-edge="torn">Use torn poster</button>
-        </figure>
-        <figure class="edge-card">
-          <div class="edge-demo" style="--c:#2B1B3F">
-            <div class="em em-flame" aria-hidden="true"><i style={`--m:${edgeMask(edges.flame.smoke)};opacity:.35`}></i><i style={`--m:${edgeMask(edges.flame.back)};opacity:.65`}></i><i style={`--m:${edgeMask(edges.flame.front)}`}></i></div>
-            <div class="edge-fill"></div>
-          </div>
-          <figcaption><b>Option B: Flame and smoke</b><span>Licking flames with a soft smoke layer. The tongues shift sideways as you scroll.</span></figcaption>
-          <button class="btn btn--sm" type="button" data-pick-edge="flame">Use flame and smoke</button>
-        </figure>
-      </div>
-      <p class="picked" aria-live="polite" data-picked></p>
-    </div>
-  </section>
   {(['yellow', 'orange', 'plum', 'teal', 'pink', 'cream'] as ToneName[]).map((n) => (
     <section class="sec tone-demo" {...tone(n)}>
       <div class="wrap">
@@ -80,30 +54,8 @@ const pairs: [string, string, string, string][] = [
   <section class="sec s-plum"><div class="wrap"><h2>Cards</h2><Packages /></div></section>
   <section class="sec s-teal"><div class="wrap"><h2>Teal section</h2><p>Cream text on deep teal.</p></div></section><section class="sec s-orange"><div class="wrap"><h2>Orange section</h2></div></section><section class="sec s-red"><div class="wrap"><h2>Red section</h2></div></section>
 </BaseLayout>
-<script>
-  const picked = document.querySelector<HTMLElement>('[data-picked]');
-  const show = () => { if (picked) picked.textContent = `Showing: ${document.documentElement.dataset.edge === 'flame' ? 'Option B, flame and smoke' : 'Option A, torn poster'}. Scroll down to see it.`; };
-  document.querySelectorAll<HTMLButtonElement>('[data-pick-edge]').forEach((b) => b.addEventListener('click', () => {
-    document.documentElement.dataset.edge = b.dataset.pickEdge;
-    try { localStorage.setItem('kreung-edge', b.dataset.pickEdge || 'torn'); } catch {}
-    show();
-  }));
-  show();
-</script>
 <style>
-  .edge-opts { display: grid; gap: 22px; margin-top: 28px; }
-  .edge-card { margin: 0; background: #fff; border: 2.5px solid var(--plum); border-radius: 22px; padding: 18px; box-shadow: 6px 6px 0 var(--plum); display: grid; gap: 14px; }
-  .edge-demo { color: var(--c); background: var(--yellow); border-radius: 14px; overflow: hidden; padding-top: 50px; }
-  .em { position: relative; height: 70px; margin-bottom: -1px; }
-  .em-flame { height: 100px; }
-  .em i { position: absolute; inset: 0; background: currentColor; -webkit-mask: var(--m) repeat-x 0 0 / auto 100%; mask: var(--m) repeat-x 0 0 / auto 100%; }
-  .edge-fill { height: 70px; background: currentColor; }
-  .edge-card figcaption { display: grid; gap: 4px; }
-  .edge-card figcaption span { color: var(--muted); }
-  .edge-card .btn { justify-self: start; }
-  .picked { margin-top: 18px; font-weight: 800; }
   .tone-demo { min-height: 90vh; display: grid; align-items: center; }
-  @media (min-width: 860px) { .edge-opts { grid-template-columns: 1fr 1fr; } }
 </style>
 <style>
   .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }

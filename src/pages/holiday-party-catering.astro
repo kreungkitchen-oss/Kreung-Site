@@ -1,0 +1,74 @@
+---
+import NichePage from '../components/NichePage.astro';
+import { policies, money, holidaySpecial } from '../data/business';
+import photo from '../assets/photos/event-night-dinner.jpg';
+
+const faqs = [
+  { q: 'How early should we book a holiday party?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. For December dates, the earlier the better.` },
+  { q: 'Can you grill on-site at our holiday party?', a: `Yes. Our grill on-site has a ${money(policies.minimumOnsite)} minimum and a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}.` },
+  { q: 'What does holiday catering cost?', a: 'Packages are $20, $25 and $33 per person. The Full Experience, with all 4 meats including short rib, is our pick for a big celebration.' },
+  { q: 'Can you drop off for an office party?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup. The drop-off minimum is ${money(policies.minimumDropoff)}.` },
+  { q: 'Do you have options for vegan guests?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
+  { q: 'Can we add drinks?', a: 'Yes. Bottled water, sodas and sparkling water are available separately.' },
+];
+---
+<NichePage
+  title="Holiday Party Catering in Los Angeles | Kreung LA"
+  description="Holiday party catering in LA with fire-grilled Cambodian BBQ. Office parties and year-end celebrations for 30 to 300+ guests. From $20 per person."
+  path="/holiday-party-catering"
+  crumb="Holiday Parties"
+  h1="Holiday Party Catering in Los Angeles"
+  lede="Skip the sad sandwich platter. Give your team a year-end party with smoke, fire and big Cambodian BBQ flavor."
+  photo={photo}
+  photoAlt="Guests sharing a Kreung LA dinner at long tables at an evening event"
+  estimateType="Corporate or office lunch"
+  estimateNotes="This is for a holiday party."
+  reviewKeys={['repeatClient', 'janeT', 'pasqual']}
+  faqs={faqs}
+  faqHeading="Holiday party questions"
+  ctaHeading="Make this year's party the one they remember."
+  bodyTone="orange"
+>
+  {/* Seasonal block: edit holidaySpecial in src/data/business.ts to show, change or hide it. */}
+  <aside class="special" aria-labelledby="special-h">
+    <p class="eyebrow">{holidaySpecial.season}</p>
+    {holidaySpecial.active ? (
+      <>
+        <h2 id="special-h">{holidaySpecial.title}</h2>
+        <p>{holidaySpecial.detail}</p>
+        {holidaySpecial.validThrough && <p class="valid">Good through {holidaySpecial.validThrough}.</p>}
+      </>
+    ) : (
+      <>
+        <h2 id="special-h">Holiday special</h2>
+        <p><span class="todo">Holiday offer coming soon</span> Ask about holiday dates when you get your estimate.</p>
+      </>
+    )}
+  </aside>
+
+  <div class="cols">
+    <div class="prose">
+      <h2>A party, not just a meal</h2>
+      <p>The holidays are when your team finally gets to slow down together. Our food gives them something to gather around: skewers charred over fire, lemongrass chicken, short rib and bright, crunchy sides.</p>
+      <p>Go big with <strong>The Full Experience</strong>: all 4 meats, including short rib, with coconut lime leaf rice. Or bring the party outside with our <a href="/on-site-grill-catering">grill on-site</a>.</p>
+      <h2>Plan ahead</h2>
+      <p>Book at least {policies.leadTimeDays} days ahead. For a December party, get your estimate in early.</p>
+    </div>
+    <div class="card card--line">
+      <h3>Holiday party checklist</h3>
+      <ul class="check">
+        <li>Headcount and date</li>
+        <li>Drop-off, pickup or on-site grill</li>
+        <li>Dietary needs (vegan tofu skewers available)</li>
+        <li>Drinks, if you want them</li>
+      </ul>
+      <p>Send it all in the estimator below. We reply within 24 hours.</p>
+    </div>
+  </div>
+</NichePage>
+<style>
+  .special { background: var(--yellow); color: var(--plum); border: 3px solid var(--cream); outline: 3px dashed var(--plum); outline-offset: -12px; border-radius: 26px; padding: clamp(22px, 4vw, 40px); margin-bottom: clamp(36px, 5vw, 64px); transform: rotate(-1deg); }
+  .special h2 { --hf: var(--plum); --hs: var(--pink); --hsw: 0px; margin: 4px 0 10px; }
+  .special p { margin: 0; }
+  .special .valid { margin-top: 8px; font-weight: 700; }
+</style>

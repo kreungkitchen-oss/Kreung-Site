@@ -1,0 +1,54 @@
+---
+import NichePage from '../components/NichePage.astro';
+import { policies, cateringMenu } from '../data/business';
+import photo from '../assets/photos/event-backyard-spread.jpg';
+
+const faqs = [
+  { q: 'Is Cambodian food Southeast Asian?', a: 'Yes. Cambodia sits between Thailand, Laos and Vietnam. Our BBQ uses classic Southeast Asian ingredients like lemongrass, galangal, turmeric and makrut lime leaves.' },
+  { q: 'Will it work for a team with mixed tastes?', a: 'Yes. Grilled chicken, beef skewers and short rib are easy for anyone to love, and the herbs make them taste new. There are vegan tofu skewers too.' },
+  { q: 'What vegan and allergy options do you have?', a: `Our tofu skewers are vegan, and our food contains no dairy or peanuts. ${policies.allergyNote}` },
+  { q: 'How much does it cost per person?', a: 'Packages are $20, $25 and $33 per person, plus delivery from $75 and sales tax. A 50-person Signature drop-off is about $29 per guest, all in.' },
+  { q: 'How big a group can you feed?', a: `We cater for ${policies.guestsLabel} guests.` },
+  { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks). ${policies.responseTime}` },
+];
+---
+<NichePage
+  title="Southeast Asian BBQ Catering in Los Angeles | Kreung LA"
+  description="Southeast Asian BBQ catering in LA: lemongrass chicken, beef skewers, vegan tofu skewers, coconut corn and pickled veggies. From $20 per person."
+  path="/southeast-asian-catering"
+  crumb="Southeast Asian Catering"
+  h1="Southeast Asian BBQ Catering in Los Angeles"
+  lede="Looking for Asian catering that isn't the same old tray? Cambodian BBQ is grilled, fresh and full of lemongrass. It's a crowd-pleaser for every kind of team."
+  photo={photo}
+  photoAlt="A backyard buffet of Kreung LA grilled skewers and sides at an outdoor party"
+  reviewKeys={['repeatClient', 'rareBeauty', 'janeT']}
+  faqs={faqs}
+  faqHeading="Southeast Asian catering questions"
+  ctaHeading="Something new for the team."
+  bodyTone="cream"
+>
+  <div class="cols">
+    <div class="prose">
+      <h2>Why Cambodian BBQ fits</h2>
+      <p>Cambodia sits right in the middle of Southeast Asia. Our food uses the flavors people already love from the region, like lemongrass, galangal and lime leaves. But it's not the usual noodle or curry tray. It's BBQ.</p>
+      <ul>
+        <li><strong>Lemongrass and herbs.</strong> Every meat is marinated in kreung, our herb paste.</li>
+        <li><strong>Grilled.</strong> Cooked over fire for smoky, charred flavor.</li>
+        <li><strong>Fresh.</strong> Coconut chive corn salad keeps the plate bright.</li>
+        <li><strong>Pickled.</strong> Pickled vegetables add crunch and tang.</li>
+      </ul>
+      <h2>Good for diverse teams</h2>
+      <p>Grilled chicken and beef skewers are easy wins for picky eaters. Adventurous eaters get bold herb flavor. Vegan guests get tofu skewers, and our food has no dairy or peanuts.</p>
+      <p><a href="/guides/cambodian-vs-thai-food">Cambodian vs. Thai food</a> · <a href="/catering-menu">See the menu</a></p>
+    </div>
+    <div class="card card--line">
+      <h3>On the menu</h3>
+      <ul class="check">
+        {cateringMenu.proteins.map((p) => <li>{p.name}{p.vegan ? ' (vegan)' : ''}</li>)}
+        {cateringMenu.sides.map((p) => <li>{p.name}</li>)}
+        <li>Rice or coconut lime leaf rice</li>
+        <li>House sauces</li>
+      </ul>
+    </div>
+  </div>
+</NichePage>

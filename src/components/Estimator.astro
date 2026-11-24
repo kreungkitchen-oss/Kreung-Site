@@ -8,8 +8,8 @@
  * Pricing rules come from src/data/business.ts.
  */
 import { packages, policies, money } from '../data/business';
-interface Props { defaultType?: string; heading?: string }
-const { defaultType = 'Corporate or office lunch', heading = 'Get your estimate' } = Astro.props;
+interface Props { defaultType?: string; heading?: string; defaultService?: 'Drop-off' | 'Pickup' | 'On-site grill'; notes?: string }
+const { defaultType = 'Corporate or office lunch', heading = 'Get your estimate', defaultService = 'Drop-off', notes = '' } = Astro.props;
 const eventTypes = ['Corporate or office lunch', 'Private celebration', 'Wedding or engagement', 'Community event', 'Other'];
 const heard = ['Google', 'ChatGPT or other AI', 'Instagram', 'Yelp', 'Catering marketplace', 'Referral', 'Saw us at a market', 'Other'];
 const cfg = {
@@ -101,9 +101,9 @@ const cfg = {
           <div class="field">
             <span class="lbl" id="lbl-svc">Service</span>
             <div class="chips" role="radiogroup" aria-labelledby="lbl-svc">
-              <label><input type="radio" name="service" value="Drop-off" checked /><span>Drop-off (delivery from ${policies.deliveryFrom})</span></label>
-              <label><input type="radio" name="service" value="Pickup" /><span>Pickup</span></label>
-              <label><input type="radio" name="service" value="On-site grill" /><span>On-site grill</span></label>
+              <label><input type="radio" name="service" value="Drop-off" checked={defaultService === 'Drop-off'} /><span>Drop-off (delivery from ${policies.deliveryFrom})</span></label>
+              <label><input type="radio" name="service" value="Pickup" checked={defaultService === 'Pickup'} /><span>Pickup</span></label>
+              <label><input type="radio" name="service" value="On-site grill" checked={defaultService === 'On-site grill'} /><span>On-site grill</span></label>
             </div>
           </div>
           <div class="field">
@@ -128,7 +128,7 @@ const cfg = {
           </div>
           <div class="field">
             <label for="q-notes">Anything else? <span class="hint">(optional)</span></label>
-            <textarea id="q-notes" name="notes" rows="3" placeholder="Venue details, timing, questions"></textarea>
+            <textarea id="q-notes" name="notes" rows="3" placeholder="Venue details, timing, questions">{notes}</textarea>
           </div>
           <div class="field">
             <label for="q-heard">How did you hear about us?</label>

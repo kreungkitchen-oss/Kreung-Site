@@ -218,7 +218,7 @@ figure { margin: 0; }
 .prose h2 { font-size: clamp(30px, 4vw, 46px); margin-top: 1.4em; }
 .prose h3 { margin-top: 1.4em; }
 .prose li { margin-bottom: 0.4em; }
-.prose a { color: var(--teal-d); font-weight: 600; }
+.prose a { color: inherit; font-weight: 700; text-decoration-thickness: 2px; }
 .prose table { width: 100%; border-collapse: collapse; margin: 1em 0 1.5em; font-size: 16px; background: var(--white); border-radius: 14px; overflow: hidden; }
 .prose th, .prose td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .prose th { background: var(--mint); }

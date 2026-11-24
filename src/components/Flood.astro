@@ -3,7 +3,7 @@
  * Scroll-driven color flood.
  * One fixed, full-viewport layer sits behind the page. As each section enters,
  * its color rises from the bottom of the screen with a ragged edge (torn poster
- * paper or flame and smoke), scrubbed to scroll. Text and heading colors
+ * paper, Sam's pick), scrubbed to scroll. Text and heading colors
  * crossfade at the same time.
  *
  * - Sections declare colors with data-bg / data-fg / data-hf / data-hs / data-hsw
@@ -13,23 +13,15 @@
  *   no pinning and no step animations.
  * - Pinned sections: add data-pin to a section and data-step to the children
  *   that should appear one by one while it is pinned.
- * - Edge style: html[data-edge="torn" | "flame"], default from the prop.
  */
 import { edges, edgeMask } from '../data/edges';
-interface Props { edge?: 'torn' | 'flame' }
-const { edge = 'torn' } = Astro.props;
 ---
-<div class="flood" aria-hidden="true" data-flood data-default-edge={edge}>
+<div class="flood" aria-hidden="true" data-flood>
   <div class="flood__base" data-flood-base></div>
   <div class="flood__rise" data-flood-rise>
     <div class="flood__edge edge-torn">
       <i class="rim" style={`--m:${edgeMask(edges.torn.rim)}`} data-edge-shift="0.15"></i>
       <i style={`--m:${edgeMask(edges.torn.front)}`} data-edge-shift="0.15"></i>
-    </div>
-    <div class="flood__edge edge-flame">
-      <i class="smoke" style={`--m:${edgeMask(edges.flame.smoke)}`} data-edge-shift="-0.35"></i>
-      <i class="back" style={`--m:${edgeMask(edges.flame.back)}`} data-edge-shift="0.6"></i>
-      <i style={`--m:${edgeMask(edges.flame.front)}`} data-edge-shift="-1"></i>
     </div>
   </div>
   <div class="flood__grain"></div>
@@ -54,8 +46,7 @@ const { edge = 'torn' } = Astro.props;
   };
 
   if (flood) {
-    const saved = (() => { try { return localStorage.getItem('kreung-edge'); } catch { return null; } })();
-    if (!root.dataset.edge) root.dataset.edge = saved === 'flame' || saved === 'torn' ? saved : flood.dataset.defaultEdge || 'torn';
+    try { localStorage.removeItem('kreung-edge'); } catch {} // clear the old edge-preview choice
 
     const base = flood.querySelector<HTMLElement>('[data-flood-base]')!;
     const rise = flood.querySelector<HTMLElement>('[data-flood-rise]')!;
@@ -76,12 +67,11 @@ const { edge = 'torn' } = Astro.props;
     let tops: number[] = [];
     let heights: number[] = [];
     let vh = window.innerHeight;
-    const edgeHs = { torn: 84, flame: 120 };
+    const edgeHs = { torn: 84 };
     const measure = () => {
       vh = window.innerHeight;
       const w = window.innerWidth;
       edgeHs.torn = Math.min(84, Math.max(40, w * 0.07));
-      edgeHs.flame = Math.min(120, Math.max(64, w * 0.1));
       const y = window.scrollY;
       tops = nodes.map((n) => n.getBoundingClientRect().top + y);
       heights = nodes.map((n) => n.offsetHeight);
@@ -148,6 +138,8 @@ const { edge = 'torn' } = Astro.props;
       const range = Math.max(1, Math.min(vh * 0.7, heights[k] || vh));
       let p = k === 0 ? 1 : Math.min(1, Math.max(0, (vh - (tops[k] - y)) / range));
       if (reduce.matches) p = (tops[k] - y) < vh * 0.5 || k === 0 ? 1 : 0;
+      // same background as the section before: nothing to flood
+      if (k > 0 && tones[k].bg.join() === tones[k - 1].bg.join() && p < 1) p = (tops[k] - y) < vh * 0.5 ? 1 : 0;
 
       const from = p >= 1 ? k : k - 1;
       if (from !== lastBase) { base.style.backgroundColor = rgbStr(tones[from].bg); lastBase = from; }
@@ -159,9 +151,9 @@ const { edge = 'torn' } = Astro.props;
         return;
       }
       if (lastRise !== k) { rise.style.color = rgbStr(tones[k].bg); rise.style.visibility = 'visible'; lastRise = k; }
-      const edgeH = root.dataset.edge === 'flame' ? edgeHs.flame : edgeHs.torn;
+      const edgeH = edgeHs.torn;
       rise.style.transform = `translate3d(0, ${((1 - p) * (vh + edgeH)).toFixed(1)}px, 0)`;
-      // flame tongues lick sideways with scroll; torn edge drifts slightly
+      // the torn edge drifts slightly sideways with scroll
       shifts.forEach((s) => {
         const f = parseFloat(s.dataset.edgeShift || '0.15') || 0.15;
         s.style.setProperty('--x', `${(-p * vh * 0.6 * f).toFixed(1)}px`);
@@ -192,16 +184,12 @@ const { edge = 'torn' } = Astro.props;
   .flood__base, .flood__rise { position: absolute; inset: 0; }
   .flood__rise { visibility: hidden; will-change: transform; background: currentColor; }
   .flood__edge { position: absolute; left: 0; right: 0; bottom: calc(100% - 1px); height: clamp(40px, 7vw, 84px); }
-  .edge-flame { height: clamp(64px, 10vw, 120px); }
   .flood__edge i {
     position: absolute; inset: 0; background: currentColor;
     -webkit-mask: var(--m) repeat-x var(--x, 0px) 0 / auto 100%;
     mask: var(--m) repeat-x var(--x, 0px) 0 / auto 100%;
   }
   .edge-torn .rim { background: #fdf2db; }
-  .edge-flame .smoke { opacity: 0.35; }
-  .edge-flame .back { opacity: 0.65; }
-  :global(html:not([data-edge='flame'])) .edge-flame, :global(html[data-edge='flame']) .edge-torn { display: none; }
   /* halftone dots + paper grain, like the hero video */
   .flood__grain {
     position: absolute; inset: 0;

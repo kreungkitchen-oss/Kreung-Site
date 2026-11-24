@@ -1,0 +1,57 @@
+---
+import NichePage from '../components/NichePage.astro';
+import { policies, money, lunchClub } from '../data/business';
+import photo from '../assets/photos/event-office-lunch.jpg';
+
+const faqs = [
+  { q: 'What is the Office Lunch Club?', a: `${lunchClub.pitch} You pick a regular day, and Cambodian BBQ shows up for your team on schedule.` },
+  { q: 'How often can we book?', a: 'Monthly or every other week. Tell us what rhythm works for your office.' },
+  { q: 'Do members get first pick of dates?', a: 'Yes. Lunch Club teams get first pick of dates on our calendar.' },
+  { q: 'What does it cost?', a: `Pricing starts from our regular packages: $20, $25 and $33 per person. The drop-off minimum is ${money(policies.minimumDropoff)} per order. Ask us about Lunch Club terms.` },
+  { q: 'Can we switch up the menu each time?', a: 'Yes. Rotate between grilled lemongrass chicken, beef skewers, vegan tofu skewers and short rib.' },
+  { q: 'Do you deliver and set up?', a: `Yes. We deliver to ${policies.deliveryArea}, from $${policies.deliveryFrom}, with setup included.` },
+];
+---
+<NichePage
+  title="Office Lunch Club: Recurring Catering in LA | Kreung LA"
+  description="Recurring Cambodian BBQ catering for LA offices. Book a standing monthly or bi-weekly team lunch, with first pick of dates. Ask about the Lunch Club."
+  path="/office-lunch-club"
+  crumb="Office Lunch Club"
+  h1="Office Lunch Club: Recurring Cambodian BBQ Catering"
+  lede="Put lunch on autopilot. Book a standing Cambodian BBQ lunch for your team, monthly or every other week, and get first pick of dates."
+  photo={photo}
+  photoAlt="Coworkers serving themselves from a Kreung LA lunch spread in a bright office"
+  button="Ask about the Lunch Club"
+  estimateType="Corporate or office lunch"
+  estimateNotes="I'm interested in the Office Lunch Club (recurring catering)."
+  estimateHeading="Ask about the Lunch Club"
+  reviewKeys={['rareBeauty', 'janeT', 'repeatClient']}
+  faqs={faqs}
+  faqHeading="Lunch Club questions"
+  ctaHeading="Lunch, handled. Every time."
+  bodyTone="teal"
+>
+  <div class="cols">
+    <div class="prose">
+      <h2>How the Lunch Club works</h2>
+      <ol>
+        <li><strong>Pick your rhythm.</strong> Monthly or every other week.</li>
+        <li><strong>Lock in your dates.</strong> Lunch Club teams get first pick of our calendar.</li>
+        <li><strong>We show up.</strong> Hot food, delivered and set up, on schedule.</li>
+      </ol>
+      <h2>Why teams like it</h2>
+      <p>No more scrambling to order lunch every few weeks. Your team gets something to look forward to, and you get one less thing to plan.</p>
+      {/* TODO(Sam): confirm Lunch Club pricing, frequency options and terms. */}
+      <p><span class="todo">Lunch Club pricing and terms coming soon</span></p>
+    </div>
+    <div class="card card--line">
+      <h3>Members get</h3>
+      <ul class="check">
+        <li>A standing lunch, monthly or bi-weekly</li>
+        <li>First pick of dates</li>
+        <li>A rotating menu of our 4 proteins</li>
+        <li>Delivery and setup across most of LA County</li>
+      </ul>
+    </div>
+  </div>
+</NichePage>
