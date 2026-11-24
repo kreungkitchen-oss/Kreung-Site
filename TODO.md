@@ -22,7 +22,7 @@ Everything the site still needs from Sam before (or after) launch. Each item is 
 | 8 | **Press kit** (logo files and high-res photos to download) | `/press` | `src/pages/press.astro` |
 | 9 | **FAQ answers**: deposits and payment, cancellation policy, how far "most of LA County" reaches | Left off `/faq` until confirmed | `src/pages/faq.astro` |
 | 10 | **Gift cards**: off for now. Add the Square gift card link if you set them up. | Hidden | `links.giftCards` in `src/data/business.ts` |
-| 11 | **More client logos** (Rare Beauty, Altruist, Causeway, Karney, Layla Bagels show as text tiles) | Client tiles | Add an SVG to `public/images/clients/` and fill in `clientTiles` in `src/data/business.ts` |
+| 11 | **Karney Properties logo** (shows as a text tile until the client sends it) | Client tiles | Add an SVG to `public/images/clients/` and fill in `clientTiles` in `src/data/business.ts` |
 | 12 | **Higher-resolution stacked logo** (current file is 288px wide) | Stamp logo and footer | `src/assets/brand/` |
 | 13 | **LinkedIn profile link** for the author box on catering pages and guides | "By Sam Oum, founder" box | `people.sam.linkedin` in `src/data/business.ts` |
 

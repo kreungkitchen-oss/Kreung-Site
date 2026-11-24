@@ -289,11 +289,11 @@ export const clientTiles: Client[] = [
   { name: 'Cedars-Sinai', logo: '/images/clients/client-cedars-sinai.svg', w: 99, h: 32 },
   { name: 'Shamrock Capital', logo: '/images/clients/client-shamrock-capital.svg', w: 225, h: 62 },
   { name: 'Truist', logo: '/images/clients/client-truist.svg', w: 250, h: 58 },
-  { name: 'Rare Beauty' },
-  { name: 'Altruist' },
-  { name: 'Causeway Capital Management' },
+  { name: 'Rare Beauty', logo: '/images/clients/client-rare-beauty.svg', w: 206, h: 43 },
+  { name: 'Altruist', logo: '/images/clients/client-altruist.svg', w: 85, h: 26 },
+  { name: 'Causeway Capital Management', logo: '/images/clients/client-causeway-capital.svg', w: 205, h: 90 },
   { name: 'Karney Properties' },
-  { name: 'Layla Bagels' },
+  { name: 'Layla Bagels', logo: '/images/clients/client-layla-bagels.webp', w: 320, h: 180 },
 ];
 export const clients = clientTiles.map((c) => c.name);
 export const clientNote = 'Live Nation has booked us 4 times in 12 months.';
