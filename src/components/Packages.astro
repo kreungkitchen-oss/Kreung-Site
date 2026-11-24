@@ -1,0 +1,22 @@
+---
+import { packages, packagesNote, policies, money } from '../data/business';
+interface Props { headingLevel?: 2 | 3 | 4; showMinimums?: boolean }
+const { headingLevel = 3, showMinimums = true } = Astro.props;
+const H = `h${headingLevel}`;
+---
+<div class="tiers">
+  {packages.map((p) => (
+    <article class={`tier${p.popular ? ' pop' : ''}`}>
+      {p.popular && <span class="badge">Most popular</span>}
+      <H class="nm">{p.name}</H>
+      <p class="pp">${p.price}<small>per person</small></p>
+      <ul>
+        <li>{p.proteins === '1 protein' ? 'Choose 1 protein' : p.proteins === '2 proteins' ? 'Choose 2 proteins' : p.proteins}</li>
+        <li>{p.sides}</li>
+        <li>{p.bestFor}</li>
+      </ul>
+    </article>
+  ))}
+</div>
+<p class="pk-note">{packagesNote}{showMinimums && ` ${money(policies.minimumDropoff)} minimum for pickup and drop-off, ${money(policies.minimumOnsite)} for our grill on-site.`}</p>
+<style>.pk-note { margin-top: 22px; font-weight: 600; }</style>

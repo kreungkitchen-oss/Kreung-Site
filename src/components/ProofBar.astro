@@ -1,0 +1,22 @@
+---
+import { clients, ratings, links, clientNote } from '../data/business';
+interface Props { heading?: string; note?: boolean }
+const { heading = 'Trusted by teams at', note = false } = Astro.props;
+---
+<div class="proof">
+  <p class="eyebrow proof__h">{heading}</p>
+  {/* Text list until Sam confirms logo permission (see CLAUDE.md) */}
+  <ul class="client-list">{clients.map((c) => <li>{c}</li>)}</ul>
+  {note && <p class="proof__note">{clientNote}</p>}
+  <div class="ratings">
+    <a class="rating" href={links.yelp} rel="noopener"><strong>{ratings.yelp.value}</strong><span class="stars" aria-hidden="true">★★★★★</span>Yelp <span class="n">({ratings.yelp.count} reviews)</span></a>
+    <span class="rating"><strong>{ratings.google.value}</strong><span class="stars" aria-hidden="true">★★★★★</span>Google <span class="n">({ratings.google.count} reviews)</span></span>
+  </div>
+  <p class="proof__asof">Ratings as of {ratings.asOf}.</p>
+</div>
+<style>
+  .proof__h { margin-bottom: 14px; }
+  .ratings { margin-top: 22px; }
+  .proof__note { margin: 14px 0 0; font-weight: 600; }
+  .proof__asof { font-size: 14px; margin: 10px 0 0; opacity: 0.85; }
+</style>

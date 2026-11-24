@@ -1,0 +1,88 @@
+---
+/**
+ * "Pound the kreung!" — six ingredients with Khmer labels and an optional
+ * mortar game (progressive enhancement, like the current site).
+ * Without JS every ingredient is listed and readable; with JS, each pound
+ * adds the next ingredient. Respects prefers-reduced-motion.
+ */
+import { kreungIngredients } from '../data/business';
+const colors = ['#C9D97F', '#E2C98E', '#F0A81E', '#6FA543', '#EFE2BE', '#C77D6E'];
+---
+<div class="mortar-box" data-mortar>
+  <button class="mortar" type="button" aria-label="Pound the mortar" hidden data-mortar-btn>
+    <svg viewBox="0 0 220 220" aria-hidden="true">
+      <g class="pestle"><rect x="128" y="14" width="28" height="112" rx="14" transform="rotate(24 141 73)" fill="#c08a4b" stroke="#2b1b3f" stroke-width="5" /></g>
+      <ellipse cx="110" cy="122" rx="86" ry="22" fill="#fdf2db" stroke="#2b1b3f" stroke-width="5" />
+      <g class="paste">{colors.map((c, i) => <circle class={`blob b${i}`} cx={70 + i * 16} cy={120 + (i % 2) * 4} r="9" fill={c} stroke="#2b1b3f" stroke-width="2.5" />)}</g>
+      <path d="M24 122 C 30 186, 70 204, 110 204 C 150 204, 190 186, 196 122 Z" fill="#2b1b3f" stroke="#2b1b3f" stroke-width="5" />
+      <path d="M46 150 C 62 178, 90 188, 110 188" fill="none" stroke="#c75682" stroke-width="6" stroke-linecap="round" />
+      <rect x="62" y="200" width="96" height="12" rx="6" fill="#2b1b3f" />
+    </svg>
+  </button>
+  <div>
+    <ul class="herbs">
+      {kreungIngredients.map((h, i) => (
+        <li data-herb style={`--c:${colors[i]}`}><i aria-hidden="true"></i><span>{h.en}<span class="hk" lang="km">{h.km}</span></span></li>
+      ))}
+    </ul>
+    <div class="pound-ctl" hidden data-mortar-ctl>
+      <button class="btn" type="button" data-pound>Pound it</button>
+      <span class="count" data-count>0 of 6 in the mortar</span>
+    </div>
+    <p class="pound-hint" hidden data-mortar-ctl>Tap the mortar, or press the button.</p>
+    <p class="pound-msg" aria-live="polite" data-msg></p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-mortar]').forEach((box) => {
+    const herbs = [...box.querySelectorAll<HTMLElement>('[data-herb]')];
+    const btn = box.querySelector<HTMLButtonElement>('[data-mortar-btn]');
+    const pound = box.querySelector<HTMLButtonElement>('[data-pound]');
+    const count = box.querySelector<HTMLElement>('[data-count]');
+    const msg = box.querySelector<HTMLElement>('[data-msg]');
+    if (!btn || !pound || !count || !msg) return;
+    box.classList.add('is-game');
+    btn.hidden = false;
+    box.querySelectorAll<HTMLElement>('[data-mortar-ctl]').forEach((el) => (el.hidden = false));
+    let n = 0;
+    const step = () => {
+      if (n >= herbs.length) { n = 0; herbs.forEach((h) => h.classList.remove('in')); box.classList.remove('done'); msg.textContent = ''; }
+      herbs[n].classList.add('in');
+      box.style.setProperty('--fill', String(n + 1));
+      n++;
+      count.textContent = `${n} of ${herbs.length} in the mortar`;
+      btn.classList.remove('hit'); void btn.offsetWidth; btn.classList.add('hit');
+      if (n === herbs.length) { box.classList.add('done'); msg.textContent = 'That’s kreung! Now we marinate everything in it and fire up the grill.'; pound.textContent = 'Start over'; }
+      else pound.textContent = 'Pound it';
+    };
+    btn.addEventListener('click', step);
+    pound.addEventListener('click', step);
+  });
+</script>
+
+<style>
+  .mortar-box { display: grid; gap: 28px; align-items: center; margin-top: 26px; }
+  .mortar { width: min(240px, 70vw); aspect-ratio: 1; justify-self: center; cursor: pointer; border: 0; background: none; padding: 0; touch-action: manipulation; }
+  .mortar svg { width: 100%; height: 100%; overflow: visible; }
+  .herbs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .herbs li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 2px solid var(--plum); border-radius: 14px; background: var(--cream); font-weight: 700; font-size: 15px; line-height: 1.2; }
+  .herbs .hk { display: block; font-size: 13px; font-weight: 400; opacity: 0.85; }
+  .herbs i { width: 16px; height: 16px; border-radius: 50%; flex: none; border: 2px solid var(--plum); background: var(--c); }
+  .is-game .herbs li:not(.in) { border-style: dashed; border-color: rgba(43, 27, 63, 0.55); background: transparent; }
+  .is-game .herbs li:not(.in) i { background: transparent; }
+  .pound-ctl { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
+  .count { font-weight: 700; }
+  .pound-hint { margin: 8px 0 0; font-size: 15px; }
+  .pound-msg { min-height: 1.6em; margin: 14px 0 0; font-weight: 800; }
+  .is-game .blob { opacity: 0; transform-box: fill-box; transform-origin: center; transition: opacity 0.2s; }
+  .is-game[style*='--fill: 1'] .b0, .is-game[style*='--fill: 2'] :is(.b0,.b1), .is-game[style*='--fill: 3'] :is(.b0,.b1,.b2),
+  .is-game[style*='--fill: 4'] :is(.b0,.b1,.b2,.b3), .is-game[style*='--fill: 5'] :is(.b0,.b1,.b2,.b3,.b4), .is-game[style*='--fill: 6'] .blob { opacity: 1; }
+  .done .blob { fill: #b5a03a; }
+  @media (prefers-reduced-motion: no-preference) {
+    .pestle { transform-box: view-box; transform-origin: 141px 73px; }
+    .hit .pestle { animation: pound 0.28s ease-in 2 alternate; }
+    @keyframes pound { to { transform: translate(-16px, 26px); } }
+  }
+  @media (min-width: 560px) { .mortar-box { grid-template-columns: minmax(200px, 260px) 1fr; } .mortar { width: 100%; } }
+</style>

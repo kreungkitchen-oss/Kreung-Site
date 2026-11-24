@@ -1,6 +1,10 @@
-# Netlify settings. The site is plain HTML/CSS/JS, so there is no build step.
+# Netlify settings for the Kreung LA Astro site.
 [build]
-  publish = "."
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[headers]]
   for = "/*"
@@ -10,17 +14,11 @@
     X-Frame-Options = "SAMEORIGIN"
 
 [[headers]]
-  for = "/images/*"
+  for = "/_astro/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/video/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
-
-# Old Square Online page addresses can be pointed here later, e.g.
-# [[redirects]]
-#   from = "/s/order"
-#   to = "/#quote"
-#   status = 301
