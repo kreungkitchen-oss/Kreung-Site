@@ -69,3 +69,22 @@ export const article = (o: { title: string; description: string; path: string; d
 });
 
 export const ratingsText = `${ratings.google.value} on Google (${ratings.google.count} reviews) and ${ratings.yelp.value} on Yelp (${ratings.yelp.count} reviews), as of ${ratings.asOf}`;
+
+export const menuSchema = (sections: { name: string; items: { name: string; vegan?: boolean; description?: string }[] }[], path: string) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  name: 'Kreung LA Catering Menu',
+  url: new URL(path, SITE_URL).href,
+  inLanguage: 'en',
+  provider: { '@id': BUSINESS_ID },
+  hasMenuSection: sections.map((s) => ({
+    '@type': 'MenuSection',
+    name: s.name,
+    hasMenuItem: s.items.map((it) => ({
+      '@type': 'MenuItem',
+      name: it.name,
+      ...(it.description ? { description: it.description } : {}),
+      ...(it.vegan ? { suitableForDiet: 'https://schema.org/VeganDiet' } : {}),
+    })),
+  })),
+});

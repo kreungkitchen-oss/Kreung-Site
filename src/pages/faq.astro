@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { business, policies, money, markets, marketNote, marketMenuNote, rewards, cateringMenu, links, clientNote } from '../data/business';
+import { faqPage } from '../data/schema';
+
+const drinks = cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B');
+
+const groups = [
+  {
+    id: 'catering',
+    heading: 'Catering',
+    faqs: [
+      { q: 'How much does catering cost?', a: `Packages are $20 (Classic), $25 (Signature) and $33 (The Full Experience) per person. Delivery starts at $${policies.deliveryFrom}, sales tax applies, and some orders have a production fee. A 50-person Signature drop-off is about $29 per guest, all in.` },
+      { q: 'What is the minimum order?', a: `${money(policies.minimumDropoff)} for pickup and drop-off. ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+      { q: 'How many guests can you serve?', a: `We cater for ${policies.guestsLabel} guests.` },
+      { q: 'How far ahead should I book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead.` },
+      { q: 'How fast will you get back to me?', a: `${policies.responseTime} ${policies.estimateTime}` },
+      { q: 'Where do you deliver?', a: `We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
+      { q: 'What is the production fee?', a: `${policies.productionFeeDropoffPct}% on drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests, and ${policies.productionFeeOnsitePct}% for on-site cooking, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
+      { q: 'Can you grill on-site at our event?', a: `Yes. We bring our grill and cook for your guests. On-site events have a ${money(policies.minimumOnsite)} minimum and a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}.` },
+      { q: 'Who have you catered for?', a: `Teams at SpaceX, Adobe, Amazon, Live Nation, Sony Pictures, DreamWorks, Rare Beauty, Cedars-Sinai, Caltech and more. ${clientNote}` },
+    ],
+    // TODO(Sam): add answers for deposits/payment, cancellations, and how far "most of LA County" reaches. Left off the page until confirmed.
+  },
+  {
+    id: 'food',
+    heading: 'Food & Dietary',
+    faqs: [
+      { q: 'What is kreung?', a: 'Kreung is the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. We marinate our meats in it before they hit the grill.' },
+      { q: 'What is on the catering menu?', a: 'Grilled lemongrass chicken, beef skewers, tofu skewers (vegan), short rib, coconut chive corn salad, pickled vegetables, rice or coconut lime leaf rice, and house sauces.' },
+      { q: 'Do you have vegan options?', a: 'Yes. Our tofu skewers are vegan.' },
+      { q: 'Is your food dairy-free and peanut-free?', a: 'Yes. Our food contains no dairy or peanuts.' },
+      { q: 'What allergens should I know about?', a: policies.allergyNote },
+      { q: 'Do you offer drinks?', a: `Yes. ${drinks} are available separately.` },
+    ],
+  },
+  {
+    id: 'markets',
+    heading: 'Markets & Ordering',
+    faqs: [
+      { q: 'Where can I find you each week?', a: `${markets.map((m) => `${m.day}: ${m.name}, ${m.address}, ${m.hours}`).join('. ')}. ${marketNote}` },
+      { q: 'What do you serve at the markets?', a: `Chicken plates, skewer plates, sampler plates, pork belly plates and short rib by the rib. ${marketMenuNote}` },
+      { q: 'Can I order online?', a: 'Yes. Online ordering is through our Square store.' },
+      { q: 'Do you have a rewards program?', a: `Yes, ${rewards.name}. You get ${rewards.joinOffer.replace(' when you join', '')} when you join. ${rewards.earn}` },
+    ],
+    // TODO(Sam): market plate prices, and how Square online ordering pickup works. Left off until confirmed.
+  },
+  {
+    id: 'about',
+    heading: 'About Us',
+    faqs: [
+      { q: 'Who owns Kreung LA?', a: `${business.founders.join(' and ')}. Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border.` },
+      { q: 'Where are you based?', a: 'We are based in Culver City, Los Angeles, CA.' },
+      { q: 'Are you the same as Kreung Kitchen?', a: 'Yes. Kreung LA was formerly called Kreung Kitchen.' },
+      { q: 'When did you start?', a: 'Our first catering order came on January 1, 2024. It was the birthday of Sam’s mother, Mak.' },
+      { q: 'What does "Made for Mak" mean?', a: 'Mak is what Sam called his mother. For years he told her he would bring Cambodian food to LA. Her last words to him were to stop talking and start doing. Everything we cook is for her.' },
+      { q: 'How do I contact you?', a: `Email ${business.email}, text ${business.phone.display}, or message us on Instagram at ${business.instagram.handle}.` },
+    ],
+  },
+];
+
+const all = groups.flatMap((g) => g.faqs);
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'FAQ', path: '/faq' }];
+---
+<BaseLayout
+  title="FAQ: Catering, Menu and Markets | Kreung LA"
+  description="Answers about Kreung LA catering prices, minimums, delivery, vegan and allergy info, weekly markets, online ordering and our story."
+  path="/faq"
+  jsonLd={[faqPage(all)]}
+>
+  <section class="sec s-yellow page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs} />
+      <h1>Kreung LA FAQ</h1>
+      <p class="lede">Quick answers about catering, our food, the markets and who we are. Can't find yours? Text us or email {business.email}.</p>
+      <nav class="jump" aria-label="FAQ sections">
+        {groups.map((g) => <a class="btn btn--sm btn--o" href={`#${g.id}`}>{g.heading}</a>)}
+      </nav>
+    </div>
+  </section>
+
+  <section class="sec s-cream faq-page">
+    <div class="wrap">
+      {groups.map((g) => (
+        <div class="grp">
+          <Faq faqs={g.faqs} heading={g.heading} id={g.id} schema={false} />
+          {g.id === 'markets' && links.order && <p class="more-faq"><a href={links.order} rel="noopener">Order online</a></p>}
+        </div>
+      ))}
+      <p class="more-faq"><a href="/catering">Catering</a> · <a href="/catering-pricing">Pricing</a> · <a href="/catering-menu">Catering menu</a> · <a href="/find-us">Find us</a></p>
+    </div>
+  </section>
+
+  <CtaBand heading="Planning an event?" text="See a price in a minute. We reply within 24 hours." href="/corporate-catering#estimate" label="Get a catering quote" />
+</BaseLayout>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .grp + .grp { margin-top: clamp(48px, 6vw, 72px); }
+  .grp :global(.faq-list) { scroll-margin-top: 90px; }
+</style>

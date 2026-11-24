@@ -1,0 +1,148 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Packages from '../components/Packages.astro';
+import ProofBar from '../components/ProofBar.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { packages, policies, money, marketContext, cateringMenu } from '../data/business';
+import { article } from '../data/schema';
+import plating from '../assets/photos/food-rice-corn-plating.jpg';
+
+/** Worked examples use the same rules as the estimator. */
+function example(guests: number, pkgId: string, service: 'drop' | 'onsite') {
+  const pkg = packages.find((p) => p.id === pkgId)!;
+  const food = guests * pkg.price;
+  const delivery = service === 'drop' ? policies.deliveryFrom : 0;
+  const fee = service === 'onsite'
+    ? Math.max(food * policies.productionFeeOnsitePct / 100, policies.productionFeeOnsiteMin)
+    : guests >= policies.productionFeeDropoffThreshold ? food * policies.productionFeeDropoffPct / 100 : 0;
+  const tax = (food + delivery + fee) * policies.estimatedTaxPct / 100;
+  const total = food + delivery + fee + tax;
+  return { pkg, guests, food, delivery, fee, tax, total, per: total / guests };
+}
+const ex1 = example(50, 'signature', 'drop');
+const ex2 = example(150, 'signature', 'drop');
+
+const faqs = [
+  { q: 'How much does catering cost per person?', a: `Our packages are $20 (Classic), $25 (Signature) and $33 (The Full Experience) per person. A 50-person Signature drop-off comes to about ${money(ex1.per)} per guest with delivery and estimated tax.` },
+  { q: 'Is there a minimum order?', a: `Yes. ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+  { q: 'How much is delivery?', a: `Delivery starts at $${policies.deliveryFrom} and includes setup. We deliver to ${policies.deliveryArea}.` },
+  { q: 'What is the production fee?', a: `It's ${policies.productionFeeDropoffPct}% on drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests, and ${policies.productionFeeOnsitePct}% for on-site cooking, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
+  { q: 'Is gratuity included?', a: 'The production fee is not a gratuity. It is a one-time charge that covers the work of producing a large or on-site event.' },
+  { q: 'Do I pay sales tax?', a: `Yes, sales tax applies. Our estimator uses ${policies.estimatedTaxPct}% as a guide. Your final tax is confirmed in your quote.` },
+  { q: 'Are drinks included?', a: `No. ${cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B')} are available separately.` },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Catering', path: '/catering' },
+  { name: 'Pricing', path: '/catering-pricing' },
+];
+const title = 'Catering Cost in Los Angeles: Pricing Guide | Kreung LA';
+const description = 'What Cambodian BBQ catering costs in LA: $20–33 per person, minimums, delivery, production fee and tax, with a worked example. About $29 per guest.';
+---
+<BaseLayout
+  title={title}
+  description={description}
+  path="/catering-pricing"
+  jsonLd={[article({ title: 'How Much Does Catering Cost in Los Angeles? Kreung LA Pricing Guide', description, path: '/catering-pricing', datePublished: '2026-11-24' })]}
+>
+  <section class="sec s-yellow page-hero">
+    <div class="wrap split split--wide">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <h1>How Much Does Catering Cost in Los Angeles? Kreung LA Pricing Guide</h1>
+        <p class="lede">Our catering is priced per person: $20, $25 or $33. Most office lunches land around {money(ex1.per)} per guest, all in. Here's exactly how it adds up.</p>
+        <div class="btn-row">
+          <a class="btn" href="/corporate-catering#estimate">Get your estimate</a>
+        </div>
+      </div>
+      <figure class="photo">
+        <Image src={plating} alt="Plates of Kreung LA rice and coconut corn being served at a catered event" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec s-plum" aria-labelledby="pk-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="pk-h">1. Pick a package</h2>
+        <p class="lede">The package sets your price per person. Every package includes house sauces.</p>
+      </div>
+      <Packages />
+    </div>
+  </section>
+
+  <section class="sec s-cream" aria-labelledby="add-h">
+    <div class="wrap prose">
+      <h2 id="add-h">2. What gets added</h2>
+      <table>
+        <thead><tr><th scope="col">Item</th><th scope="col">How it works</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Minimum order</th><td>{money(policies.minimumDropoff)} for pickup and drop-off. {money(policies.minimumOnsite)} when we bring our grill on-site.</td></tr>
+          <tr><th scope="row">Delivery</th><td>From ${policies.deliveryFrom}, setup included. We cover {policies.deliveryArea}.</td></tr>
+          <tr><th scope="row">Production fee</th><td>{policies.productionFeeDropoffPct}% on drop-off orders for {policies.productionFeeDropoffThreshold}+ guests. {policies.productionFeeOnsitePct}% for on-site cooking, starting at ${policies.productionFeeOnsiteMin}. {policies.productionFeeNote}</td></tr>
+          <tr><th scope="row">Sales tax</th><td>Sales tax applies. We estimate {policies.estimatedTaxPct}% and confirm the final amount in your quote.</td></tr>
+          <tr><th scope="row">Drinks</th><td>{cateringMenu.drinksNote} {cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B')}.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="ex-h">3. A worked example</h2>
+      <p>Say you're feeding <strong>{ex1.guests} people</strong> at the office with the <strong>{ex1.pkg.name}</strong> package, dropped off.</p>
+      <table class="sum">
+        <tbody>
+          <tr><th scope="row">Food ({ex1.guests} × ${ex1.pkg.price})</th><td>{money(ex1.food)}</td></tr>
+          <tr><th scope="row">Delivery and setup</th><td>{money(ex1.delivery)}</td></tr>
+          <tr><th scope="row">Production fee (under {policies.productionFeeDropoffThreshold} guests)</th><td>$0</td></tr>
+          <tr><th scope="row">Estimated tax ({policies.estimatedTaxPct}%)</th><td>{money(ex1.tax)}</td></tr>
+          <tr class="tot"><th scope="row">Estimated total</th><td>{money(ex1.total)}</td></tr>
+          <tr class="tot"><th scope="row">Per guest, all in</th><td>about {money(ex1.per)}</td></tr>
+        </tbody>
+      </table>
+      <p>Now say it's <strong>{ex2.guests} people</strong>, same package. Food is {money(ex2.food)}, delivery {money(ex2.delivery)}, and the {policies.productionFeeDropoffPct}% production fee adds {money(ex2.fee)}. With estimated tax, that's about <strong>{money(ex2.total)}</strong>, or {money(ex2.per)} per guest.</p>
+      <p>These are estimates. Your quote has your final price.</p>
+
+      <h2 id="change-h">4. What changes the price</h2>
+      <ul>
+        <li><strong>Guest count.</strong> More guests means more food. Drop-off orders for {policies.productionFeeDropoffThreshold}+ guests add a {policies.productionFeeDropoffPct}% production fee.</li>
+        <li><strong>Proteins.</strong> Classic has 1 protein, Signature has 2, and The Full Experience has all 4, including short rib.</li>
+        <li><strong>Drop-off or on-site.</strong> Pickup and drop-off start at a {money(policies.minimumDropoff)} minimum. Our grill on-site starts at {money(policies.minimumOnsite)}, with a {policies.productionFeeOnsitePct}% production fee (at least ${policies.productionFeeOnsiteMin}).</li>
+        <li><strong>Distance.</strong> Delivery starts at ${policies.deliveryFrom}. Farther locations may cost more.</li>
+        <li><strong>Drinks.</strong> Water, sodas and sparkling water are extra.</li>
+      </ul>
+
+      <h2 id="ctx-h">How we compare</h2>
+      <p>{marketContext.text} (Source: <a href={marketContext.sourceUrl} rel="noopener">{marketContext.sourceName}</a>.) Our packages run $20 to $33 per person, and every one comes with rice, sides and house sauces.</p>
+      <p><a href="/catering-menu">See the full catering menu</a> · <a href="/catering">All catering options</a></p>
+    </div>
+  </section>
+
+  <section class="sec sec--tight s-plum" aria-label="Clients and ratings">
+    <div class="wrap"><ProofBar /></div>
+  </section>
+
+  <section class="sec s-red" aria-labelledby="rev-h">
+    <div class="wrap">
+      <div class="head"><h2 id="rev-h">Worth every bite</h2></div>
+      <Reviews keys={['repeatClient', 'rareBeauty', 'janeT']} />
+    </div>
+  </section>
+
+  <section class="sec s-mint">
+    <div class="wrap">
+      <Faq faqs={faqs} heading="Pricing questions" />
+      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering-menu">Menu</a> · <a href="/catering">All catering</a></p>
+    </div>
+  </section>
+
+  <CtaBand heading="See your price in a minute." text="Answer a few questions and get a ballpark right away." href="/corporate-catering#estimate" label="Get your estimate" />
+</BaseLayout>
+
+<style>
+  .sum th { font-weight: 600; background: none; }
+  .sum td { text-align: right; font-weight: 700; white-space: nowrap; }
+  .sum .tot th, .sum .tot td { background: var(--yellow); font-weight: 800; }
+</style>
