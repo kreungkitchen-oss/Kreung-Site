@@ -19,6 +19,7 @@ export const businessEntity = () => ({
     { '@type': 'Person', name: 'Christina' },
   ],
   email: business.email,
+  telephone: business.phone.e164,
   address: {
     '@type': 'PostalAddress',
     addressLocality: business.locality,

@@ -1,0 +1,362 @@
+---
+/**
+ * Catering estimator + quote request (Netlify Forms).
+ * - Plain HTML form that works without JavaScript: every step is visible
+ *   and submits normally to /thanks.
+ * - With JavaScript: one step at a time, inline validation, and a live
+ *   estimate whose numbers are copied into hidden fields on submit.
+ * Pricing rules come from src/data/business.ts.
+ */
+import { packages, policies, money } from '../data/business';
+interface Props { defaultType?: string; heading?: string }
+const { defaultType = 'Corporate or office lunch', heading = 'Get your estimate' } = Astro.props;
+const eventTypes = ['Corporate or office lunch', 'Private celebration', 'Wedding or engagement', 'Community event', 'Other'];
+const heard = ['Google', 'ChatGPT or other AI', 'Instagram', 'Yelp', 'Catering marketplace', 'Referral', 'Saw us at a market', 'Other'];
+const cfg = {
+  prices: Object.fromEntries(packages.map((p) => [p.id, p.price])),
+  names: Object.fromEntries(packages.map((p) => [p.id, p.name])),
+  delivery: policies.deliveryFrom,
+  feeDropPct: policies.productionFeeDropoffPct,
+  feeDropMin: policies.productionFeeDropoffThreshold,
+  feeOnsitePct: policies.productionFeeOnsitePct,
+  feeOnsiteMin: policies.productionFeeOnsiteMin,
+  tax: policies.estimatedTaxPct,
+  minDrop: policies.minimumDropoff,
+  minOnsite: policies.minimumOnsite,
+  lead: policies.leadTimeDays,
+};
+---
+<section class="sec s-plum est-sec" id="estimate" aria-labelledby="estimate-h">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="estimate-h">{heading}</h2>
+      <p class="lede">Answer a few questions and see a ballpark price right away. Send it over and we'll reply within 24 hours, usually the same day, with a real quote.</p>
+    </div>
+
+    <div class="est" data-est data-cfg={JSON.stringify(cfg)}>
+      <form class="q-main" name="catering-quote" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="website" novalidate>
+        <input type="hidden" name="form-name" value="catering-quote" />
+        <p class="visually-hidden"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off" /></label></p>
+        <input type="hidden" name="source-page" value={Astro.url.pathname} />
+        <input type="hidden" name="estimate-food" value="" />
+        <input type="hidden" name="estimate-delivery" value="" />
+        <input type="hidden" name="estimate-production-fee" value="" />
+        <input type="hidden" name="estimate-tax" value="" />
+        <input type="hidden" name="estimate-total" value="" />
+        <input type="hidden" name="estimate-per-guest" value="" />
+        <input type="hidden" name="estimate-warnings" value="" />
+
+        <ol class="q-steps" aria-hidden="true" data-steps hidden>
+          <li class="on">Your event</li><li>Food and service</li><li>Details</li><li>Contact</li>
+        </ol>
+        <p class="visually-hidden" aria-live="polite" data-step-announce></p>
+
+        <fieldset class="q-step" data-step="1">
+          <legend class="q-legend">1. Your event</legend>
+          <div class="field">
+            <span class="lbl" id="lbl-type">Type of event</span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-type">
+              {eventTypes.map((t) => (
+                <label><input type="radio" name="event-type" value={t} checked={t === defaultType} /><span>{t}</span></label>
+              ))}
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="q-date">Event date</label>
+              <input id="q-date" name="event-date" type="date" required aria-describedby="q-date-err q-date-hint" />
+              <span class="hint" id="q-date-hint">Please book at least {policies.leadTimeDays} days ahead.</span>
+              <span class="err" id="q-date-err" data-err></span>
+            </div>
+            <div class="field">
+              <label for="q-time">Serving time</label>
+              <input id="q-time" name="event-time" type="time" />
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="q-guests">Number of guests</label>
+              <input id="q-guests" name="guests" type="number" inputmode="numeric" min="1" step="1" value="50" required aria-describedby="q-guests-hint q-guests-err" />
+              <span class="hint" id="q-guests-hint">We cater for {policies.guestsLabel} guests.</span>
+              <span class="err" id="q-guests-err" data-err></span>
+            </div>
+            <div class="field">
+              <label for="q-loc">Event location</label>
+              <input id="q-loc" name="location" type="text" autocomplete="postal-code" placeholder="City or ZIP" required aria-describedby="q-loc-err" />
+              <span class="err" id="q-loc-err" data-err></span>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="q-step" data-step="2">
+          <legend class="q-legend">2. Food and service</legend>
+          <div class="field">
+            <span class="lbl" id="lbl-pkg">Package</span>
+            <div class="pk-choices" role="radiogroup" aria-labelledby="lbl-pkg">
+              {packages.map((p) => (
+                <label class="pk-choice"><input type="radio" name="package" value={p.id} checked={p.popular} /><span><b>{p.name}</b> ${p.price}/person<small>{p.proteins}. {p.sides}.</small></span></label>
+              ))}
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl" id="lbl-svc">Service</span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-svc">
+              <label><input type="radio" name="service" value="Drop-off" checked /><span>Drop-off (delivery from ${policies.deliveryFrom})</span></label>
+              <label><input type="radio" name="service" value="Pickup" /><span>Pickup</span></label>
+              <label><input type="radio" name="service" value="On-site grill" /><span>On-site grill</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <span class="lbl" id="lbl-drinks">Add drinks? <span class="hint">(bottled water, sodas, sparkling water; priced in your quote)</span></span>
+            <div class="chips" role="radiogroup" aria-labelledby="lbl-drinks">
+              <label><input type="radio" name="drinks" value="Yes" /><span>Yes</span></label>
+              <label><input type="radio" name="drinks" value="No" checked /><span>No</span></label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="q-step" data-step="3">
+          <legend class="q-legend">3. Details</legend>
+          <div class="field">
+            <label for="q-budget">Budget <span class="hint">(optional)</span></label>
+            <input id="q-budget" name="budget" type="text" placeholder="e.g. $2,000 or $30 per person" />
+          </div>
+          <div class="field">
+            <label for="q-diet">Dietary needs <span class="hint">(optional)</span></label>
+            <textarea id="q-diet" name="dietary" rows="3" placeholder="Vegan, allergies, how many of each"></textarea>
+            <span class="hint">{policies.allergyNote}</span>
+          </div>
+          <div class="field">
+            <label for="q-notes">Anything else? <span class="hint">(optional)</span></label>
+            <textarea id="q-notes" name="notes" rows="3" placeholder="Venue details, timing, questions"></textarea>
+          </div>
+          <div class="field">
+            <label for="q-heard">How did you hear about us?</label>
+            <select id="q-heard" name="heard-about">
+              <option value="">Choose one</option>
+              {heard.map((h) => <option value={h}>{h}</option>)}
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="q-step" data-step="4">
+          <legend class="q-legend">4. Contact</legend>
+          <div class="row2">
+            <div class="field">
+              <label for="q-name">Your name</label>
+              <input id="q-name" name="name" type="text" autocomplete="name" required aria-describedby="q-name-err" />
+              <span class="err" id="q-name-err" data-err></span>
+            </div>
+            <div class="field">
+              <label for="q-company">Company <span class="hint">(optional)</span></label>
+              <input id="q-company" name="company" type="text" autocomplete="organization" />
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="q-email">Email</label>
+              <input id="q-email" name="email" type="email" autocomplete="email" required aria-describedby="q-email-err" />
+              <span class="err" id="q-email-err" data-err></span>
+            </div>
+            <div class="field">
+              <label for="q-phone">Phone <span class="hint">(optional)</span></label>
+              <input id="q-phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="q-nav">
+          <button class="btn btn--o q-back" type="button" data-back hidden>Back</button>
+          <button class="btn btn--y q-next" type="button" data-next hidden>Next</button>
+          <button class="btn btn--y q-submit" type="submit" data-submit>Send my quote request</button>
+        </div>
+        <p class="q-fine">No payment now. We reply within 24 hours, usually the same day. Estimates in 24–48 hours.</p>
+      </form>
+
+      <aside class="q-side" aria-labelledby="est-h">
+        <h3 id="est-h" class="est-h">Your estimate</h3>
+        <div data-live hidden>
+          <p class="est-total" aria-live="polite" data-total>$0</p>
+          <p class="est-pp" data-pp></p>
+          <dl class="est-lines">
+            <div><dt>Food</dt><dd data-food>$0</dd></div>
+            <div><dt>Delivery</dt><dd data-delivery>$0</dd></div>
+            <div><dt>Production fee</dt><dd data-fee>$0</dd></div>
+            <div><dt>Estimated tax ({policies.estimatedTaxPct}%)</dt><dd data-tax>$0</dd></div>
+          </dl>
+          <ul class="est-warn" data-warn aria-live="polite"></ul>
+        </div>
+        <div class="est-static" data-static>
+          <p>How we price it:</p>
+          <ul>
+            <li>Food: guests × package price ($20, $25 or $33 per person).</li>
+            <li>Drop-off delivery starts at ${policies.deliveryFrom}, setup included.</li>
+            <li>Production fee: {policies.productionFeeDropoffPct}% on drop-off orders for {policies.productionFeeDropoffThreshold}+ guests, or {policies.productionFeeOnsitePct}% for on-site cooking (starting at ${policies.productionFeeOnsiteMin}).</li>
+            <li>Sales tax applies.</li>
+            <li>Minimums: {money(policies.minimumDropoff)} for pickup and drop-off, {money(policies.minimumOnsite)} for our grill on-site.</li>
+          </ul>
+        </div>
+        <p class="est-fine">Tax is estimated; final pricing confirmed in your quote. The production fee is a one-time charge, not a gratuity.</p>
+        <p class="est-fine"><a href="/catering-pricing">How pricing works</a></p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  type Cfg = { prices: Record<string, number>; names: Record<string, string>; delivery: number; feeDropPct: number; feeDropMin: number; feeOnsitePct: number; feeOnsiteMin: number; tax: number; minDrop: number; minOnsite: number; lead: number };
+  const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
+  document.querySelectorAll<HTMLElement>('[data-est]').forEach((root) => {
+    const cfg: Cfg = JSON.parse(root.dataset.cfg || '{}');
+    const form = root.querySelector('form')!;
+    const $ = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const val = (name: string) => (form.querySelector<HTMLInputElement>(`[name="${name}"]:checked`) || form.querySelector<HTMLInputElement>(`[name="${name}"]`))?.value || '';
+    const setHidden = (name: string, v: string) => { const el = form.querySelector<HTMLInputElement>(`input[type=hidden][name="${name}"]`); if (el) el.value = v; };
+
+    // Pre-fill from the link, e.g. ?type=Wedding%20or%20engagement&interest=lunch-club
+    const params = new URLSearchParams(location.search);
+    const t = params.get('type');
+    if (t) form.querySelectorAll<HTMLInputElement>('[name="event-type"]').forEach((r) => (r.checked = r.value === t));
+    const pkg = params.get('package');
+    if (pkg) form.querySelectorAll<HTMLInputElement>('[name="package"]').forEach((r) => (r.checked = r.value === pkg));
+    const svc = params.get('service');
+    if (svc) form.querySelectorAll<HTMLInputElement>('[name="service"]').forEach((r) => (r.checked = r.value === svc));
+    if (params.get('interest') === 'lunch-club') {
+      const notes = form.querySelector<HTMLTextAreaElement>('[name="notes"]');
+      if (notes && !notes.value) notes.value = "I'm interested in the Office Lunch Club (recurring catering).";
+    }
+
+    // Live estimate
+    $('[data-live]').removeAttribute('hidden');
+    $<HTMLElement>('[data-static]').hidden = true;
+    const update = () => {
+      const guests = Math.max(0, parseInt(val('guests'), 10) || 0);
+      const price = cfg.prices[val('package')] || 0;
+      const service = val('service');
+      const food = guests * price;
+      const delivery = service === 'Drop-off' ? cfg.delivery : 0;
+      let fee = 0;
+      if (service === 'Drop-off' && guests >= cfg.feeDropMin) fee = food * cfg.feeDropPct / 100;
+      if (service === 'On-site grill') fee = Math.max(food * cfg.feeOnsitePct / 100, cfg.feeOnsiteMin);
+      const sub = food + delivery + fee;
+      const tax = sub * cfg.tax / 100;
+      const total = sub + tax;
+      const pp = guests ? total / guests : 0;
+      $('[data-total]').textContent = money(total);
+      $('[data-pp]').textContent = guests ? `About ${money(pp)} per guest, all in` : 'Enter your guest count';
+      $('[data-food]').textContent = `${money(food)} (${guests} × $${price})`;
+      $('[data-delivery]').textContent = service === 'Drop-off' ? `from ${money(delivery)}` : '$0';
+      $('[data-fee]').textContent = money(fee);
+      $('[data-tax]').textContent = money(tax);
+      const warns: string[] = [];
+      if (service === 'On-site grill' && food < cfg.minOnsite) warns.push(`Our grill on-site has a ${money(cfg.minOnsite)} food minimum.`);
+      if (service !== 'On-site grill' && food < cfg.minDrop) warns.push(`Pickup and drop-off have a ${money(cfg.minDrop)} food minimum.`);
+      const d = val('event-date');
+      if (d) {
+        const days = (new Date(d + 'T12:00:00').getTime() - Date.now()) / 86400000;
+        if (days < cfg.lead) warns.push(`That's less than ${cfg.lead} days away. We need 2 weeks' notice, but send it anyway and we'll check.`);
+      }
+      $('[data-warn]').innerHTML = warns.map((w) => `<li>${w}</li>`).join('');
+      setHidden('estimate-food', money(food));
+      setHidden('estimate-delivery', service === 'Drop-off' ? `from ${money(delivery)}` : '$0');
+      setHidden('estimate-production-fee', money(fee));
+      setHidden('estimate-tax', money(tax));
+      setHidden('estimate-total', money(total));
+      setHidden('estimate-per-guest', money(pp));
+      setHidden('estimate-warnings', warns.join(' '));
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    update();
+
+    // Step-by-step flow
+    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('[data-step]')];
+    const dots = [...root.querySelectorAll('[data-steps] li')];
+    const back = $<HTMLButtonElement>('[data-back]');
+    const next = $<HTMLButtonElement>('[data-next]');
+    const submit = $<HTMLButtonElement>('[data-submit]');
+    const announce = $('[data-step-announce]');
+    $<HTMLElement>('[data-steps]').hidden = false;
+    let cur = 0;
+    const show = (i: number, focus = true) => {
+      cur = i;
+      steps.forEach((s, j) => (s.hidden = j !== i));
+      dots.forEach((d, j) => d.classList.toggle('on', j <= i));
+      back.hidden = i === 0;
+      next.hidden = i === steps.length - 1;
+      submit.hidden = i !== steps.length - 1;
+      announce.textContent = `Step ${i + 1} of ${steps.length}: ${steps[i].querySelector('legend')?.textContent?.replace(/^\d\.\s*/, '')}`;
+      if (focus) steps[i].querySelector<HTMLElement>('input:not([type=hidden]), select, textarea')?.focus();
+    };
+    const validate = (fs: HTMLElement) => {
+      let firstBad: HTMLInputElement | null = null;
+      fs.querySelectorAll<HTMLInputElement>('input[required]').forEach((el) => {
+        const err = document.getElementById(el.getAttribute('aria-describedby')?.split(' ').find((id) => id.endsWith('-err')) || '');
+        let msg = '';
+        if (!el.value.trim()) msg = 'Please fill this in.';
+        else if (el.type === 'email' && !el.checkValidity()) msg = 'Please enter a valid email address.';
+        else if (el.type === 'number' && (parseInt(el.value, 10) || 0) < 1) msg = 'Please enter how many guests.';
+        el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        if (err) err.textContent = msg;
+        if (msg && !firstBad) firstBad = el;
+      });
+      if (firstBad) (firstBad as HTMLInputElement).focus();
+      return !firstBad;
+    };
+    next.addEventListener('click', () => { if (validate(steps[cur])) show(cur + 1); });
+    back.addEventListener('click', () => show(cur - 1));
+    form.addEventListener('submit', (e) => {
+      update();
+      for (let i = 0; i < steps.length; i++) { steps[i].hidden = false; if (!validate(steps[i])) { e.preventDefault(); show(i); validate(steps[i]); return; } }
+    });
+    show(0, false);
+  });
+</script>
+
+<style>
+  .est { display: grid; gap: 24px; align-items: start; }
+  .q-main { background: var(--cream); color: var(--plum); border-radius: var(--r-big); padding: clamp(20px, 4vw, 40px); }
+  .q-steps { list-style: none; display: flex; gap: 6px; padding: 0; margin: 0 0 22px; counter-reset: s; flex-wrap: wrap; }
+  .q-steps li { counter-increment: s; flex: 1 1 0; min-width: 70px; font-size: 13px; font-weight: 700; border-top: 5px solid rgba(43, 27, 63, 0.2); padding-top: 6px; }
+  .q-steps li.on { border-color: var(--pink); }
+  .q-step { border: 0; padding: 0; margin: 0 0 8px; min-width: 0; }
+  .q-legend { font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: clamp(26px, 3vw, 34px); line-height: 1; margin-bottom: 18px; padding: 0; }
+  .row2 { display: grid; gap: 0 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips label { position: relative; }
+  .chips input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+  .chips span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 2px solid rgba(43, 27, 63, 0.35); border-radius: 999px; background: var(--white); font-weight: 600; font-size: 15px; }
+  .chips input:checked + span { background: var(--plum); color: var(--white); border-color: var(--plum); }
+  .chips input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .pk-choices { display: grid; gap: 8px; }
+  .pk-choice { position: relative; }
+  .pk-choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pk-choice span { display: block; padding: 12px 16px; border: 2px solid rgba(43, 27, 63, 0.35); border-radius: 16px; background: var(--white); font-weight: 600; }
+  .pk-choice small { display: block; font-weight: 500; color: var(--muted); font-size: 14px; }
+  .pk-choice input:checked + span { background: var(--yellow); border-color: var(--plum); box-shadow: 4px 4px 0 var(--plum); }
+  .pk-choice input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .err { color: #a3122a; font-weight: 700; font-size: 14px; }
+  .err:empty { display: none; }
+  [aria-invalid='true'] { border-color: #a3122a !important; }
+  .q-nav { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .q-nav .btn { --fg: var(--plum); --bg: var(--cream); }
+  .q-nav .btn--y { border-color: var(--plum); }
+  .q-fine { font-size: 14px; margin: 14px 0 0; color: var(--muted); }
+  .q-side { background: var(--yellow); color: var(--plum); border: 2.5px solid var(--cream); border-radius: var(--r-big); padding: clamp(20px, 3vw, 32px); }
+  .est-h { font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: 22px; margin: 0 0 6px; }
+  .est-total { font-stretch: 75%; font-weight: 900; font-size: clamp(44px, 6vw, 64px); line-height: 1; margin: 0; }
+  .est-pp { font-weight: 800; margin: 6px 0 14px; }
+  .est-lines { margin: 0; display: grid; gap: 6px; border-top: 2px solid var(--plum); padding-top: 12px; }
+  .est-lines div { display: flex; justify-content: space-between; gap: 12px; }
+  .est-lines dt { font-weight: 600; }
+  .est-lines dd { margin: 0; font-weight: 800; text-align: right; }
+  .est-warn { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
+  .est-warn li { background: var(--cream); border: 2px solid var(--plum); border-radius: 12px; padding: 8px 12px; font-weight: 700; font-size: 15px; }
+  .est-warn:empty { display: none; }
+  .est-static p { font-weight: 800; margin-bottom: 6px; }
+  .est-static ul { margin: 0; }
+  .est-fine { font-size: 14px; margin: 12px 0 0; }
+  .est-fine a { font-weight: 800; }
+  @media (min-width: 640px) { .row2 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .est { grid-template-columns: 1.5fr 1fr; } .q-side { position: sticky; top: calc(var(--header-h) + 20px); } }
+</style>

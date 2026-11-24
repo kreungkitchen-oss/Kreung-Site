@@ -38,6 +38,7 @@ const guides = [
       <h2 class="fh">Contact</h2>
       <ul>
         <li><a href={`mailto:${business.email}`}>{business.email}</a></li>
+        <li><a href={`sms:${business.phone.e164}`}>Text {business.phone.display}</a></li>
         <li><a href={links.instagram} rel="noopener">Instagram {business.instagram.handle}</a></li>
         <li><a href={links.yelp} rel="noopener">Yelp</a></li>
       </ul>

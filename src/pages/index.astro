@@ -25,7 +25,7 @@ const doors = [
   { href: '/production-catering', title: 'Production & studio', text: 'Crew meals for film, TV and music sets.' },
   { href: '/office-lunch-club', title: 'Office Lunch Club', text: 'A standing Cambodian BBQ lunch on your calendar.' },
   { href: links.order || '/find-us', title: 'Order ahead', text: 'Order online through Square and pick up at the market.', todo: !links.order },
-  { href: links.giftCards || '/find-us', title: 'Gift cards', text: 'Give someone a plate of Cambodian BBQ.', todo: !links.giftCards },
+  // Gift cards hidden until Sam sets them up in Square (Sam, 2026-11-24). Re-add when links.giftCards is set.
   { href: '/rewards', title: 'Kreung Rewards', text: `${rewards.joinOffer}. ${rewards.earn}` },
 ];
 
@@ -143,7 +143,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
           </li>
         ))}
       </ul>
-      {/* TODO(Sam): add Square ordering and gift card links in src/data/business.ts (links.order, links.giftCards) */}
+      {/* TODO(Sam): add Square ordering and gift card links in src/data/business.ts (links.order; links.giftCards once gift cards exist) */}
     </div>
   </section>
 
@@ -279,13 +279,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   /* Catering */
   .spread :global(img) { aspect-ratio: 4 / 3; }
   .pk-h { margin: 0 0 28px; }
-  .dl { margin-top: 10px; }
-  .dl a { font-weight: 800; color: var(--yellow); }
 
-  .doors { list-style: none; padding: 0; margin: 0; }
-  .doors li { display: flex; }
-  .doors .card { width: 100%; }
-  .doors .todo { align-self: flex-start; }
 
   .booth { box-shadow: 10px 10px 0 var(--yellow); }
   .booth :global(img) { aspect-ratio: 4 / 3; }

@@ -274,3 +274,22 @@ figure { margin: 0; }
   .split--wide { grid-template-columns: 1.2fr 1fr; }
   .page-hero__grid { grid-template-columns: 1.3fr 1fr; }
 }
+
+/* ---------- Shared page bits ---------- */
+.dl { margin-top: 18px; }
+.dl a, .press-line a, .more-faq a { font-weight: 800; color: inherit; text-decoration-thickness: 2px; }
+.s-plum .dl a { color: var(--yellow); }
+.doors { list-style: none; padding: 0; margin: 0; }
+.doors li { display: flex; }
+.doors .card { width: 100%; }
+.doors .todo { align-self: flex-start; }
+.howto { counter-reset: how; list-style: none; padding: 0; margin: 24px 0 28px; display: grid; gap: 14px; }
+.howto li { counter-increment: how; position: relative; padding-left: 56px; min-height: 40px; font-size: 18px; }
+.howto li::before { content: counter(how); position: absolute; left: 0; top: -2px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--plum); border: 2.5px solid var(--plum); font-weight: 900; }
+.howto b { display: block; }
+.press-line, .more-faq { margin: 28px 0 0; font-weight: 600; }
+.check { list-style: none; padding: 0; margin: 0 0 1em; display: grid; gap: 10px; }
+.check li { position: relative; padding-left: 32px; }
+.check li::before { content: '✓'; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--fg); color: var(--bg); display: grid; place-items: center; font-size: 13px; font-weight: 900; }
+
+[hidden] { display: none !important; }

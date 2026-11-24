@@ -1,0 +1,14 @@
+---
+/** Floating "Text us" button, kept from the current site at Sam's request. Plain sms: link, no JS. */
+import { business } from '../data/business';
+---
+<a class="textus" href={`sms:${business.phone.e164}`} aria-label={`Text us at ${business.phone.display}`}>
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="currentColor" /></svg>
+  <span>Text us</span>
+</a>
+<style>
+  .textus { position: fixed; right: 16px; bottom: 16px; z-index: 50; display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 20px; border-radius: 999px; background: var(--teal-d); color: #fff; border: 3px solid var(--plum); box-shadow: 4px 4px 0 var(--plum); font-weight: 800; font-size: 17px; text-decoration: none; }
+  .textus:hover { background: var(--plum); }
+  .textus:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  @media print { .textus { display: none; } }
+</style>

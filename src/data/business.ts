@@ -19,6 +19,8 @@ export const business = {
   state: 'CA',
   areaServed: 'Los Angeles County',
   email: 'kreungkitchen@gmail.com',
+  // Phone from the current kreungla.com; Sam approved keeping the floating "Text us" button (2026-11-24).
+  phone: { display: '(562) 726-5072', e164: '+15627265072' },
   instagram: { handle: '@kreung_la', url: 'https://www.instagram.com/kreung_la' },
   yelp: { url: 'https://www.yelp.com/biz/kreung-kitchen-culver-city' },
   taglines: {
@@ -33,7 +35,7 @@ export const business = {
 /** External links. TODO(Sam): Square ordering and gift card links. */
 export const links = {
   order: '', // TODO(Sam): Square online ordering URL
-  giftCards: '', // TODO(Sam): Square gift card URL
+  giftCards: '', // Not set up yet in Square (Sam, 2026-11-24). Gift card links stay hidden until this is filled in.
   instagram: business.instagram.url,
   yelp: business.yelp.url,
 };

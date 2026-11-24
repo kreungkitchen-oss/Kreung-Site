@@ -21,7 +21,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 
 ## Business facts (single source of truth — never invent facts beyond these)
 - Name: Kreung LA (formerly Kreung Kitchen). Founded January 1, 2024. Owners: Sam Oum and Christina. Based in Culver City, Los Angeles, CA.
-- Contact: kreungkitchen@gmail.com · Instagram @kreung_la · Yelp: yelp.com/biz/kreung-kitchen-culver-city
+- Contact: kreungkitchen@gmail.com · Phone/text (562) 726-5072 (floating "Text us" button, approved by Sam) · Instagram @kreung_la · Yelp: yelp.com/biz/kreung-kitchen-culver-city
 - What we are: Cambodian street BBQ. Fire-grilled meats marinated in kreung, the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. Served with rice, coconut corn, pickled vegetables and house sauces.
 - Weekly markets:
   - Thursday: Westwood Village Farmers Market, 1036 Broxton Ave, Los Angeles, 12–5 PM
@@ -57,7 +57,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 
 ## External links
 - Online ordering (Square): [ORDER_URL — TODO, Sam to provide the Square ordering link]
-- Gift cards (Square): [GIFTCARD_URL — TODO]
+- Gift cards (Square): not set up yet. Hide gift card links until Sam sets them up.
 - Instagram: https://www.instagram.com/kreung_la
 
 ## Site map
