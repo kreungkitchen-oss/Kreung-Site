@@ -1,10 +1,13 @@
 ---
 /**
- * Catering estimator + quote request (Netlify Forms).
+ * Catering estimator + quote request.
  * - Plain HTML form that works without JavaScript: every step is visible
- *   and submits normally to /thanks.
+ *   and submits normally to Netlify Forms, then /thanks.
  * - With JavaScript: one step at a time, inline validation, and a live
- *   estimate whose numbers are copied into hidden fields on submit.
+ *   estimate whose numbers are copied into hidden fields. On submit the
+ *   answers go to Sam's Google Form (same as the current site) AND to
+ *   Netlify Forms as a backup, then the visitor sees /thanks.
+ *   Google Form field mapping: src/data/googleForm.ts.
  * Pricing rules come from src/data/business.ts.
  */
 import { packages, policies, money } from '../data/business';
@@ -163,6 +166,10 @@ const cfg = {
               <input id="q-phone" name="phone" type="tel" autocomplete="tel" />
             </div>
           </div>
+          <div class="field ack">
+            <label class="ack__l"><input id="q-ack" name="acknowledge" type="checkbox" value="Yes" required aria-describedby="q-ack-err" /> <span>I understand the minimums and fees, and I'd like a catering estimate.</span></label>
+            <span class="err" id="q-ack-err" data-err></span>
+          </div>
         </fieldset>
 
         <div class="q-nav">
@@ -204,6 +211,7 @@ const cfg = {
 </section>
 
 <script>
+  import { GFORM, GFORM_URL, EVENT_TYPE, SERVICE_TEXT, SOURCE, ACK_TEXT, guestRange, budgetFor, dietChoices, time12 } from '../data/googleForm';
   type Cfg = { prices: Record<string, number>; names: Record<string, string>; delivery: number; feeDropPct: number; feeDropMin: number; feeOnsitePct: number; feeOnsiteMin: number; tax: number; minDrop: number; minOnsite: number; lead: number };
   const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
   document.querySelectorAll<HTMLElement>('[data-est]').forEach((root) => {
@@ -227,6 +235,7 @@ const cfg = {
     }
 
     // Live estimate
+    let last = { food: 0, delivery: 0, fee: 0, tax: 0, total: 0, pp: 0, guests: 0, warns: [] as string[] };
     $('[data-live]').removeAttribute('hidden');
     $<HTMLElement>('[data-static]').hidden = true;
     const update = () => {
@@ -264,6 +273,7 @@ const cfg = {
       setHidden('estimate-total', money(total));
       setHidden('estimate-per-guest', money(pp));
       setHidden('estimate-warnings', warns.join(' '));
+      last = { food, delivery, fee, tax, total, pp, guests, warns };
     };
     form.addEventListener('input', update);
     form.addEventListener('change', update);
@@ -293,7 +303,8 @@ const cfg = {
       fs.querySelectorAll<HTMLInputElement>('input[required]').forEach((el) => {
         const err = document.getElementById(el.getAttribute('aria-describedby')?.split(' ').find((id) => id.endsWith('-err')) || '');
         let msg = '';
-        if (!el.value.trim()) msg = 'Please fill this in.';
+        if (el.type === 'checkbox') { if (!el.checked) msg = 'Please check this box to send your request.'; }
+        else if (!el.value.trim()) msg = 'Please fill this in.';
         else if (el.type === 'email' && !el.checkValidity()) msg = 'Please enter a valid email address.';
         else if (el.type === 'number' && (parseInt(el.value, 10) || 0) < 1) msg = 'Please enter how many guests.';
         el.setAttribute('aria-invalid', msg ? 'true' : 'false');
@@ -305,9 +316,67 @@ const cfg = {
     };
     next.addEventListener('click', () => { if (validate(steps[cur])) show(cur + 1); });
     back.addEventListener('click', () => show(cur - 1));
-    form.addEventListener('submit', (e) => {
+    // Google Form answers, translated to the form's own option text.
+    const googlePairs = (): [string, string][] => {
+      const f = new FormData(form);
+      const g = (k: string) => String(f.get(k) || '').trim();
+      const pkgId = g('package');
+      const diet = g('dietary');
+      const details = [
+        `Package: ${cfg.names[pkgId] || pkgId} ($${cfg.prices[pkgId] || 0}/person)`,
+        `Drinks: ${g('drinks') || 'No'}`,
+        `Exact guest count: ${last.guests}`,
+        `Website estimate: ${money(last.total)} (about ${money(last.pp)} per guest, tax estimated). Food ${money(last.food)}, delivery ${g('service') === 'Drop-off' ? 'from ' + money(last.delivery) : '$0'}, production fee ${money(last.fee)}, tax ${money(last.tax)}.`,
+        g('budget') && `Budget (their words): ${g('budget')}`,
+        diet && `Dietary needs (their words): ${diet}`,
+        g('heard-about') && `Heard about us: ${g('heard-about')}`,
+        last.warns.length ? `Notes from the estimator: ${last.warns.join(' ')}` : '',
+        `Sent from: ${location.pathname}`,
+      ].filter(Boolean).join('\n');
+      const [y, m, d] = g('event-date').split('-');
+      const pairs: [string, string][] = [
+        ['emailAddress', g('email')],
+        [GFORM.name, g('name')],
+        [GFORM.phone, g('phone') || 'Not given'],
+        [GFORM.company, g('company')],
+        [GFORM.eventType, EVENT_TYPE[g('event-type')] || 'Other'],
+        [GFORM.date + '_year', y || ''],
+        [GFORM.date + '_month', m ? String(+m) : ''],
+        [GFORM.date + '_day', d ? String(+d) : ''],
+        [GFORM.time, time12(g('event-time')) || 'Not given'],
+        [GFORM.loc, g('location')],
+        [GFORM.guests, guestRange(last.guests)],
+        [GFORM.budget, budgetFor(last.total)],
+        [GFORM.service, SERVICE_TEXT[g('service')] || g('service')],
+        [GFORM.serve, time12(g('event-time'))],
+        [GFORM.details, details],
+        [GFORM.notes, g('notes')],
+        [GFORM.source, SOURCE[g('heard-about')] || 'Other'],
+        [GFORM.ack, ACK_TEXT],
+      ];
+      dietChoices(diet).forEach((v) => pairs.push([GFORM.diet, v]));
+      return pairs;
+    };
+    const withTimeout = (p: Promise<unknown>, ms: number) => Promise.race([p, new Promise((r) => setTimeout(r, ms))]);
+
+    let sending = false;
+    form.addEventListener('submit', async (e) => {
       update();
       for (let i = 0; i < steps.length; i++) { steps[i].hidden = false; if (!validate(steps[i])) { e.preventDefault(); show(i); validate(steps[i]); return; } }
+      e.preventDefault();
+      if (sending) return;
+      sending = true;
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      const isBot = !!String(new FormData(form).get('website') || '').trim();
+      // 1. Google Form (no-cors: we can't read the reply, so Netlify is the backup).
+      const google = isBot ? Promise.resolve() : fetch(GFORM_URL, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(googlePairs()) }).catch(() => {});
+      // 2. Netlify Forms backup (same answers, emails kreungkitchen@gmail.com).
+      const netlify = fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form) as any).toString() })
+        .then((r) => r.ok).catch(() => false);
+      const [, netlifyOk] = await Promise.all([withTimeout(google, 8000), withTimeout(netlify, 10000)]);
+      if (netlifyOk) location.href = form.action;
+      else form.submit(); // let the browser post to Netlify the normal way
     });
     show(0, false);
   });
@@ -335,6 +404,8 @@ const cfg = {
   .pk-choice small { display: block; font-weight: 500; color: var(--muted); font-size: 14px; }
   .pk-choice input:checked + span { background: var(--yellow); border-color: var(--plum); box-shadow: 4px 4px 0 var(--plum); }
   .pk-choice input:focus-visible + span { outline: 3px solid var(--teal); outline-offset: 2px; }
+  .ack__l { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; cursor: pointer; }
+  .ack__l input { width: 22px; height: 22px; margin-top: 2px; flex: none; accent-color: var(--plum); }
   .err { color: #a3122a; font-weight: 700; font-size: 14px; }
   .err:empty { display: none; }
   [aria-invalid='true'] { border-color: #a3122a !important; }
