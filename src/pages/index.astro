@@ -1,0 +1,322 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProofBar from '../components/ProofBar.astro';
+import KreungMortar from '../components/KreungMortar.astro';
+import Packages from '../components/Packages.astro';
+import Markets from '../components/Markets.astro';
+import Reviews from '../components/Reviews.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { tone } from '../data/tones';
+import PressGrid from '../components/PressGrid.astro';
+import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients } from '../data/business';
+
+import logo from '../assets/brand/logo-horizontal.png';
+import heroStill from '../assets/photos/grill-sausage-flames.jpg';
+import spread from '../assets/photos/event-backyard-spread.jpg';
+import booth from '../assets/photos/market-booth.jpg';
+import samChristina from '../assets/photos/sam-christina-wedding.jpg';
+
+const poster = await getImage({ src: heroStill, width: 720, format: 'webp' });
+
+const doors = [
+  { href: '/corporate-catering', title: 'Corporate catering', text: 'Team lunches and office events, dropped off hot and set up.' },
+  { href: '/on-site-grill-catering', title: 'On-site grill', text: 'We bring the fire and grill for your guests, live.' },
+  { href: '/production-catering', title: 'Production & studio', text: 'Crew meals for film, TV and music sets.' },
+  { href: '/office-lunch-club', title: 'Office Lunch Club', text: 'A standing Cambodian BBQ lunch on your calendar.' },
+  // Online ordering is off for now (Sam, 2026-11-24). Shows automatically once links.order is set.
+  ...(links.order ? [{ href: links.order, title: 'Order ahead', text: 'Order online through Square.' }] : []),
+  // Gift cards hidden until Sam sets them up in Square (Sam, 2026-11-24). Re-add when links.giftCards is set.
+  { href: '/rewards', title: 'Kreung Rewards', text: `${rewards.joinOffer}. ${rewards.earn}` },
+];
+
+const faqs = [
+  { q: 'How many people can you cater for?', a: `We cater for ${policies.guestsLabel} guests. Packages start at $20 per person.` },
+  { q: 'Is there a minimum order for catering?', a: `Yes. The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+  { q: 'How far ahead should I book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
+  { q: 'Do you deliver?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
+  { q: 'What about allergies?', a: `${policies.allergyNote} We also have vegan tofu skewers.` },
+];
+
+const title = 'Cambodian BBQ & Catering in Los Angeles | Kreung LA';
+const description = 'Cambodian street BBQ from Culver City. Catering for 30 to 300+ guests from $20 per person, plus three weekly farmers markets across LA.';
+const herbs = [...kreungIngredients, ...kreungIngredients];
+---
+<BaseLayout title={title} description={description} path="/">
+  <link slot="head" rel="preload" as="image" href={poster.src} type="image/webp" fetchpriority="high" />
+  <!-- 1. HERO (matches the current kreungla.com hero) -->
+  <section class="sec hero" {...tone('yellow')} style={`${tone('yellow').style};--vo:.3`}>
+    <div class="bgv" aria-hidden="true">
+      <video muted loop playsinline preload="none" data-hero-video poster={poster.src} tabindex="-1">
+        <source src="/video/hero-grill.mp4" type="video/mp4" />
+      </video>
+      <img src={poster.src} alt="" width="720" height="1280" />
+    </div>
+    <div class="wrap hero__inner">
+      <div class="cover">
+        <span class="kh-big kh" lang="km" aria-hidden="true">{khmer.kreung}</span>
+        <picture class="disc">
+          <source srcset="/images/hero/halftone-disc-still.webp" media="(prefers-reduced-motion: reduce)" type="image/webp" />
+          <source srcset="/images/hero/halftone-disc.webp" type="image/webp" />
+          <img src="/images/hero/halftone-disc.gif" alt="Halftone portraits of Sam and Christina, with a Khmer mask and an LA hand sign" width="480" height="480" loading="eager" />
+        </picture>
+        <p class="seal est-seal">Est. 2024<br />{business.city}</p>
+        <Image class="logo" src={logo} alt="Kreung LA" width={383} height={105} densities={[1, 2]} loading="eager" />
+        <span class="star s1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="currentColor" /></svg></span>
+        <span class="star s2" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="currentColor" /></svg></span>
+      </div>
+      <h1>Cambodian BBQ &amp; Catering in Los Angeles</h1>
+      <p class="lede">
+        Smoky, fire-grilled meats marinated in kreung, served with coconut corn, pickled vegetables and house sauces.
+        We cater for {policies.guestsLabel} guests, and you can find us at three weekly markets across LA.
+      </p>
+      <div class="btn-row cta">
+        <a class="btn" href="/corporate-catering#estimate">Get a catering quote</a>
+        <a class="btn btn--o" href="/find-us">Find us this week</a>
+      </div>
+      <span class="cue" aria-hidden="true"><span>Keep scrolling. It gets hotter.</span><span class="arrow"></span></span>
+    </div>
+  </section>
+
+  <div class="band" role="img" aria-label="What goes into kreung: lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots">
+    <div class="track" aria-hidden="true">
+      {herbs.map((h) => <span class="item">{h.en}<span class="kh" lang="km">{h.km}</span></span>)}
+    </div>
+  </div>
+
+  <!-- 2. PROOF BAR -->
+  <section class="sec sec--tight proof-sec" {...tone('cream')} aria-label="Clients and ratings">
+    <div class="wrap"><ProofBar /></div>
+  </section>
+
+  <!-- 3. KREUNG EXPLAINED + POUND THE KREUNG -->
+  <section class="sec halftone" {...tone('orange')} data-pin aria-labelledby="kreung-h">
+    <div class="wrap pound">
+      <div class="pound__ink" aria-hidden="true" data-step><span class="kh">{khmer.kreung}</span></div>
+      <div>
+        <h2 id="kreung-h" data-step>Pound the kreung!</h2>
+        <p class="lede" data-step>
+          Kreung (<span lang="km">{khmer.kreung}</span>) is the Cambodian herb paste behind our BBQ: lemongrass, galangal, turmeric,
+          makrut lime leaves, garlic and shallots. It's the base of every marinade we make. Six ingredients. One bold flavor. Your turn.
+        </p>
+        <div data-step><KreungMortar /></div>
+        <p data-step><a class="inline-link" href="/guides/what-is-kreung">Learn more about kreung</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CATERING -->
+  <section class="sec" {...tone('plum')} aria-labelledby="catering-h">
+    <div class="wrap">
+      <div class="split split--wide">
+        <div class="head">
+          <h2 id="catering-h">Feed your people.</h2>
+          <p class="lede">From drop-off catering to live grilling, we bring Cambodian BBQ to your event. Bold flavors, generous portions, and everyone coming back for seconds.</p>
+          <div><a class="btn btn--y" href="/catering">See catering options</a></div>
+        </div>
+        <figure class="photo spread">
+          <Image src={spread} alt="Trays of Kreung LA beef skewers and grilled meats lined up on a buffet at an outdoor party" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" quality={70} />
+        </figure>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>30–300+</b><span>Guests per event</span></div>
+        <div class="stat"><b>3</b><span>Packages, from $20 per person</span></div>
+        <div class="stat"><b>24–48 hrs</b><span>To get your estimate</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4b. PACKAGES (pinned: cards deal in one by one) -->
+  <section class="sec" {...tone('teal')} data-pin aria-labelledby="pk-h">
+    <div class="wrap">
+      <h2 id="pk-h" class="pk-h" data-step>What are you planning?</h2>
+      <Packages steps />
+      <p class="dl" data-step>Delivery covers {policies.deliveryArea}, from ${policies.deliveryFrom}, setup included. <a href="/catering-pricing">How pricing works</a></p>
+    </div>
+  </section>
+
+  <!-- 5. DOORS -->
+  <section class="sec" {...tone('cream')} aria-labelledby="doors-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="doors-h">How can we feed you?</h2>
+      </div>
+      <ul class="grid grid--4 doors" role="list">
+        {doors.map((d) => (
+          <li>
+            <a class="card card--link" href={d.href}>
+              <h3>{d.title}</h3>
+              <p>{d.text}</p>
+              {d.todo && <span class="todo">Link coming soon</span>}
+              <span class="more" aria-hidden="true">Go →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      {/* TODO(Sam): add Square ordering and gift card links in src/data/business.ts (links.order; links.giftCards once gift cards exist) */}
+    </div>
+  </section>
+
+  <!-- 6. FIND US -->
+  <section class="sec" {...tone('pink')} aria-labelledby="find-h">
+    <div class="wrap">
+      <div class="split split--wide find-top">
+        <div class="head">
+          <h2 id="find-h">Find us. Come hungry.</h2>
+          <p class="lede">Three markets, every week. Grab a plate hot off the grill.</p>
+        </div>
+        <figure class="photo booth">
+          <Image src={booth} alt="The Kreung LA market booth with a Cambodian flag, serving a customer at sunset" widths={[480, 800]} sizes="(min-width: 960px) 440px, 100vw" />
+        </figure>
+      </div>
+      <Markets />
+    </div>
+  </section>
+
+  <!-- 7. OUR STORY -->
+  <section class="sec" {...tone('plum')} aria-labelledby="story-h">
+    <div class="wrap split story">
+      <div class="collage">
+        <figure class="photo"><Image src={samChristina} alt="Sam and Christina of Kreung LA in their black Kreung shirts" widths={[480, 800]} sizes="(min-width: 960px) 520px, 100vw" /></figure>
+        <span class="kh mak" lang="km" aria-hidden="true">{khmer.mak}</span>
+      </div>
+      <div>
+        <h2 id="story-h">We're Sam &amp; Christina.</h2>
+        <p class="sq">“I'm gonna bring Cambodian food to LA.”</p>
+        <p class="who">Sam, to his mother, Mak</p>
+        <p>Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community. In Culver City he met Christina and started cooking his mother's dishes himself.</p>
+        <p>Mak passed in late November 2023. Her last words to him were to stop talking and start doing. On January 1, 2024, her birthday, Kreung LA got its first catering order.</p>
+        <ol class="tline">
+          {story.timeline.map((t, i) => (
+            <li><span class="dot" aria-hidden="true">{i === story.timeline.length - 1 ? '★' : i + 1}</span><span class="yr">{t.year === 'Childhood' ? 'Grew up' : t.year}</span><span class="pl">{t.place}</span></li>
+          ))}
+        </ol>
+        <a class="btn" href="/about">Read our story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. REVIEWS -->
+  <section class="sec" {...tone('yellow')} aria-labelledby="reviews-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="reviews-h">Don't take our word for it.</h2>
+        <p class="lede">What people say after they try it.</p>
+      </div>
+      <Reviews keys={['repeatClient', 'rareBeauty', 'janeT', 'randall', 'pasqual']} />
+    </div>
+  </section>
+
+  <!-- 9. PRESS + 10. REWARDS -->
+  <section class="sec" {...tone('teal')} aria-labelledby="press-h">
+    <div class="wrap">
+      <div class="head"><h2 id="press-h">As seen in</h2></div>
+      <PressGrid />
+      <p><a class="inline-link" href="/press">Press and media</a></p>
+
+      <div class="club" id="rewards">
+        <div>
+          <h2 class="disp d-m">Get $5 off. Join Kreung Rewards.</h2>
+          <p>{rewards.joinOffer}. {rewards.earn}</p>
+        </div>
+        <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
+          <input type="hidden" name="form-name" value="rewards-signup" />
+          <input type="hidden" name="name" value="" />
+          <p class="visually-hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
+          <label class="visually-hidden" for="rw-email">Email address</label>
+          <input id="rw-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required />
+          <button class="btn btn--plum" type="submit">Join and get $5 off</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. FAQ -->
+  <section class="sec" {...tone('cream')} aria-labelledby="faq-h">
+    <div class="wrap wrap--narrow">
+      <div class="head"><h2 id="faq-h">Good to know</h2></div>
+      <Faq faqs={faqs} heading="" />
+      <p class="more-links"><a href="/faq">All FAQs</a> · <a href="/catering-pricing">Catering pricing</a> · <a href="/catering">Catering</a></p>
+    </div>
+  </section>
+
+  <!-- 12. FINAL CTA -->
+  <CtaBand heading="Ready to feed your crew?" text="Tell us your date and headcount. We reply within 24 hours, usually the same day." href="/corporate-catering#estimate" label="Get a catering quote" />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero { padding-block: clamp(48px, 10vw, 110px) clamp(70px, 9vw, 120px); background: linear-gradient(180deg, var(--yellow) 0%, var(--yellow) calc(100% - 180px), var(--orange) 100%); }
+  .hero__inner { display: grid; justify-items: center; text-align: center; }
+  .cover { position: relative; width: min(100%, 780px); aspect-ratio: 1.45; margin-bottom: clamp(8px, 2vw, 20px); container-type: inline-size; }
+  .kh-big { position: absolute; top: 2%; left: 50%; transform: translateX(-50%) rotate(-6deg); font-size: 30cqw; line-height: 1; color: var(--pink); -webkit-text-stroke: 3px var(--plum); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--teal); white-space: nowrap; pointer-events: none; }
+  .disc { position: absolute; width: 30%; left: 2%; top: 30%; border-radius: 50%; }
+  .disc img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 50%; }
+  .est-seal { position: absolute; right: 3%; top: 30%; width: 22%; margin: 0; font-size: clamp(11px, 2.2cqw, 18px); transform: rotate(10deg); }
+  .cover :global(.logo) { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 68%; height: auto; filter: drop-shadow(5px 6px 0 rgba(43, 27, 63, 0.35)); }
+  .star { position: absolute; color: var(--cream); width: 5%; aspect-ratio: 1; }
+  .star svg { width: 100%; height: 100%; }
+  .s1 { left: 30%; top: 16%; } .s2 { left: 74%; top: 66%; width: 4%; }
+  @media (prefers-reduced-motion: no-preference) { .star { animation: tw 3.2s ease-in-out infinite; } .s2 { animation-delay: -1.2s; } }
+  @keyframes tw { 0%, 100% { transform: scale(0.8) rotate(0); } 50% { transform: scale(1.2) rotate(25deg); } }
+  .hero h1 { max-width: 16ch; margin: 0; }
+  .hero .lede { margin: 22px auto 0; }
+  .hero .cta { justify-content: center; margin-top: 30px; }
+  .cue { margin-top: 46px; display: inline-flex; flex-direction: column; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
+  .cue .arrow { width: 2px; height: 38px; background: currentColor; position: relative; }
+  .cue .arrow::after { content: ''; position: absolute; left: 50%; bottom: -2px; width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateX(-50%) rotate(45deg); }
+  @media (prefers-reduced-motion: no-preference) { .cue .arrow { animation: cue 1.6s ease-in-out infinite; } }
+  @keyframes cue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+  .proof-sec { padding-top: clamp(64px, 8vw, 100px); }
+
+  /* Pound */
+  .pound { display: grid; gap: clamp(24px, 5vw, 80px); align-items: center; }
+  .pound__ink .kh { display: block; font-size: clamp(90px, 22vw, 220px); line-height: 1.3; color: var(--cream); -webkit-text-stroke: 3px var(--plum); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--plum); transform: rotate(-8deg); text-align: center; }
+  .pound .lede { margin: 14px 0 0; }
+  .inline-link { font-weight: 800; }
+  @media (min-width: 960px) { .pound { grid-template-columns: 0.7fr 1.3fr; } }
+
+  /* Catering */
+  .spread :global(img) { aspect-ratio: 4 / 3; }
+  .pk-h { margin: 0 0 clamp(24px, 3vw, 40px); }
+
+
+  .booth { box-shadow: 10px 10px 0 var(--yellow); }
+  .booth :global(img) { aspect-ratio: 4 / 3; }
+  .find-top { margin-bottom: 36px; }
+  .find-top .head { margin-bottom: 0; }
+
+  /* Story */
+  .collage { position: relative; }
+  .collage .photo { box-shadow: 10px 10px 0 var(--pink); }
+  .collage :global(img) { aspect-ratio: 4 / 5; }
+  .mak { position: absolute; right: -2%; bottom: -6%; font-size: clamp(54px, 9vw, 96px); color: var(--yellow); -webkit-text-stroke: 3px var(--plum); paint-order: stroke fill; text-shadow: 4px 4px 0 var(--plum); transform: rotate(-8deg); }
+  .sq { font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: clamp(26px, 3vw, 38px); line-height: 1.02; margin: 6px 0 6px; text-shadow: -3px 0 0 rgba(47, 149, 161, 0.75), 3px 2px 0 rgba(199, 86, 130, 0.75); }
+  .who { font-weight: 700; opacity: 0.8; margin-bottom: 18px; }
+  .tline { list-style: none; padding: 0; margin: 24px 0 28px; display: grid; gap: 10px; }
+  .tline li { display: grid; grid-template-columns: 40px 90px 1fr; align-items: center; gap: 10px; }
+  .tline .dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--plum); font-weight: 900; }
+  .tline .yr { font-weight: 800; }
+  .tline .pl { font-weight: 600; }
+
+  .club { margin-top: clamp(48px, 7vw, 96px); background: var(--yellow); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 26px; padding: clamp(24px, 5vw, 56px); display: grid; gap: 24px; align-items: center; box-shadow: 8px 10px 0 var(--plum); }
+  .club h2 { margin: 0 0 10px; }
+  .club p { margin: 0; }
+  .club form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .club input[type='email'] { flex: 1 1 220px; min-width: 0; height: 56px; border: 2.5px solid var(--plum); border-radius: 999px; padding: 0 20px; font: 500 17px var(--f-text); background: #fff; color: var(--plum); }
+  @media (min-width: 860px) { .club { grid-template-columns: 1fr 1fr; } }
+
+  .more-links { margin-top: 22px; font-weight: 700; }
+</style>
+<script>
+  // Start the hero video only after the page has loaded, so it doesn't slow the first paint.
+  // Skipped for reduced motion and data saver. The poster image shows otherwise.
+  const v = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const saveData = (navigator as any).connection?.saveData;
+  if (v && !saveData && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const start = () => setTimeout(() => { v.preload = 'auto'; v.play().catch(() => {}); }, 300);
+    if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+  }
+</script>

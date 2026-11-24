@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import PressGrid from '../components/PressGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { story, khmer, kreungIngredients, business } from '../data/business';
+import { personSam } from '../data/schema';
+import { tone } from '../data/tones';
+import samChristina from '../assets/photos/sam-christina-wedding.jpg';
+import grilling from '../assets/photos/team-grilling.jpg';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Our Story', path: '/about' }];
+---
+<BaseLayout
+  title="Our Story: Sam, Christina and Mak | Kreung LA"
+  description="How a promise to his mother, Mak, became Kreung LA. Sam Oum's journey from a refugee camp to Cambodian street BBQ in Culver City."
+  path="/about"
+  jsonLd={[personSam()]}
+>
+  <section class="sec page-hero" {...tone('yellow')}>
+    <div class="wrap split split--wide">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <h1>Our Story: Sam, Christina and Mak</h1>
+        <p class="lede">Kreung LA started with a promise. "I'm gonna bring Cambodian food to LA." Sam said it to his mother for years. Now we cook for her every day.</p>
+        <div class="btn-row"><a class="btn" href="/catering">Book us for your event</a></div>
+      </div>
+      <figure class="photo">
+        <Image src={samChristina} alt="Sam and Christina of Kreung LA in their black Kreung shirts" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('plum')} aria-labelledby="story-h">
+    <div class="wrap prose story-prose" id="sam-oum">
+      <h2 id="story-h">Sam's story</h2>
+      <p>Sam Oum was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community.</p>
+      <p>In 2011 he moved to Long Beach, the heart of Cambodian LA. In 2017 he moved to Culver City. That's where he met Christina, and where he started cooking his mother's dishes himself.</p>
+      <h2>A promise to Mak</h2>
+      <p>For years, Sam told his mother, Mak (<span lang="km">{khmer.mak}</span>), "I'm gonna bring Cambodian food to LA."</p>
+      <p>Mak passed in late November 2023. Her last words to him were to stop talking and start doing.</p>
+      <p>On January 1, 2024, her birthday, Kreung LA got its first catering order. That's why our footer says <strong>{business.taglines.footer}</strong></p>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('cream')} aria-labelledby="time-h">
+    <div class="wrap">
+      <h2 id="time-h">The road to Kreung LA</h2>
+      <ol class="timeline">
+        {story.timeline.map((t) => (
+          <li><span class="yr">{t.year === 'Childhood' ? 'Growing up' : t.year}</span><b>{t.place}</b><span>{t.text}</span></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('orange')} aria-labelledby="why-h">
+    <div class="wrap split">
+      <div>
+        <h2 id="why-h">Why kreung?</h2>
+        <p class="lede">Kreung (<span lang="km">{khmer.kreung}</span>) is the herb paste at the heart of Cambodian cooking. It's what makes our BBQ taste like home.</p>
+        <ul class="herb-list">
+          {kreungIngredients.map((i) => <li>{i.en} <span lang="km">{i.km}</span></li>)}
+        </ul>
+        <p>We marinate every meat in it, then grill it over fire. That's why we named ourselves after it. <a class="inline-link" href="/guides/what-is-kreung">Learn more about kreung</a></p>
+      </div>
+      <figure class="photo">
+        <Image src={grilling} alt="The Kreung LA team grilling skewers over open fire" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('teal')} aria-labelledby="press-h">
+    <div class="wrap">
+      <h2 id="press-h">In the press</h2>
+      <PressGrid />
+      <p><a class="inline-link" href="/press">Press and media</a></p>
+    </div>
+  </section>
+
+  <CtaBand heading="Taste the story." text="Book Cambodian BBQ catering for your next event, or find us at a market this week." href="/catering" label="Book us for your event" />
+</BaseLayout>
+
+<style>
+  .story-prose { font-size: 19px; }
+  .story-prose h2:first-child { margin-top: 0; }
+  .timeline { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; }
+  .timeline li { display: grid; gap: 4px; background: var(--white); border: 2.5px solid var(--plum); border-radius: 18px; padding: 16px 20px; box-shadow: 5px 5px 0 var(--plum); }
+  .timeline .yr { font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: 26px; line-height: 1; color: var(--pink-d); }
+  .timeline b { font-size: 19px; }
+  .herb-list { list-style: none; padding: 0; margin: 18px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-weight: 700; }
+  .herb-list li { background: var(--cream); color: var(--plum); border: 2px solid var(--plum); border-radius: 12px; padding: 8px 12px; }
+  .herb-list span { display: block; font-weight: 400; font-size: 14px; }
+  .inline-link { font-weight: 800; }
+  @media (min-width: 900px) { .timeline { grid-template-columns: repeat(5, 1fr); } }
+</style>

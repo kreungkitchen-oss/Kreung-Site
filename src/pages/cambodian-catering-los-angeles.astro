@@ -1,0 +1,51 @@
+---
+import NichePage from '../components/NichePage.astro';
+import { policies, khmer, kreungIngredients } from '../data/business';
+import photo from '../assets/photos/plate-combo.jpg';
+
+const faqs = [
+  { q: 'What is Cambodian BBQ?', a: 'Cambodian street BBQ is meat grilled over fire after soaking in kreung, an herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. We serve it with rice, coconut corn, pickled vegetables and house sauces.' },
+  { q: 'What comes with the meat?', a: 'Every package comes with rice, coconut corn, pickled vegetables and house sauces. The Full Experience comes with coconut lime leaf rice.' },
+  { q: 'How is Cambodian food different from Thai food?', a: 'They share some ingredients, like lemongrass and galangal. Cambodian cooking is built on herb pastes like kreung, with fresh and pickled sides on the plate. Our guide on Cambodian vs. Thai food explains more.' },
+  { q: 'How much does Cambodian catering cost?', a: `Our packages are $20, $25 and $33 per person. The minimum is $1,000 for pickup and drop-off and $2,000 for our grill on-site.` },
+  { q: 'Do you have vegan Cambodian dishes?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
+  { q: 'Where in LA do you cater?', a: `We are based in Culver City and deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
+];
+---
+<NichePage
+  title="Cambodian Catering in Los Angeles | Kreung LA"
+  description="Real Cambodian BBQ catering in LA: kreung-marinated meats grilled over fire, with rice, coconut corn and pickled veggies. 30 to 300+ guests."
+  path="/cambodian-catering-los-angeles"
+  crumb="Cambodian Catering"
+  h1="Cambodian Catering in Los Angeles"
+  lede="Real Khmer flavor for your party, office or celebration. Fire-grilled meats marinated in kreung, inspired by the dishes of Sam's mother, Mak."
+  photo={photo}
+  photoAlt="A Kreung LA plate of grilled short rib, sausage and pork belly with turmeric rice and coconut corn"
+  estimateType="Private celebration"
+  reviewKeys={['repeatClient', 'pasqual', 'randall']}
+  faqs={faqs}
+  faqHeading="Cambodian catering questions"
+  ctaHeading="Bring Cambodian BBQ to your table."
+>
+  <div class="cols">
+    <div class="prose">
+      <h2>What makes it Cambodian</h2>
+      <p>It starts with kreung (<span lang="km">{khmer.kreung}</span>). That's the Cambodian herb paste we pound from {kreungIngredients.map((i) => i.en.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' and $1')}. Every meat soaks in it before it hits the fire.</p>
+      <p>Then we grill it over open fire. You get smoky, charred edges and bright herb flavor in every bite. We serve it with rice, coconut corn, pickled vegetables and our house sauces.</p>
+      <h2>Our story</h2>
+      <p>Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community. For years he told his mother, Mak, "I'm gonna bring Cambodian food to LA."</p>
+      <p>He moved to Long Beach in 2011. LA County is home to one of the largest Cambodian communities outside Cambodia, centered in Long Beach. Now we bring that food to the whole city, from Culver City to Downtown and beyond.</p>
+      <p><a href="/about">Read the full story</a> · <a href="/guides/what-is-kreung">What is kreung?</a></p>
+    </div>
+    <div class="card card--line">
+      <h3>Great for</h3>
+      <ul class="check">
+        <li>Birthdays, graduations and family parties</li>
+        <li>Weddings and engagements</li>
+        <li>Office lunches and team events</li>
+        <li>Community and cultural events</li>
+      </ul>
+      <p>We cater for {policies.guestsLabel} guests. Book at least {policies.leadTimeDays} days ahead.</p>
+    </div>
+  </div>
+</NichePage>

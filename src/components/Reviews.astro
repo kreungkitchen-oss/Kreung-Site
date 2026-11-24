@@ -1,0 +1,15 @@
+---
+import { reviews, type Review } from '../data/business';
+interface Props { keys?: (keyof typeof reviews)[] }
+const { keys = Object.keys(reviews) as (keyof typeof reviews)[] } = Astro.props;
+const list: Review[] = keys.map((k) => reviews[k]);
+---
+<div class="grid grid--3 reviews">
+  {list.map((r) => (
+    <figure class={`quote${r.short ? ' quote--big' : ''}`}>
+      <span class="stars" aria-hidden="true">★★★★★</span>
+      <blockquote><p>{r.quote}</p></blockquote>
+      <figcaption>{r.author}<span>, {r.source}</span></figcaption>
+    </figure>
+  ))}
+</div>

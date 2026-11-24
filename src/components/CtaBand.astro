@@ -1,0 +1,19 @@
+---
+interface Props { heading: string; text?: string; href: string; label: string }
+const { heading, text, href, label } = Astro.props;
+---
+<section class="sec sec--tight s-plum cta-band">
+  <div class="wrap endcta">
+    <div>
+      <h2>{heading}</h2>
+      {text && <p class="lede">{text}</p>}
+    </div>
+    <a class="btn btn--y" href={href}>{label}</a>
+  </div>
+</section>
+<style>
+  .endcta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px 32px; }
+  .endcta h2 { margin: 0; }
+  .endcta .lede { margin: 14px 0 0; }
+  .endcta .btn { min-height: 60px; font-size: 18px; }
+</style>

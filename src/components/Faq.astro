@@ -1,0 +1,17 @@
+---
+/** FAQ accordion + FAQPage JSON-LD. Answers are plain text (also used in JSON-LD). */
+import { faqPage } from '../data/schema';
+interface Props { faqs: { q: string; a: string }[]; heading?: string; id?: string; schema?: boolean; headingLevel?: 2 | 3 }
+const { faqs, heading = 'Questions', id = 'faq', schema = true, headingLevel = 2 } = Astro.props;
+const H = `h${headingLevel}`;
+---
+<div class="faq-list" id={id}>
+  {heading && <H>{heading}</H>}
+  {faqs.map((f) => (
+    <details>
+      <summary>{f.q}</summary>
+      <div class="faq-answer"><p>{f.a}</p></div>
+    </details>
+  ))}
+</div>
+{schema && <script type="application/ld+json" set:html={JSON.stringify(faqPage(faqs))} />}

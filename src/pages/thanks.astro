@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { business, links } from '../data/business';
+---
+<BaseLayout
+  title="Thanks, we got your request | Kreung LA"
+  description="Thanks for your catering request. Kreung LA will reply within 24 hours, usually the same day."
+  path="/thanks"
+  noindex
+>
+  <section class="sec s-yellow page-hero thanks">
+    <div class="wrap">
+      <h1>Thanks! We got it.</h1>
+      <p class="lede">We'll reply within 24 hours, usually the same day. Your estimate is a ballpark. We'll send a real quote with your final price.</p>
+      <p>Need us sooner? Text <a href={`sms:${business.phone.e164}`}>{business.phone.display}</a> or email <a href={`mailto:${business.email}`}>{business.email}</a>.</p>
+      <div class="btn-row">
+        <a class="btn" href="/catering-menu">See the catering menu</a>
+        <a class="btn btn--o" href={links.instagram} rel="noopener">Follow {business.instagram.handle}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .thanks .wrap { max-width: 760px; }
+  .thanks a:not(.btn) { font-weight: 800; }
+</style>

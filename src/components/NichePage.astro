@@ -1,0 +1,116 @@
+---
+/**
+ * Shared template for the niche catering landing pages (Prompt 5).
+ * Each page passes its own copy, FAQs, photo and proof; the frame is shared:
+ * breadcrumbs, hero with one primary button, page body (slot), packages,
+ * proof (clients, reviews, press), estimator, FAQs, closing button.
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import Packages from './Packages.astro';
+import ProofBar from './ProofBar.astro';
+import Reviews from './Reviews.astro';
+import Faq from './Faq.astro';
+import Estimator from './Estimator.astro';
+import CtaBand from './CtaBand.astro';
+import { press, reviews, policies, money } from '../data/business';
+import { tone, type ToneName } from '../data/tones';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  crumb: string;
+  h1: string;
+  lede: string;
+  photo: ImageMetadata;
+  photoAlt: string;
+  button?: string;
+  estimateType?: string;
+  estimateService?: 'Drop-off' | 'Pickup' | 'On-site grill';
+  estimateNotes?: string;
+  estimateHeading?: string;
+  reviewKeys: (keyof typeof reviews)[];
+  proofHeading?: string;
+  faqs: { q: string; a: string }[];
+  faqHeading: string;
+  ctaHeading: string;
+  ctaText?: string;
+  heroTone?: ToneName;
+  bodyTone?: ToneName;
+  showPackages?: boolean;
+  heroFacts?: string;
+}
+const p = Astro.props;
+const button = p.button ?? 'Get your estimate';
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Catering', path: '/catering' },
+  { name: p.crumb, path: p.path },
+];
+---
+<BaseLayout title={p.title} description={p.description} path={p.path}>
+  <section class="sec page-hero" {...tone(p.heroTone ?? 'yellow')}>
+    <div class="wrap split split--wide">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <h1>{p.h1}</h1>
+        <p class="lede">{p.lede}</p>
+        <p class="hero-facts">{p.heroFacts ?? `From $20 per person · ${policies.guestsLabel} guests · ${money(policies.minimumDropoff)} minimum`}</p>
+        <div class="btn-row"><a class="btn" href="#estimate">{button}</a></div>
+      </div>
+      <figure class="photo">
+        <Image src={p.photo} alt={p.photoAlt} widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec niche-body" {...tone(p.bodyTone ?? 'cream')}>
+    <div class="wrap">
+      <slot />
+    </div>
+  </section>
+
+  <slot name="extra" />
+
+  {p.showPackages !== false && (
+    <section class="sec" {...tone('plum')} aria-labelledby="pk-h">
+      <div class="wrap">
+        <div class="head"><h2 id="pk-h">Packages</h2><p class="lede">Priced per person.</p></div>
+        <Packages />
+        <p class="dl"><a href="/catering-pricing">How pricing works</a> · <a href="/catering-menu">Catering menu</a> · <a href="/catering">All catering</a></p>
+      </div>
+    </section>
+  )}
+
+  <section class="sec sec--tight" {...tone('cream')} aria-label="Clients and ratings">
+    <div class="wrap"><ProofBar heading={p.proofHeading} note /></div>
+  </section>
+
+  <section class="sec" {...tone('yellow')} aria-labelledby="rev-h">
+    <div class="wrap">
+      <div class="head"><h2 id="rev-h">What people say</h2></div>
+      <Reviews keys={p.reviewKeys} />
+      <p class="press-line">As seen in {press.map((x) => x.name).join(', ')}. <a href="/press">Press</a></p>
+    </div>
+  </section>
+
+  <Estimator defaultType={p.estimateType} defaultService={p.estimateService} notes={p.estimateNotes} heading={p.estimateHeading ?? button} />
+
+  <section class="sec" {...tone('cream')}>
+    <div class="wrap">
+      <Faq faqs={p.faqs} heading={p.faqHeading} />
+      <p class="more-faq"><a href="/catering-pricing">Pricing</a> · <a href="/catering-menu">Menu</a> · <a href="/catering">All catering</a> · <a href="/faq">More questions</a></p>
+    </div>
+  </section>
+
+  <CtaBand heading={p.ctaHeading} text={p.ctaText ?? 'See a price in a minute. We reply within 24 hours.'} href="#estimate" label={button} />
+</BaseLayout>
+
+<style>
+  .hero-facts { font-weight: 800; margin: 16px 0 0; }
+  .niche-body :global(.prose) { max-width: 70ch; }
+  .niche-body :global(.cols) { display: grid; gap: clamp(24px, 4vw, 56px); }
+  @media (min-width: 900px) { .niche-body :global(.cols) { grid-template-columns: 1.3fr 1fr; align-items: start; } }
+</style>

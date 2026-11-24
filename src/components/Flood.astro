@@ -1,0 +1,202 @@
+---
+/**
+ * Scroll-driven color flood.
+ * One fixed, full-viewport layer sits behind the page. As each section enters,
+ * its color rises from the bottom of the screen with a ragged edge (torn poster
+ * paper, Sam's pick), scrubbed to scroll. Text and heading colors
+ * crossfade at the same time.
+ *
+ * - Sections declare colors with data-bg / data-fg / data-hf / data-hs / data-hsw
+ *   (see src/data/tones.ts). Sections without them are read from their CSS.
+ * - Without JavaScript nothing here runs: sections keep their own solid colors.
+ * - With prefers-reduced-motion the colors switch instantly, with no flood,
+ *   no pinning and no step animations.
+ * - Pinned sections: add data-pin to a section and data-step to the children
+ *   that should appear one by one while it is pinned.
+ */
+import { edges, edgeMask } from '../data/edges';
+---
+<div class="flood" aria-hidden="true" data-flood>
+  <div class="flood__base" data-flood-base></div>
+  <div class="flood__rise" data-flood-rise>
+    <div class="flood__edge edge-torn">
+      <i class="rim" style={`--m:${edgeMask(edges.torn.rim)}`} data-edge-shift="0.15"></i>
+      <i style={`--m:${edgeMask(edges.torn.front)}`} data-edge-shift="0.15"></i>
+    </div>
+  </div>
+  <div class="flood__grain"></div>
+</div>
+
+<script>
+  type Tone = { bg: number[]; fg: number[]; hf: number[]; hs: number[]; hsw: number };
+  const root = document.documentElement;
+  const flood = document.querySelector<HTMLElement>('[data-flood]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const hex = (h: string) => {
+    const m = h.trim().replace('#', '');
+    const v = m.length === 3 ? m.split('').map((c) => c + c).join('') : m;
+    return [0, 2, 4].map((i) => parseInt(v.slice(i, i + 2), 16));
+  };
+  const rgbStr = (c: number[]) => `rgb(${c.map((n) => Math.round(n)).join(',')})`;
+  const mix = (a: number[], b: number[], t: number) => a.map((v, i) => v + (b[i] - v) * t);
+  const smooth = (e0: number, e1: number, x: number) => {
+    const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+    return t * t * (3 - 2 * t);
+  };
+
+  if (flood) {
+    try { localStorage.removeItem('kreung-edge'); } catch {} // clear the old edge-preview choice
+
+    const base = flood.querySelector<HTMLElement>('[data-flood-base]')!;
+    const rise = flood.querySelector<HTMLElement>('[data-flood-rise]')!;
+    const shifts = [...flood.querySelectorAll<HTMLElement>('[data-edge-shift]')];
+
+    // Read every section's tone once.
+    const nodes = [...document.querySelectorAll<HTMLElement>('main > section, main > .sec, .site-footer')]
+      .filter((el, i, a) => a.indexOf(el) === i);
+    const readTone = (el: HTMLElement): Tone => {
+      const cs = getComputedStyle(el);
+      const get = (k: string, v: string) => el.dataset[k] || cs.getPropertyValue(v).trim() || '#000';
+      const hsw = parseFloat(el.dataset.hsw ?? cs.getPropertyValue('--hsw')) || 0;
+      return { bg: hex(get('bg', '--bg')), fg: hex(get('fg', '--fg')), hf: hex(get('hf', '--hf')), hs: hex(get('hs', '--hs')), hsw };
+    };
+    const tones = nodes.map(readTone);
+    root.classList.add('flood-on');
+
+    let tops: number[] = [];
+    let heights: number[] = [];
+    let vh = window.innerHeight;
+    const edgeHs = { torn: 84 };
+    const measure = () => {
+      vh = window.innerHeight;
+      const w = window.innerWidth;
+      edgeHs.torn = Math.min(84, Math.max(40, w * 0.07));
+      const y = window.scrollY;
+      tops = nodes.map((n) => n.getBoundingClientRect().top + y);
+      heights = nodes.map((n) => n.offsetHeight);
+      pins.forEach((p) => p.measure());
+    };
+
+    // ---------- Pinned sections ----------
+    type Pin = { el: HTMLElement; measure: () => void; update: (y: number) => void };
+    const pins: Pin[] = [...document.querySelectorAll<HTMLElement>('[data-pin]')].map((el) => {
+      const inner = el.querySelector<HTMLElement>(':scope > .wrap')!;
+      const steps = [...el.querySelectorAll<HTMLElement>('[data-step]')];
+      let start = 0, dist = 0, active = false;
+      const measurePin = () => {
+        el.classList.remove('is-pinned');
+        el.style.removeProperty('--pin-extra');
+        el.style.removeProperty('--pin-top');
+        active = false;
+        if (reduce.matches) { steps.forEach((s) => s.classList.add('is-in')); return; }
+        const h = inner.offsetHeight;
+        if (h > vh - 24) { steps.forEach((s) => s.classList.add('is-in')); return; } // too tall to pin on this screen
+        const top = Math.max(12, (vh - h) / 2);
+        dist = Math.round(vh * 0.25 * Math.max(2, steps.length * 0.6));
+        el.style.setProperty('--pin-extra', `${dist}px`);
+        el.style.setProperty('--pin-top', `${top}px`);
+        el.classList.add('is-pinned');
+        start = inner.getBoundingClientRect().top + window.scrollY - top;
+        active = true;
+      };
+      const update = (y: number) => {
+        if (!active) return;
+        const p = (y - start) / dist; // 0..1 while pinned
+        const n = steps.length;
+        steps.forEach((s, i) => s.classList.toggle('is-in', p > (i / (n + 0.5)) - 0.15));
+      };
+      return { el, measure: measurePin, update };
+    });
+
+    // ---------- Flood ----------
+    let lastBase = -1, lastRise = -1, lastVars = '';
+    const setVars = (a: Tone, b: Tone, t: number) => {
+      const fg = rgbStr(mix(a.fg, b.fg, t));
+      const bg = rgbStr(mix(a.bg, b.bg, t));
+      const hf = rgbStr(mix(a.hf, b.hf, t));
+      const hs = rgbStr(mix(a.hs, b.hs, t));
+      const hsw = (a.hsw + (b.hsw - a.hsw) * t).toFixed(2);
+      const key = fg + bg + hf + hs + hsw;
+      if (key === lastVars) return;
+      lastVars = key;
+      root.style.setProperty('--f-fg', fg);
+      root.style.setProperty('--f-bg', bg);
+      root.style.setProperty('--f-hf', hf);
+      root.style.setProperty('--f-hs', hs);
+      root.style.setProperty('--f-hsw', `${hsw}px`);
+    };
+
+    const frame = () => {
+      ticking = false;
+      const y = window.scrollY;
+      pins.forEach((p) => p.update(y));
+
+      // k = last section whose top has entered the viewport
+      let k = 0;
+      for (let i = 0; i < tops.length; i++) if (tops[i] - y < vh) k = i;
+      const range = Math.max(1, Math.min(vh * 0.7, heights[k] || vh));
+      let p = k === 0 ? 1 : Math.min(1, Math.max(0, (vh - (tops[k] - y)) / range));
+      if (reduce.matches) p = (tops[k] - y) < vh * 0.5 || k === 0 ? 1 : 0;
+      // same background as the section before: nothing to flood
+      if (k > 0 && tones[k].bg.join() === tones[k - 1].bg.join() && p < 1) p = (tops[k] - y) < vh * 0.5 ? 1 : 0;
+
+      const from = p >= 1 ? k : k - 1;
+      if (from !== lastBase) { base.style.backgroundColor = rgbStr(tones[from].bg); lastBase = from; }
+
+      if (p >= 1 || p <= 0 || reduce.matches) {
+        if (lastRise !== -2) { rise.style.visibility = 'hidden'; lastRise = -2; }
+        const t = tones[p >= 1 ? k : k - 1];
+        setVars(t, t, 0);
+        return;
+      }
+      if (lastRise !== k) { rise.style.color = rgbStr(tones[k].bg); rise.style.visibility = 'visible'; lastRise = k; }
+      const edgeH = edgeHs.torn;
+      rise.style.transform = `translate3d(0, ${((1 - p) * (vh + edgeH)).toFixed(1)}px, 0)`;
+      // the torn edge drifts slightly sideways with scroll
+      shifts.forEach((s) => {
+        const f = parseFloat(s.dataset.edgeShift || '0.15') || 0.15;
+        s.style.setProperty('--x', `${(-p * vh * 0.6 * f).toFixed(1)}px`);
+      });
+      setVars(tones[k - 1], tones[k], smooth(0.35, 0.65, p));
+    };
+
+    let ticking = false;
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+    const onResize = () => { measure(); onScroll(); };
+    measure();
+    frame();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    reduce.addEventListener?.('change', onResize);
+    // Images, fonts and the estimator change heights after load.
+    if ('ResizeObserver' in window) {
+      let t = 0;
+      new ResizeObserver(() => { clearTimeout(t); t = window.setTimeout(onResize, 120); }).observe(document.body);
+    }
+    window.addEventListener('load', onResize);
+  }
+</script>
+
+<style>
+  .flood { display: none; }
+  :global(html.flood-on) .flood { display: block; position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; contain: strict; }
+  .flood__base, .flood__rise { position: absolute; inset: 0; }
+  .flood__rise { visibility: hidden; will-change: transform; background: currentColor; }
+  .flood__edge { position: absolute; left: 0; right: 0; bottom: calc(100% - 1px); height: clamp(40px, 7vw, 84px); }
+  .flood__edge i {
+    position: absolute; inset: 0; background: currentColor;
+    -webkit-mask: var(--m) repeat-x var(--x, 0px) 0 / auto 100%;
+    mask: var(--m) repeat-x var(--x, 0px) 0 / auto 100%;
+  }
+  .edge-torn .rim { background: #fdf2db; }
+  /* halftone dots + paper grain, like the hero video */
+  .flood__grain {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(rgba(43, 27, 63, 0.16) 1px, transparent 1.4px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.17 0 0 0 0 0.1 0 0 0 0 0.25 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    background-size: 6px 6px, 160px 160px;
+    opacity: 0.55;
+  }
+</style>

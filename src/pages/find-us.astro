@@ -1,0 +1,72 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Markets from '../components/Markets.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { marketMenu, marketMenuNote, links, business, rewards, money } from '../data/business';
+import { tone } from '../data/tones';
+import booth from '../assets/photos/market-booth.jpg';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Find Us', path: '/find-us' }];
+---
+<BaseLayout
+  title="Where to Find Kreung LA This Week | Kreung LA"
+  description="Find Kreung LA at Westwood Village (Thu), Playa Vista (Sat) and Smorgasburg LA at ROW DTLA (Sun). Hours, addresses, directions and the market menu."
+  path="/find-us"
+>
+  <section class="sec page-hero" {...tone('yellow')}>
+    <div class="wrap split split--wide">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <h1>Where to Find Kreung LA This Week</h1>
+        <p class="lede">Three farmers markets, every week. Come hungry and grab a plate hot off the grill.</p>
+        <div class="btn-row">
+          {links.order
+            ? <a class="btn" href={links.order} rel="noopener">Order ahead</a>
+            : <a class="btn" href={business.instagram.url} rel="noopener">Check today's schedule on Instagram</a>}
+        </div>
+      </div>
+      <figure class="photo">
+        <Image src={booth} alt="The Kreung LA market booth with a Cambodian flag, serving a customer at sunset" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('pink')} aria-labelledby="mk-h">
+    <div class="wrap">
+      <h2 id="mk-h">Weekly markets</h2>
+      <Markets />
+    </div>
+  </section>
+
+  <section class="sec" {...tone('cream')} aria-labelledby="menu-h">
+    <div class="wrap">
+      <h2 id="menu-h">Market menu</h2>
+      <p class="lede">{marketMenuNote}</p>
+      <ul class="mmenu">
+        {marketMenu.map((m) => (
+          <li>
+            <div><b>{m.name}</b><span>{m.detail}</span></div>
+            {/* TODO(Sam): plate prices */}
+            <strong class="price">{m.price != null ? money(m.price) : <span class="todo">Price TBD</span>}</strong>
+          </li>
+        ))}
+      </ul>
+      <p class="small">Want it for a crowd? <a href="/catering">See catering</a>. Join <a href="/rewards">{rewards.name}</a> for {rewards.joinOffer.toLowerCase()}.</p>
+    </div>
+  </section>
+
+  <CtaBand heading="Feeding a crowd?" text="We cater for 30 to 300+ guests across LA." href="/catering" label="See catering options" />
+</BaseLayout>
+
+<style>
+  .note { margin-top: 24px; font-weight: 600; }
+  .note a, .small a { font-weight: 800; }
+  .mmenu { list-style: none; padding: 0; margin: 24px 0; display: grid; gap: 12px; max-width: 760px; }
+  .mmenu li { display: flex; justify-content: space-between; align-items: center; gap: 16px; background: var(--white); border: 2.5px solid var(--plum); border-radius: 18px; padding: 16px 20px; }
+  .mmenu li div { display: grid; }
+  .mmenu b { font-size: 19px; }
+  .mmenu span:not(.todo) { color: var(--muted); }
+  .price { font-size: 20px; white-space: nowrap; }
+</style>

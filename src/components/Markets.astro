@@ -1,0 +1,27 @@
+---
+import { markets, mapsUrl, links, business } from '../data/business';
+interface Props { headingLevel?: 2 | 3 }
+const { headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}`;
+const short = { Thursday: 'Thu', Saturday: 'Sat', Sunday: 'Sun' } as Record<string, string>;
+---
+<ul class="gigs">
+  {markets.map((m) => (
+    <li class="gig">
+      <p class="day"><abbr title={m.day}>{short[m.day]}</abbr><span class="visually-hidden">, {m.day}</span></p>
+      <div>
+        <H class="v">{m.name}</H>
+        <address class="a">{m.address}</address>
+      </div>
+      <p class="t">{m.hours}</p>
+      <a class="go" href={mapsUrl(m)} rel="noopener">Directions<span class="visually-hidden"> to {m.name}</span></a>
+    </li>
+  ))}
+</ul>
+<p class="mk-note">Schedules can change, so check <a href={links.instagram} rel="noopener">{business.instagram.handle}</a> before you head out. We also do evening pop-ups at LA Aleworks in Hawthorne, plus events.</p>
+<style>
+  .mk-note { margin-top: 22px; font-weight: 600; }
+  .gig abbr { text-decoration: none; }
+  .gig > div { display: grid; gap: 2px; }
+  @media (min-width: 640px) { .gig > div { grid-column: auto; } }
+</style>

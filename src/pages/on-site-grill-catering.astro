@@ -1,0 +1,59 @@
+---
+import NichePage from '../components/NichePage.astro';
+import { policies, money } from '../data/business';
+import photo from '../assets/photos/grill-wide.jpg';
+
+const faqs = [
+  { q: 'What is the minimum for on-site grilling?', a: `The minimum is ${money(policies.minimumOnsite)} for our grill on-site.` },
+  { q: 'Is there a production fee?', a: `Yes. On-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
+  { q: 'What events is live grilling good for?', a: 'Company events, parties and weddings. Anywhere you want the smell of the grill and food served hot off the fire.' },
+  { q: 'How many guests can you grill for?', a: `We cater for ${policies.guestsLabel} guests.` },
+  { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks).` },
+  { q: 'What space do you need?', a: 'Tell us about your venue when you ask for a quote, and we will confirm the space and setup we need.' },
+];
+---
+<NichePage
+  title="Live BBQ Grill Catering for LA Events | Kreung LA"
+  description="We bring the grill and cook Cambodian BBQ live at your LA event. $2,000 minimum, 20% production fee from $400. Company events, parties, weddings."
+  path="/on-site-grill-catering"
+  crumb="On-Site Grill"
+  heroFacts={`From $20 per person · ${policies.guestsLabel} guests · ${money(policies.minimumOnsite)} minimum on-site`}
+  h1="Live BBQ Grill Catering for LA Events"
+  lede="We bring the fire. Our team grills kreung-marinated meats right at your event, so your guests get smoke, sizzle and food straight off the grill."
+  photo={photo}
+  photoAlt="Kreung LA chefs grilling skewers over a long open-fire grill at an event"
+  estimateType="Private celebration"
+  estimateService="On-site grill"
+  reviewKeys={['janeT', 'repeatClient', 'randall']}
+  faqs={faqs}
+  faqHeading="On-site grill questions"
+  ctaHeading="Fire up your event."
+  bodyTone="orange"
+>
+  <div class="cols">
+    <div class="prose">
+      <h2>Food straight off the fire</h2>
+      <p>Live grilling turns dinner into part of the party. Guests watch the skewers char, smell the lemongrass and line up for food that's seconds off the grill.</p>
+      <p>It's a great fit for company events, backyard parties, weddings and celebrations.</p>
+      <h2>What we bring</h2>
+      <ul>
+        <li>Our grill and our team to cook and serve</li>
+        <li>Kreung-marinated meats and vegan tofu skewers</li>
+        <li>Rice, coconut corn, pickled vegetables and house sauces</li>
+      </ul>
+      <h2>Space and setup</h2>
+      <p>Tell us about your venue when you ask for a quote. We'll confirm the space and setup we need for the grill.</p>
+      {/* TODO(Sam): grill space and power requirements (outdoor only? how much room? power or water needed?). */}
+      <p class="todo">Grill space and power needs coming soon</p>
+    </div>
+    <dl class="facts facts--1">
+      <div><dt>Minimum</dt><dd>{money(policies.minimumOnsite)} for our grill on-site.</dd></div>
+      <div><dt>Production fee</dt><dd>{policies.productionFeeOnsitePct}%, starting at ${policies.productionFeeOnsiteMin}. {policies.productionFeeNote}</dd></div>
+      <div><dt>Guests</dt><dd>{policies.guestsLabel}.</dd></div>
+      <div><dt>Book ahead</dt><dd>At least {policies.leadTimeDays} days.</dd></div>
+    </dl>
+  </div>
+</NichePage>
+<style>
+  .facts--1 { grid-template-columns: 1fr !important; }
+</style>

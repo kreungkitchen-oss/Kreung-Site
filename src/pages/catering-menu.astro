@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Packages from '../components/Packages.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { cateringMenu, policies, khmer } from '../data/business';
+import { menuSchema } from '../data/schema';
+import plate from '../assets/photos/plate-combo.jpg';
+import chicken from '../assets/photos/grill-chicken.jpg';
+import skewers from '../assets/photos/food-skewers-tray.jpg';
+
+const meatNote = 'Fire-grilled and marinated in kreung.';
+const sections = [
+  { name: 'Proteins', items: cateringMenu.proteins.map((p) => ({ name: p.name, vegan: p.vegan, description: p.vegan ? 'Grilled tofu skewers. Vegan.' : meatNote })) },
+  { name: 'Sides', items: cateringMenu.sides.map((s) => ({ name: s.name })) },
+  { name: 'Rice', items: cateringMenu.rices.map((r) => ({ name: r.name })) },
+  { name: 'Sauces', items: cateringMenu.sauces.map((s) => ({ name: s.name, description: 'Included with every package.' })) },
+  { name: 'Drinks', items: cateringMenu.drinks.map((d) => ({ name: d, description: 'Available separately.' })) },
+];
+
+const faqs = [
+  { q: 'Do you have vegan options?', a: 'Yes. Our tofu skewers are vegan.' },
+  { q: 'Is your food dairy-free and peanut-free?', a: 'Yes. Our food contains no dairy or peanuts.' },
+  { q: 'What allergens are in your food?', a: policies.allergyNote },
+  { q: 'What is kreung?', a: 'Kreung is the Cambodian herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. We marinate our meats in it before they hit the grill.' },
+  { q: 'Which proteins come with each package?', a: 'Classic comes with 1 protein and Signature with 2. The Full Experience includes all 4 meats, including short rib, with coconut lime leaf rice.' },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Catering', path: '/catering' },
+  { name: 'Catering Menu', path: '/catering-menu' },
+];
+---
+<BaseLayout
+  title="Cambodian BBQ Catering Menu | Kreung LA"
+  description="Our catering menu: lemongrass chicken, beef skewers, vegan tofu skewers, short rib, coconut corn, pickled veggies, rice and house sauces. No dairy or peanuts."
+  path="/catering-menu"
+  jsonLd={[menuSchema(sections, '/catering-menu')]}
+>
+  <section class="sec s-yellow page-hero">
+    <div class="wrap split split--wide">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <h1>Cambodian BBQ Catering Menu</h1>
+        <p class="lede">Every meat is fire-grilled and marinated in kreung (<span lang="km">{khmer.kreung}</span>), our Cambodian herb paste. Pick your proteins, and we bring the rice, sides and house sauces.</p>
+        <div class="btn-row">
+          <a class="btn" href="/corporate-catering#estimate">Get a quote</a>
+        </div>
+      </div>
+      <figure class="photo">
+        <Image src={plate} alt="A Kreung LA plate with grilled meats, rice, coconut corn and pickled vegetables" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" loading="eager" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec s-cream" aria-labelledby="menu-h">
+    <div class="wrap">
+      <h2 id="menu-h" class="visually-hidden">The menu</h2>
+      <div class="menu-grid">
+        <div class="card card--line menu-card big">
+          <h3>Proteins</h3>
+          <ul class="mlist">
+            {cateringMenu.proteins.map((p) => (
+              <li><b>{p.name}</b>{p.vegan ? <span class="vg">Vegan</span> : <span class="md">{meatNote}</span>}</li>
+            ))}
+          </ul>
+          <p class="note">Classic: choose 1. Signature: choose 2. The Full Experience: all 4 meats.</p>
+        </div>
+        <div class="card card--line menu-card">
+          <h3>Sides</h3>
+          <ul class="mlist">{cateringMenu.sides.map((s) => <li><b>{s.name}</b></li>)}</ul>
+        </div>
+        <div class="card card--line menu-card">
+          <h3>Rice</h3>
+          <ul class="mlist">{cateringMenu.rices.map((r) => <li><b>{r.name}</b></li>)}</ul>
+          <p class="note">Coconut lime leaf rice comes with The Full Experience.</p>
+        </div>
+        <div class="card card--line menu-card">
+          <h3>Sauces</h3>
+          <ul class="mlist">{cateringMenu.sauces.map((s) => <li><b>{s.name}</b><span class="md">Included with every package.</span></li>)}</ul>
+        </div>
+        <div class="card card--line menu-card">
+          <h3>Drinks</h3>
+          <ul class="mlist">{cateringMenu.drinks.map((d) => <li><b>{d}</b></li>)}</ul>
+          <p class="note">{cateringMenu.drinksNote}</p>
+        </div>
+      </div>
+      <div role="region" class="allergy" aria-labelledby="allergy-h">
+        <h3 id="allergy-h">Allergy note</h3>
+        <p>{policies.allergyNote} Tell us about any allergies when you ask for a quote.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec s-orange" aria-labelledby="photos-h">
+    <div class="wrap">
+      <h2 id="photos-h">Straight off the grill</h2>
+      <div class="grid grid--2 pics">
+        <figure class="photo"><Image src={chicken} alt="Kreung chicken thighs charring over the flames" widths={[480, 800]} sizes="(min-width: 960px) 560px, 100vw" /></figure>
+        <figure class="photo"><Image src={skewers} alt="A tray of glazed Kreung LA beef skewers" widths={[480, 800]} sizes="(min-width: 960px) 560px, 100vw" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec s-plum" aria-labelledby="pk-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="pk-h">Packages</h2>
+        <p class="lede">Priced per person.</p>
+      </div>
+      <Packages />
+      <p class="dl"><a href="/catering-pricing">How pricing works</a> · <a href="/catering">All catering options</a></p>
+    </div>
+  </section>
+
+  <section class="sec s-mint">
+    <div class="wrap">
+      <Faq faqs={faqs} heading="Menu questions" />
+      <p class="more-faq"><a href="/faq">More questions</a> · <a href="/catering-pricing">Pricing</a> · <a href="/catering">All catering</a></p>
+    </div>
+  </section>
+
+  <CtaBand heading="Hungry yet?" text="Tell us about your event. We reply within 24 hours." href="/corporate-catering#estimate" label="Get a quote" />
+</BaseLayout>
+
+<style>
+  .menu-grid { display: grid; gap: 18px; }
+  .menu-card h3 { margin-bottom: 14px; }
+  .mlist { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .mlist li { display: grid; gap: 2px; font-size: 18px; }
+  .mlist .md { color: var(--muted); font-size: 15px; }
+  .vg { justify-self: start; background: var(--teal-d); color: #fff; border-radius: 999px; padding: 2px 10px; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+  .note { margin: 16px 0 0; font-size: 15px; }
+  .allergy { margin-top: 24px; background: var(--white); border: 2.5px dashed var(--plum); border-radius: 18px; padding: 18px 22px; }
+  .allergy h3 { margin: 0 0 6px; font-size: 20px; }
+  .allergy p { margin: 0; }
+  .pics { margin-top: 28px; }
+  .pics .photo { aspect-ratio: 4 / 3; }
+  @media (min-width: 760px) { .menu-grid { grid-template-columns: repeat(2, 1fr); } .menu-grid .big { grid-row: span 2; } }
+  @media (min-width: 1040px) { .menu-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

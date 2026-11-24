@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { rewards } from '../data/business';
+import { tone } from '../data/tones';
+
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Kreung Rewards', path: '/rewards' }];
+---
+<BaseLayout
+  title="Kreung Rewards: $5 Off When You Join | Kreung LA"
+  description="Join Kreung Rewards and get $5 off. Earn a point every visit with a $15 minimum at our LA farmers markets."
+  path="/rewards"
+>
+  <section class="sec page-hero" {...tone('yellow')}>
+    <div class="wrap split split--wide">
+      <div>
+        <Breadcrumbs items={crumbs} />
+        <h1>Kreung Rewards</h1>
+        <p class="lede">Eat with us, earn points, save money. You get {rewards.joinOffer.toLowerCase()}.</p>
+      </div>
+      <div class="join card card--line" id="join">
+        <h2 class="disp d-m">Join and get $5 off</h2>
+        <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
+          <input type="hidden" name="form-name" value="rewards-signup" />
+          <p class="visually-hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
+          <div class="field">
+            <label for="rw-name">First name</label>
+            <input id="rw-name" name="name" type="text" autocomplete="given-name" />
+          </div>
+          <div class="field">
+            <label for="rw-email2">Email address</label>
+            <input id="rw-email2" name="email" type="email" autocomplete="email" required />
+          </div>
+          <button class="btn" type="submit">Join Kreung Rewards</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" {...tone('plum')} aria-labelledby="how-h">
+    <div class="wrap">
+      <h2 id="how-h">How it works</h2>
+      <ol class="howto">
+        <li><b>Join.</b> Sign up with your email and get {rewards.joinOffer.toLowerCase()}.</li>
+        <li><b>Visit.</b> {rewards.earn}</li>
+        <li><b>Save.</b> Points add up to more Cambodian BBQ.</li>
+      </ol>
+      {/* TODO(Sam): how members redeem the $5 and their points (e.g. Square loyalty by phone number?) */}
+      <p><span class="todo">How to redeem: details coming soon</span></p>
+    </div>
+  </section>
+
+  <CtaBand heading="Find us this week." text="Three weekly markets across LA." href="/find-us" label="Find us this week" />
+</BaseLayout>
+
+<style>
+  .join h2 { --hf: var(--plum); --hs: var(--pink); --hsw: 0px; margin-bottom: 16px; }
+  .join form { display: grid; gap: 4px; }
+  .join .btn { --fg: var(--plum); --bg: var(--cream); justify-self: start; margin-top: 8px; }
+</style>

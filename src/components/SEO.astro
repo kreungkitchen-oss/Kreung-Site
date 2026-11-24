@@ -1,0 +1,41 @@
+---
+/**
+ * SEO head tags: title, description, canonical, Open Graph, Twitter, JSON-LD.
+ * Pass extra JSON-LD objects via `jsonLd` (array). The site-wide business
+ * entity is added by BaseLayout.
+ */
+import { SITE_URL } from '../data/business';
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+  ogType?: string;
+}
+const { title, description, path, image = '/images/og-image.jpg', noindex = false, jsonLd = [], ogType = 'website' } = Astro.props;
+let pathname = path ?? Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
+if (pathname.length > 1) pathname = pathname.replace(/\/$/, '');
+const canonical = SITE_URL + (pathname || '/');
+const imageUrl = new URL(image, SITE_URL).href;
+if (import.meta.env.DEV) {
+  if (title.length > 60) console.warn(`[SEO] Title over 60 chars (${title.length}): ${title}`);
+  if (description.length > 155) console.warn(`[SEO] Description over 155 chars (${description.length}): ${pathname}`);
+}
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content="Kreung LA" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+{jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
