@@ -1,0 +1,34 @@
+---
+/**
+ * Short silent looping clip (like a GIF, but much smaller). Shows the poster
+ * first and plays only while on screen. Stays on the poster for reduced motion,
+ * data saver, or no JavaScript. Decorative: the caption carries the meaning.
+ */
+interface Props { src: string; poster: string; width: number; height: number; caption?: string; class?: string }
+const { src, poster, width, height, caption, class: cls = '' } = Astro.props;
+---
+<figure class={`loopv ${cls}`}>
+  <video data-loop muted loop playsinline preload="none" poster={poster} width={width} height={height} aria-hidden="true" tabindex="-1">
+    <source src={src} type="video/mp4" />
+  </video>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  const ok = !matchMedia('(prefers-reduced-motion: reduce)').matches && !(navigator as any).connection?.saveData;
+  if (ok && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
+      }
+    }, { rootMargin: '100px' });
+    document.querySelectorAll<HTMLVideoElement>('video[data-loop]').forEach((v) => io.observe(v));
+  }
+</script>
+
+<style>
+  .loopv { margin: 0; }
+  .loopv video { display: block; width: 100%; height: auto; border-radius: var(--r-card); border: 2.5px solid var(--plum); box-shadow: 8px 8px 0 var(--plum); background: var(--plum); object-fit: cover; }
+  .loopv figcaption { margin-top: 12px; font-size: 15px; font-weight: 600; }
+</style>

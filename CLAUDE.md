@@ -5,8 +5,8 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 
 ## Tech rules (do not break these)
 - Framework: Astro, static output only (`output: 'static'`). Every page must ship its real text in the HTML. AI crawlers (GPTBot, ClaudeBot, PerplexityBot) do not run JavaScript, so headings, body copy, prices, FAQs and contact info must never depend on client-side JS. JavaScript is allowed only for interactive extras (estimator, mortar animation, mobile menu), and the page must still read completely without it.
-- No iframes for content. No page builders.
-- Hosting: Netlify. Forms: Netlify Forms (plain HTML form with `data-netlify="true"` and a honeypot field).
+- No iframes for content. No page builders. Exception (approved by Sam): Cloudflare Stream video players. The CBS segment loads its iframe only after a click (poster + play button first), and the hero background video is added by JS after load and skipped for reduced motion. Captions and text around them stay in the HTML.
+- Hosting: Netlify. Forms: Netlify Forms (plain HTML form with `data-netlify="true"` and a honeypot field). The catering estimator also posts each quote request to Sam's existing Google Form ("Kreung LA Catering Inquiry", same form and field IDs as the old site; mapping in `src/data/googleForm.ts`) with fetch no-cors; Netlify Forms stays as the backup and the no-JS path.
 - Accessibility: WCAG 2.1 AA. Semantic HTML, one H1 per page, logical heading order, alt text on every image, visible focus states, color contrast at least 4.5:1 for body text, labels on every form field, keyboard-usable everything, respects prefers-reduced-motion.
 - Performance: aim for Lighthouse 95+ on mobile. Optimized images (Astro Image, WebP/AVIF, width/height set, lazy-load below the fold), system or self-hosted fonts, minimal JS.
 - SEO on every page: unique title (under 60 characters), meta description (under 155), canonical URL, Open Graph and Twitter tags, JSON-LD structured data, breadcrumbs on sub-pages, internal links to /catering and /catering-pricing.
@@ -28,7 +28,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
   - Saturday: Playa Vista Farmers Market, 12775 Millennium Dr, Playa Vista, 9 AM–2 PM
   - Sunday: Smorgasburg LA at ROW DTLA, 777 S Alameda St, Los Angeles, 10 AM–4 PM
   - Note: schedules can change; check @kreung_la. Evening pop-ups at LA Aleworks (Hawthorne) and events.
-- Market menu: Chicken Plate (grilled kreung chicken thigh), Skewer Plate (two beef skewers), Sampler Plate (chicken thigh, one skewer, pork belly), Pork Belly Plate, short rib by the rib ($7). Every plate comes with coconut corn and pickled veggies. [Plate prices: TBD — leave a clear TODO]
+- Market menu (from Sam's menu board, Nov 2026): The Sampler $25 (chicken, pork belly, beef skewer; our three most popular meats), Lemongrass Chicken Plate $16.50 (best seller), Lemongrass Beef Skewer Plate $19 (two beef skewers), Pork Belly Plate $16.50 (slow roasted, finished on the grill). Every plate includes white rice, coconut corn and pickled veggies. Add a short rib to any plate $7; upgrade to coco-lime leaf rice $2. Small bites: pork belly $6.50, chicken thigh $6.50, beef skewer $7 (3 for $18), short rib $8 (2 for $15), pickled veggies $4.50, coconut corn $4.50, coco-lime leaf rice $4.50, white rice $3.50, extra sauce $0.75. Drinks: lemonade $7, soda $2.50, bottled water $3.50.
 - Catering packages:
   - Classic $20/person: 1 protein; rice, coconut corn, pickled veggies. For simple team lunches.
   - Signature $25/person (most popular): 2 proteins; rice, coconut corn, pickled veggies. For office lunches and team events.
@@ -42,10 +42,18 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 - Lead time: book at least 14 days (2 weeks) ahead.
 - Response time: reply within 24 hours, aiming for same day. Estimates in 24–48 hours.
 - Allergy note: some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil. Our food contains no dairy or peanuts.
-- Clients (logos only where Sam confirms permission — use a text list until then): SpaceX, Adobe, Amazon, Live Nation (booked 4 times in 12 months), Sony Pictures, DreamWorks, Rare Beauty, Cedars-Sinai, Caltech, Altruist, Truist, Shamrock Capital, Causeway Capital Management, Karney Properties, Layla Bagels.
+- Clients: SpaceX, Adobe, Live Nation (booked 4 times in 12 months), Amazon, Sony Pictures, DreamWorks, Caltech, Cedars-Sinai, Shamrock Capital, Truist, Rare Beauty, Altruist, Causeway Capital Management, Karney Properties, Layla Bagels. Sam approved showing these client names and logos (Nov 24, 2026; they are already on the current site). Logo files are in public/images/clients/; clients without a logo show as text tiles (`clientTiles` in business.ts).
 - Ratings: 4.9 on Google (45 reviews), 4.9 on Yelp (60 reviews) — as of Nov 2026.
-- Press: Los Angeles Times, CBS News Los Angeles, Time Out Los Angeles, L.A. TACO (https://lataco.com/cambodian-food-la-pop-up), Eater LA, Follow My Gut.
-- Rewards: Kreung Rewards — $5 off when you join; earn a point every visit with a $15 minimum.
+- Press:
+  - CBS News Los Angeles, "Sharing Cambodian cuisine" (aired May 2026): video on our Cloudflare Stream account, ID f7f58326bcbddb0d8599ac0a488bd043 (player https://customer-ugajlzvkncemhxjh.cloudflarestream.com/f7f58326bcbddb0d8599ac0a488bd043/iframe?preload=metadata, poster .../thumbnails/thumbnail.jpg?width=1000)
+  - Los Angeles Times, "The best pop-ups in LA": https://www.latimes.com/food/list/best-pop-up-chefs-restaurants-los-angeles
+  - Time Out Los Angeles, "Kreung LA & Friends": https://www.timeout.com/los-angeles/things-to-do/kreung-la-friends
+  - L.A. TACO, "Cambodian food in LA": https://lataco.com/cambodian-food-la-pop-up
+  - Follow My Gut, "A pop-up you shouldn't miss": https://www.followmygut.com/why-kreung-kitchen-is-a-pop-up-you-shouldnt-miss-in-la/
+  - Eater LA (no link yet)
+- Hero background video (halftone, Cloudflare Stream): desktop ID bab5381544b22a2f7ae1a76cb9c7db48, mobile ID d528c1394beca3f29f256d42e5f91db3. Muted, autoplay, loop, no controls, grayscale/multiply; skipped for reduced motion.
+- Rewards: Kreung Rewards — $5 off when you join; earn a point every visit with a $15 minimum. "How rewards work" link: https://squareup.com/loyalty/3PMJRQ6KW741N
+- Family photos (from Sam, Nov 2026): Sam's baby photo, taken in the Khao-I-Dang refugee camp (chalkboard reads OUM SAMOEUN), and a photo of his mother, Mak, in a green lace top. Use with care.
 - Story: Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community. He moved to Long Beach in 2011 and to Culver City in 2017, where he met Christina and started cooking his mother's dishes himself. For years he told his mother, Mak, "I'm gonna bring Cambodian food to LA." She passed in late November 2023; her last words to him were to stop talking and start doing. On January 1, 2024, her birthday, Kreung LA got its first catering order.
 
 ## Approved review quotes (use exactly, with attribution)

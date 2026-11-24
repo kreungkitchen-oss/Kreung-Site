@@ -9,6 +9,8 @@ import { personSam } from '../data/schema';
 import { tone } from '../data/tones';
 import samChristina from '../assets/photos/sam-christina-wedding.jpg';
 import grilling from '../assets/photos/team-grilling.jpg';
+import babySam from '../assets/photos/sam-baby-khao-i-dang.jpg';
+import mak from '../assets/photos/mak.jpg';
 
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Our Story', path: '/about' }];
 ---
@@ -33,14 +35,26 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Our Story', path: '/about'
   </section>
 
   <section class="sec" {...tone('plum')} aria-labelledby="story-h">
-    <div class="wrap prose story-prose" id="sam-oum">
-      <h2 id="story-h">Sam's story</h2>
-      <p>Sam Oum was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community.</p>
-      <p>In 2011 he moved to Long Beach, the heart of Cambodian LA. In 2017 he moved to Culver City. That's where he met Christina, and where he started cooking his mother's dishes himself.</p>
-      <h2>A promise to Mak</h2>
-      <p>For years, Sam told his mother, Mak (<span lang="km">{khmer.mak}</span>), "I'm gonna bring Cambodian food to LA."</p>
-      <p>Mak passed in late November 2023. Her last words to him were to stop talking and start doing.</p>
-      <p>On January 1, 2024, her birthday, Kreung LA got its first catering order. That's why our footer says <strong>{business.taglines.footer}</strong></p>
+    <div class="wrap story-grid" id="sam-oum">
+      <div class="prose story-prose">
+        <h2 id="story-h">Sam's story</h2>
+        <p>Sam Oum was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community.</p>
+        <p>In 2011 he moved to Long Beach, the heart of Cambodian LA. In 2017 he moved to Culver City. That's where he met Christina, and where he started cooking his mother's dishes himself.</p>
+      </div>
+      <figure class="snap snap--l">
+        <Image src={babySam} alt="Black-and-white photo of Sam as a baby, held up behind a small chalkboard that reads OUM SAMOEUN" widths={[360, 640]} sizes="(min-width: 860px) 340px, 80vw" />
+        <figcaption>Sam as a baby in the Khao-I-Dang refugee camp.</figcaption>
+      </figure>
+      <figure class="snap snap--r">
+        <Image src={mak} alt="Sam's mother, Mak, smiling in a green lace top in front of a floral curtain" widths={[360, 640]} sizes="(min-width: 860px) 360px, 80vw" />
+        <figcaption>Mak (<span lang="km">{khmer.mak}</span>), Sam's mother.</figcaption>
+      </figure>
+      <div class="prose story-prose">
+        <h2>A promise to Mak</h2>
+        <p>For years, Sam told his mother, Mak (<span lang="km">{khmer.mak}</span>), "I'm gonna bring Cambodian food to LA."</p>
+        <p>Mak passed in late November 2023. Her last words to him were to stop talking and start doing.</p>
+        <p>On January 1, 2024, her birthday, Kreung LA got its first catering order. That's why our footer says <strong>{business.taglines.footer}</strong></p>
+      </div>
     </div>
   </section>
 
@@ -49,7 +63,10 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Our Story', path: '/about'
       <h2 id="time-h">The road to Kreung LA</h2>
       <ol class="timeline">
         {story.timeline.map((t) => (
-          <li><span class="yr">{t.year === 'Childhood' ? 'Growing up' : t.year}</span><b>{t.place}</b><span>{t.text}</span></li>
+          <li>
+            {t.place === 'Khao-I-Dang' && <Image class="tl-photo" src={babySam} alt="" widths={[160, 320]} sizes="160px" />}
+            <span class="yr">{t.year === 'Childhood' ? 'Growing up' : t.year}</span><b>{t.place}</b><span>{t.text}</span>
+          </li>
         ))}
       </ol>
     </div>
@@ -85,8 +102,20 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Our Story', path: '/about'
 <style>
   .story-prose { font-size: 19px; }
   .story-prose h2:first-child { margin-top: 0; }
+  .story-grid { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 860px) {
+    .story-grid { grid-template-columns: 1.4fr 1fr; column-gap: 56px; row-gap: 48px; }
+    .snap--r { grid-row: 2; grid-column: 1; justify-self: center; }
+    .story-grid > .prose:last-child { grid-row: 2; grid-column: 2; }
+  }
+  .snap { margin: 0; justify-self: center; max-width: 360px; background: var(--cream); color: var(--plum); padding: 12px 12px 14px; border-radius: 6px; box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.35); }
+  .snap--l { transform: rotate(2deg); }
+  .snap--r { transform: rotate(-2deg); }
+  .snap :global(img) { width: 100%; height: auto; border-radius: 3px; }
+  .snap figcaption { margin-top: 10px; font-size: 15px; font-weight: 600; text-align: center; }
+  :global(.tl-photo) { width: 100%; max-width: 160px; height: auto; border-radius: 10px; margin-bottom: 8px; filter: grayscale(1); }
   .timeline { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; }
-  .timeline li { display: grid; gap: 4px; background: var(--white); border: 2.5px solid var(--plum); border-radius: 18px; padding: 16px 20px; box-shadow: 5px 5px 0 var(--plum); }
+  .timeline li { display: grid; gap: 4px; align-content: start; background: var(--white); border: 2.5px solid var(--plum); border-radius: 18px; padding: 16px 20px; box-shadow: 5px 5px 0 var(--plum); }
   .timeline .yr { font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: 26px; line-height: 1; color: var(--pink-d); }
   .timeline b { font-size: 19px; }
   .herb-list { list-style: none; padding: 0; margin: 18px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-weight: 700; }

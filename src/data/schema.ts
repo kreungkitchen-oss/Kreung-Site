@@ -1,5 +1,5 @@
 /** JSON-LD builders. Only use facts from business.ts. */
-import { business, BUSINESS_ID, SITE_URL, ratings } from './business';
+import { business, BUSINESS_ID, SITE_URL, ratings, videos } from './business';
 
 export const businessEntity = () => ({
   '@context': 'https://schema.org',
@@ -98,4 +98,17 @@ export const personSam = () => ({
   birthPlace: { '@type': 'Place', name: 'Khao-I-Dang refugee camp, Thai-Cambodian border' },
   worksFor: { '@id': BUSINESS_ID },
   url: `${SITE_URL}/about`,
+});
+
+/** The CBS News Los Angeles segment (Cloudflare Stream). */
+export const videoObject = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: videos.cbs.title,
+  description: videos.cbs.description,
+  thumbnailUrl: videos.cbs.poster,
+  embedUrl: videos.cbs.player,
+  ...(videos.cbs.uploadDate ? { uploadDate: videos.cbs.uploadDate } : {}),
+  publisher: { '@type': 'Organization', name: videos.cbs.outlet },
+  about: { '@id': BUSINESS_ID },
 });

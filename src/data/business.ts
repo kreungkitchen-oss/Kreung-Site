@@ -38,7 +38,32 @@ export const links = {
   giftCards: '', // Not set up yet in Square (Sam, 2026-11-24). Gift card links stay hidden until this is filled in.
   instagram: business.instagram.url,
   yelp: business.yelp.url,
+  rewardsInfo: 'https://squareup.com/loyalty/3PMJRQ6KW741N', // "How rewards work" (Square Loyalty, from Sam 2026-11-24)
 };
+
+/**
+ * Videos on Kreung LA's Cloudflare Stream account (IDs from Sam, 2026-11-24).
+ * The CBS segment loads only when someone clicks play. The hero background
+ * video loads after the page and is skipped for reduced motion.
+ */
+const STREAM = 'https://customer-ugajlzvkncemhxjh.cloudflarestream.com';
+export const videos = {
+  stream: STREAM,
+  cbs: {
+    id: 'f7f58326bcbddb0d8599ac0a488bd043',
+    title: 'CBS News Los Angeles segment on Kreung LA',
+    outlet: 'CBS News Los Angeles',
+    caption: 'Sharing Cambodian cuisine',
+    description: 'A CBS News Los Angeles segment on Kreung LA, the Cambodian street BBQ caterer in Culver City, sharing Cambodian cuisine.',
+    player: `${STREAM}/f7f58326bcbddb0d8599ac0a488bd043/iframe?preload=metadata`,
+    poster: `${STREAM}/f7f58326bcbddb0d8599ac0a488bd043/thumbnails/thumbnail.jpg?width=1000`,
+    uploadDate: '2026-05', // aired May 2026 (Sam, 2026-11-24); exact day unknown
+  },
+  heroBg: {
+    desktop: 'bab5381544b22a2f7ae1a76cb9c7db48',
+    mobile: 'd528c1394beca3f29f256d42e5f91db3',
+  },
+} as const;
 
 export const kreungIngredients = [
   { en: 'Lemongrass', km: 'ស្លឹកគ្រៃ' },
@@ -97,15 +122,37 @@ export const marketNote =
 export const mapsUrl = (m: Market) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${m.name}, ${m.address}`)}`;
 
-/** Market menu. TODO(Sam): plate prices. */
-export const marketMenu = [
-  { name: 'Chicken Plate', detail: 'Grilled kreung chicken thigh', price: null },
-  { name: 'Skewer Plate', detail: 'Two beef skewers', price: null },
-  { name: 'Sampler Plate', detail: 'Chicken thigh, one skewer and pork belly', price: null },
-  { name: 'Pork Belly Plate', detail: 'Grilled pork belly', price: null },
-  { name: 'Short rib', detail: 'By the rib', price: 7 },
-] as const;
-export const marketMenuNote = 'Every plate comes with coconut corn and pickled veggies.';
+/** Market menu and prices, from Sam's market menu board (sent 2026-11-24). */
+export type MenuItem = { name: string; detail?: string; price: number; deal?: string; badge?: string };
+export const marketMenu: MenuItem[] = [
+  { name: 'The Sampler', detail: 'Chicken, pork belly and a beef skewer. Our three most popular meats on one plate.', price: 25, badge: 'New here? Start here' },
+  { name: 'Lemongrass Chicken Plate', detail: 'Grilled kreung chicken thigh.', price: 16.5, badge: 'Best seller' },
+  { name: 'Lemongrass Beef Skewer Plate', detail: 'Two beef skewers, marinated in kreung.', price: 19 },
+  { name: 'Pork Belly Plate', detail: 'Slow roasted and finished on the grill.', price: 16.5 },
+];
+export const marketMenuNote = 'Every plate comes with white rice, coconut corn and pickled veggies.';
+export const marketAddOns: MenuItem[] = [
+  { name: 'Add a short rib to any plate', price: 7 },
+  { name: 'Upgrade to coco-lime leaf rice', price: 2 },
+];
+export const marketSmallBites: MenuItem[] = [
+  { name: 'Pork belly', price: 6.5 },
+  { name: 'Chicken thigh', price: 6.5 },
+  { name: 'Beef skewer', price: 7, deal: '3 for $18' },
+  { name: 'Short rib', price: 8, deal: '2 for $15' },
+  { name: 'Pickled veggies', price: 4.5 },
+  { name: 'Coconut corn', price: 4.5 },
+  { name: 'Coco-lime leaf rice', price: 4.5 },
+  { name: 'White rice', price: 3.5 },
+  { name: 'Extra sauce', price: 0.75 },
+];
+export const marketDrinks: MenuItem[] = [
+  { name: 'Lemonade', price: 7 },
+  { name: 'Soda', price: 2.5 },
+  { name: 'Bottled water', price: 3.5 },
+];
+/** Formats menu prices: $25, $16.50 */
+export const menuPrice = (n: number) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`);
 
 export type PackageId = 'classic' | 'signature' | 'full';
 export const packages: {
@@ -183,23 +230,31 @@ export const policies = {
     'Some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil. Our food contains no dairy or peanuts.',
 } as const;
 
-export const clients = [
-  'SpaceX',
-  'Adobe',
-  'Amazon',
-  'Live Nation',
-  'Sony Pictures',
-  'DreamWorks',
-  'Rare Beauty',
-  'Cedars-Sinai',
-  'Caltech',
-  'Altruist',
-  'Truist',
-  'Shamrock Capital',
-  'Causeway Capital Management',
-  'Karney Properties',
-  'Layla Bagels',
-] as const;
+/**
+ * Clients, in display order. Sam approved showing these names and logos
+ * (2026-11-24; they're on the current kreungla.com). To swap a text tile for a
+ * logo, add an SVG to public/images/clients/ and fill in `logo`, `w` and `h`
+ * (the SVG's width and height, or its viewBox size).
+ */
+export type Client = { name: string; logo?: string; w?: number; h?: number };
+export const clientTiles: Client[] = [
+  { name: 'SpaceX', logo: '/images/clients/client-spacex.svg', w: 400, h: 50 },
+  { name: 'Adobe', logo: '/images/clients/client-adobe.svg', w: 265, h: 67 },
+  { name: 'Live Nation', logo: '/images/clients/client-live-nation.svg', w: 200, h: 45 },
+  { name: 'Amazon', logo: '/images/clients/client-amazon.svg', w: 603, h: 182 },
+  { name: 'Sony Pictures', logo: '/images/clients/client-sony-pictures.svg', w: 644, h: 1000 },
+  { name: 'DreamWorks', logo: '/images/clients/client-dreamworks.svg', w: 300, h: 39 },
+  { name: 'Caltech', logo: '/images/clients/client-caltech.svg', w: 208, h: 50 },
+  { name: 'Cedars-Sinai', logo: '/images/clients/client-cedars-sinai.svg', w: 99, h: 32 },
+  { name: 'Shamrock Capital', logo: '/images/clients/client-shamrock-capital.svg', w: 225, h: 62 },
+  { name: 'Truist', logo: '/images/clients/client-truist.svg', w: 250, h: 58 },
+  { name: 'Rare Beauty' },
+  { name: 'Altruist' },
+  { name: 'Causeway Capital Management' },
+  { name: 'Karney Properties' },
+  { name: 'Layla Bagels' },
+];
+export const clients = clientTiles.map((c) => c.name);
 export const clientNote = 'Live Nation has booked us 4 times in 12 months.';
 
 export const ratings = {
@@ -208,10 +263,10 @@ export const ratings = {
   asOf: 'Nov 2026',
 } as const;
 
-/** Article URLs other than L.A. TACO come from the current kreungla.com press section. */
+/** Press links confirmed by Sam (2026-11-24). Cards with a `logo` show in the 2x2 grid next to the CBS video. */
 export const press: { name: string; title?: string; url?: string }[] = [
   { name: 'Los Angeles Times', title: 'The best pop-ups in LA', url: 'https://www.latimes.com/food/list/best-pop-up-chefs-restaurants-los-angeles' },
-  { name: 'CBS News Los Angeles', title: 'Sharing Cambodian cuisine' }, // TODO(Sam): link to the CBS segment
+  { name: 'CBS News Los Angeles', title: 'Sharing Cambodian cuisine' }, // shown as the video card (see `videos.cbs`)
   { name: 'Time Out Los Angeles', title: 'Kreung LA & Friends', url: 'https://www.timeout.com/los-angeles/things-to-do/kreung-la-friends' },
   { name: 'L.A. TACO', title: 'Cambodian food in LA', url: 'https://lataco.com/cambodian-food-la-pop-up' },
   { name: 'Eater LA' }, // TODO(Sam): link to the Eater LA article

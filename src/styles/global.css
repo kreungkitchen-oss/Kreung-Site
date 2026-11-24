@@ -105,9 +105,12 @@ h2, .d-l { font-size: clamp(38px, 6vw, 84px); }
 /* Halftone video background */
 .bgv { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .bgv video, .bgv img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15) brightness(1.45); mix-blend-mode: var(--vblend, multiply); opacity: var(--vo, 0.3); }
-.bgv img { display: none; }
+.bgv img { transition: opacity 0.6s; }
+.bgv.is-playing img { opacity: 0; }
+.bgv__frame { position: absolute; inset: 0; overflow: hidden; }
+.bgv__frame iframe { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border: 0; pointer-events: none; max-width: none; filter: grayscale(1) contrast(1.15) brightness(1.45); mix-blend-mode: var(--vblend, multiply); opacity: var(--vo, 0.3); }
 .bgv::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(43, 27, 63, 0.16) 0 1px, transparent 1.6px); background-size: 6px 6px; mix-blend-mode: multiply; }
-@media (prefers-reduced-motion: reduce) { .bgv video { display: none; } .bgv img { display: block; } }
+@media (prefers-reduced-motion: reduce) { .bgv video, .bgv__frame { display: none; } }
 .halftone::after { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background-image: radial-gradient(circle, rgba(43, 27, 63, 0.12) 0 1px, transparent 1.6px); background-size: 6px 6px; }
 
 /* ---------- Buttons ---------- */

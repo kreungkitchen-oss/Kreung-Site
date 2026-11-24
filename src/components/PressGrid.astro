@@ -1,39 +1,96 @@
 ---
-/** Press cards with outlet logos (files from Sam). No CBS or Eater logo yet, so those show as text. */
+/**
+ * "As seen in": the CBS News Los Angeles video on the left, four press cards in
+ * a 2x2 grid on the right (stacked on phones). Matches the current kreungla.com.
+ *
+ * The video is a click-to-play facade: a poster image and play button. The
+ * Cloudflare Stream player (an iframe) loads only after a click, which keeps the
+ * page fast. Without JavaScript the facade is a plain link to the player.
+ * The caption and card text are in the HTML.
+ */
 import { Image } from 'astro:assets';
-import { press } from '../data/business';
+import { press, videos } from '../data/business';
+import { videoObject } from '../data/schema';
 import laTimes from '../assets/press/press-la-times.png';
 import timeOut from '../assets/press/press-time-out.png';
 import laTaco from '../assets/press/press-la-taco.png';
 import fmg from '../assets/press/press-follow-my-gut.png';
-const pressLogos: Record<string, ImageMetadata> = { 'Los Angeles Times': laTimes, 'Time Out Los Angeles': timeOut, 'L.A. TACO': laTaco, 'Follow My Gut': fmg };
+
+const logos: Record<string, { img: ImageMetadata; dark?: boolean }> = {
+  'Los Angeles Times': { img: laTimes },
+  'Time Out Los Angeles': { img: timeOut },
+  'L.A. TACO': { img: laTaco, dark: true },
+  'Follow My Gut': { img: fmg, dark: true },
+};
+const cards = press.filter((p) => p.url && logos[p.name]);
+const cbs = videos.cbs;
 ---
-<ul class="outlets" role="list">
-  {press.map((p) => {
-    const logo = pressLogos[p.name];
-    const inner = (
-      <>
-        <span class={`plogo${logo ? '' : ' plogo--text'}`}>
-          {logo ? <Image src={logo} alt={p.name} width={96} height={96} densities={[1, 2]} /> : <span>{p.name}</span>}
-        </span>
-        <b>{p.title ?? p.name}</b>
-        {logo && <span class="pname">{p.name}</span>}
-        {p.url && <span class="read">Read the story →</span>}
-      </>
-    );
-    return <li>{p.url ? <a class="outlet" href={p.url} rel="noopener">{inner}</a> : <div class="outlet">{inner}</div>}</li>;
-  })}
-</ul>
+<div class="press-grid">
+  <figure class="vcard">
+    <div class="vf" data-cbs data-src={`${cbs.player}&autoplay=true`} data-title={cbs.title}>
+      <a class="vf__play" href={cbs.player} target="_blank" rel="noopener" aria-label={`Play the ${cbs.outlet} segment on Kreung LA`}>
+        <img src={cbs.poster} alt="" width="1000" height="609" loading="lazy" decoding="async" />
+        <span class="vf__btn" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34"><path d="M8 5v14l11-7z" fill="currentColor" /></svg></span>
+      </a>
+    </div>
+    <figcaption class="cap"><b>{cbs.outlet}</b><span>{cbs.caption}</span></figcaption>
+  </figure>
+
+  <ul class="outlets" role="list">
+    {cards.map((p) => {
+      const l = logos[p.name];
+      return (
+        <li>
+          <a class="outlet" href={p.url} target="_blank" rel="noopener">
+            <span class={`lg${l.dark ? ' lg--dark' : ''}`}><Image src={l.img} alt={p.name} width={96} height={96} densities={[1, 2]} /></span>
+            <span class="txt"><b>{p.title}</b><span class="pname">{p.name}<span class="visually-hidden"> (opens in a new tab)</span></span></span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</div>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(videoObject())} />
+
+<script>
+  // Swap the poster for the real player on click.
+  document.querySelectorAll<HTMLElement>('[data-cbs]').forEach((box) => {
+    box.querySelector('a')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const f = document.createElement('iframe');
+      f.src = box.dataset.src!;
+      f.title = box.dataset.title!;
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.setAttribute('allowfullscreen', '');
+      box.replaceChildren(f);
+      f.focus();
+    });
+  });
+</script>
+
 <style>
-  .outlets { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+  .press-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: stretch; margin-bottom: 18px; }
+  @media (max-width: 900px) { .press-grid { grid-template-columns: 1fr; } }
+
+  .vcard { margin: 0; border-radius: var(--r-card); overflow: hidden; background: var(--plum); color: var(--cream); display: flex; flex-direction: column; border: 2.5px solid var(--plum); }
+  .vf { position: relative; aspect-ratio: 788 / 480; background: #000; flex: 1 0 auto; }
+  .vf :global(iframe), .vf__play, .vf__play img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .vf__play img { object-fit: cover; }
+  .vf__btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--plum); border: 3px solid var(--plum); box-shadow: 5px 5px 0 var(--plum); padding-left: 5px; transition: transform 0.15s; }
+  .vf__play:hover .vf__btn { transform: translate(-50%, -50%) scale(1.08); }
+  .vf__play:focus-visible { outline: 4px solid var(--yellow); outline-offset: -6px; }
+  .cap { padding: 16px 20px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .cap span { font-size: 15px; }
+
+  .outlets { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
   .outlets li { display: flex; }
-  .outlet { width: 100%; display: grid; gap: 6px; align-content: start; background: var(--white); color: var(--plum); border-radius: var(--r-card); padding: 18px; text-decoration: none; border: 2.5px solid transparent; transition: transform 0.15s, box-shadow 0.15s; }
-  a.outlet:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--plum); border-color: var(--plum); }
-  .outlet b { font-size: 17px; line-height: 1.25; }
+  .outlet { width: 100%; display: grid; grid-template-rows: auto 1fr; gap: 12px; background: var(--white); color: var(--plum); border-radius: 22px; padding: 16px; text-decoration: none; border: 2.5px solid transparent; transition: transform 0.15s, box-shadow 0.15s; }
+  .outlet:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--plum); border-color: var(--plum); }
+  .lg { height: 82px; border-radius: 14px; display: grid; place-items: center; background: var(--cream); padding: 6px; overflow: hidden; }
+  .lg--dark { background: var(--plum); }
+  .lg :global(img) { max-height: 70px; width: auto; height: 100%; object-fit: contain; }
+  .txt { display: grid; gap: 2px; align-content: start; }
+  .outlet b { font-size: 16px; line-height: 1.25; }
   .outlet .pname { font-size: 14px; color: var(--muted); font-weight: 600; }
-  .outlet .read { font-size: 14px; font-weight: 800; margin-top: 4px; }
-  .plogo { justify-self: start; width: 72px; height: 72px; border-radius: 16px; background: var(--plum); display: grid; place-items: center; overflow: hidden; }
-  .plogo :global(img) { width: 100%; height: 100%; object-fit: contain; }
-  .plogo--text { width: auto; min-width: 72px; padding: 0 12px; color: var(--cream); font-weight: 900; font-stretch: 75%; text-transform: uppercase; font-size: 14px; line-height: 1.05; text-align: center; }
-  @media (min-width: 960px) { .outlets { grid-template-columns: repeat(3, 1fr); } }
+  @media (prefers-reduced-motion: reduce) { .outlet, .vf__btn { transition: none; } }
 </style>

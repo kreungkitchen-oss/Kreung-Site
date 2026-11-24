@@ -21,8 +21,9 @@ Most changes are one file: **`src/data/business.ts`**. It holds every fact the s
 | Online ordering link | `links.order` (buttons appear once it's set) |
 | Ratings and review counts | `ratings` |
 | Review quotes | `reviews` |
-| Clients | `clients` |
-| Press | `press` |
+| Clients and their logos | `clientTiles` |
+| Press links | `press` |
+| CBS video and hero background video | `videos` (Cloudflare Stream IDs) |
 | Holiday special | `holidaySpecial` (set `active: true`) |
 
 Merge a change into `main` on GitHub and Netlify publishes it in a minute or two. If something breaks, Netlify can roll back to any earlier version in one click (**Deploys → pick a deploy → Publish deploy**).
@@ -39,7 +40,7 @@ Merge a change into `main` on GitHub and Netlify publishes it in a minute or two
 | `src/data/tones.ts` | The section color combinations (all pass color-contrast checks) |
 | `src/styles/global.css` | Site-wide styles. Brand colors are at the top. |
 | `src/assets/` | Photos and logos. Astro shrinks and converts them when the site builds. |
-| `public/` | Files served as-is: `robots.txt`, `_redirects` (old Square links → new pages), the hero video and GIF |
+| `public/` | Files served as-is: `robots.txt`, `_redirects` (old Square links → new pages), the hero GIF and client logos (`images/clients/`) |
 | `scripts/check-nojs.mjs` | Checks that every page reads fully without JavaScript |
 | `netlify.toml` | Netlify build and caching settings |
 | `src/pages/styleguide.astro` | Internal design reference. Not linked or indexed. Delete before launch. |

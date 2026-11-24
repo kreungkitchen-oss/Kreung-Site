@@ -16,7 +16,7 @@ const UTILITY = new Set(['404.html', 'thanks.html', 'rewards-thanks.html']);
 
 // Text that must appear on specific pages (beyond the generic checks).
 const MUST = {
-  'index.html': ['Cambodian BBQ', '$20', 'Westwood Village Farmers Market', 'kreungkitchen@gmail.com'],
+  'index.html': ['Cambodian BBQ', '$20', 'Westwood Village Farmers Market', 'kreungkitchen@gmail.com', 'CBS News Los Angeles', 'Sharing Cambodian cuisine', 'Live Nation has booked us', 'How rewards work'],
   'catering.html': ['$20', '$25', '$33', '$1,000', '$2,000'],
   'corporate-catering.html': ['$25', '$1,000', '$2,000', '$75', '14 days', 'Live Nation'],
   'catering-pricing.html': ['$1,474', '$29', '11.25%', 'ZeroCater'],
@@ -27,8 +27,8 @@ const MUST = {
   'aapi-heritage-month-catering.html': ['May', 'Khao-I-Dang'],
   'office-lunch-club.html': ['Ask about the Lunch Club'],
   'about.html': ['Khao-I-Dang', 'January 1, 2024', 'Mak'],
-  'find-us.html': ['1036 Broxton Ave', '12775 Millennium Dr', '777 S Alameda St', '$7'],
-  'press.html': ['Los Angeles Times', 'L.A. TACO'],
+  'find-us.html': ['1036 Broxton Ave', '12775 Millennium Dr', '777 S Alameda St', 'The Sampler', '$25', '$16.50', '$19', '$7', 'Lemonade'],
+  'press.html': ['Los Angeles Times', 'L.A. TACO', 'CBS News Los Angeles', 'Follow My Gut'],
   'rewards.html': ['$5 off', '$15 minimum'],
   'thanks.html': ['24 hours'],
 };

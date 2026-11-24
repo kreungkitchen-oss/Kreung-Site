@@ -1,12 +1,37 @@
 ---
-import { clients, ratings, links, clientNote } from '../data/business';
+/**
+ * "Trusted by teams at": client logo tiles (white rounded cards), then the
+ * Live Nation line and the rating badges. Clients without a logo file get a
+ * text tile in the same card. Data: `clientTiles` in src/data/business.ts.
+ * Sam approved showing these names and logos (2026-11-24).
+ */
+import { clientTiles, ratings, links, clientNote } from '../data/business';
 interface Props { heading?: string; note?: boolean }
 const { heading = 'Trusted by teams at', note = false } = Astro.props;
+
+// Size each logo by area, so wide and tall logos look about the same size.
+// The tile is 150 x 64 px of usable space; this target area fits most logos.
+const AREA = 4200, MAX_W = 150, MAX_H = 62;
+const size = (w: number, h: number) => {
+  const r = w / h;
+  let dh = Math.sqrt(AREA / r);
+  let dw = dh * r;
+  if (dw > MAX_W) { dw = MAX_W; dh = dw / r; }
+  if (dh > MAX_H) { dh = MAX_H; dw = dh * r; }
+  return { w: Math.round(dw), h: Math.round(dh) };
+};
 ---
 <div class="proof">
   <p class="eyebrow proof__h">{heading}</p>
-  {/* Text list until Sam confirms logo permission (see CLAUDE.md) */}
-  <ul class="client-list">{clients.map((c) => <li>{c}</li>)}</ul>
+  <ul class="ctiles" role="list">
+    {clientTiles.map((c) => {
+      if (c.logo && c.w && c.h) {
+        const s = size(c.w, c.h);
+        return <li class="ctile"><img src={c.logo} alt={`${c.name} logo`} width={s.w} height={s.h} loading="lazy" decoding="async" /></li>;
+      }
+      return <li class="ctile ctile--text"><span>{c.name}</span></li>;
+    })}
+  </ul>
   {note && <p class="proof__note">{clientNote}</p>}
   <div class="ratings">
     <a class="rating" href={links.yelp} rel="noopener"><strong>{ratings.yelp.value}</strong><span class="stars" aria-hidden="true">★★★★★</span>Yelp <span class="n">({ratings.yelp.count} reviews)</span></a>
@@ -16,7 +41,13 @@ const { heading = 'Trusted by teams at', note = false } = Astro.props;
 </div>
 <style>
   .proof__h { margin-bottom: 14px; }
+  .ctiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 620px) { .ctiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .ctiles { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  .ctile { background: #fff; border-radius: 18px; height: 96px; padding: 14px 16px; display: grid; place-items: center; border: 2.5px solid var(--plum); box-shadow: 4px 4px 0 var(--plum); }
+  .ctile img { max-width: 100%; height: auto; object-fit: contain; }
+  .ctile--text span { color: var(--plum); font-family: var(--f-text); font-weight: 900; font-stretch: 75%; text-transform: uppercase; font-size: 18px; line-height: 1.05; text-align: center; letter-spacing: 0.01em; }
   .ratings { margin-top: 22px; }
-  .proof__note { margin: 14px 0 0; font-weight: 600; }
+  .proof__note { margin: 16px 0 0; font-weight: 700; }
   .proof__asof { font-size: 14px; margin: 10px 0 0; opacity: 0.85; }
 </style>
