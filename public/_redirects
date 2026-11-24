@@ -1,0 +1,25 @@
+# Netlify redirects: old Square Online URLs -> new pages.
+# /corporate-catering and /catering keep their exact URLs (already indexed).
+
+/contact-us          /catering             301
+/contact             /catering             301
+/menu                /catering-menu        301
+/catering-packages   /catering-pricing     301
+/about-us            /about                301
+/our-story           /about                301
+/locations           /find-us              301
+/markets             /find-us              301
+
+# Online ordering stays on Square. TODO(Sam): when Square online ordering is
+# back on, change these three lines to point at the Square ordering URL (ORDER_URL).
+/order               /find-us              302
+/orderonline         /find-us              302
+/s/order             /find-us              302
+
+# Old Square store pages
+/shop/*              /find-us              301
+/product/*           /find-us              301
+/s/*                 /                     301
+
+# Trailing-slash and .html variants of the new pages are handled by Netlify's
+# pretty URLs. The 404 page is served automatically from /404.html.

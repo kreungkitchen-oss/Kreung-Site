@@ -228,7 +228,7 @@ figure { margin: 0; }
 .gig { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; align-items: center; padding: 20px 0; border-bottom: 2px solid currentColor; }
 .gig .day { grid-column: 1 / -1; font-stretch: 75%; font-weight: 900; text-transform: uppercase; font-size: clamp(28px, 3vw, 42px); line-height: 1; color: var(--yellow); margin: 0; }
 .gig .v { grid-column: 1 / -1; font-weight: 800; font-size: clamp(18px, 2vw, 23px); line-height: 1.2; margin: 0; }
-.gig .a { display: block; font-weight: 400; font-size: 15px; opacity: 0.85; font-style: normal; }
+.gig .a { display: block; font-weight: 400; font-size: 15px; font-style: normal; }
 .gig .t { font-weight: 700; white-space: nowrap; margin: 0; }
 .gig a.go { border: 2px solid currentColor; border-radius: 999px; padding: 9px 16px; text-decoration: none; font-weight: 700; font-size: 14px; white-space: nowrap; justify-self: start; }
 .gig a.go:hover { background: var(--cream); color: var(--teal-d); }
@@ -244,7 +244,7 @@ figure { margin: 0; }
 @media (prefers-reduced-motion: reduce) { .band .track { animation: none; } }
 
 /* Starburst seal */
-.seal { display: grid; place-items: center; text-align: center; aspect-ratio: 1; background: var(--pink); color: var(--cream); font-weight: 900; line-height: 1.1; text-transform: uppercase;
+.seal { display: grid; place-items: center; text-align: center; aspect-ratio: 1; background: #bb3e6f; color: var(--cream); font-weight: 900; line-height: 1.1; text-transform: uppercase;
   clip-path: polygon(100% 50%, 93.6% 56.3%, 98% 64.1%, 90% 68.3%, 92.1% 77%, 83.3% 78.8%, 82.7% 87.8%, 73.8% 87%, 70.8% 95.5%, 62.4% 92.2%, 57.1% 99.5%, 50% 94%, 42.9% 99.5%, 37.6% 92.2%, 29.2% 95.5%, 26.2% 87%, 17.3% 87.8%, 16.7% 78.8%, 7.9% 77%, 10% 68.3%, 2% 64.1%, 6.4% 56.3%, 0% 50%, 6.4% 43.7%, 2% 35.9%, 10% 31.7%, 7.9% 23%, 16.7% 21.2%, 17.3% 12.2%, 26.2% 13%, 29.2% 4.5%, 37.6% 7.8%, 42.9% 0.5%, 50% 6%, 57.1% 0.5%, 62.4% 7.8%, 70.8% 4.5%, 73.8% 13%, 82.7% 12.2%, 83.3% 21.2%, 92.1% 23%, 90% 31.7%, 98% 35.9%, 93.6% 43.7%); }
 
 /* Forms (shared) */

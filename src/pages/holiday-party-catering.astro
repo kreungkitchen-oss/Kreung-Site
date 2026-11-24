@@ -30,7 +30,7 @@ const faqs = [
   bodyTone="orange"
 >
   {/* Seasonal block: edit holidaySpecial in src/data/business.ts to show, change or hide it. */}
-  <aside class="special" aria-labelledby="special-h">
+  <div role="region" class="special" aria-labelledby="special-h">
     <p class="eyebrow">{holidaySpecial.season}</p>
     {holidaySpecial.active ? (
       <>
@@ -44,7 +44,7 @@ const faqs = [
         <p><span class="todo">Holiday offer coming soon</span> Ask about holiday dates when you get your estimate.</p>
       </>
     )}
-  </aside>
+  </div>
 
   <div class="cols">
     <div class="prose">

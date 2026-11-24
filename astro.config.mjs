@@ -8,6 +8,6 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   integrations: [
-    sitemap({ filter: (page) => !page.includes('/styleguide') && !page.includes('/thanks') && !page.includes('/404') }),
+    sitemap({ filter: (page) => !/\/(styleguide|thanks|rewards-thanks|404)$/.test(page) }),
   ],
 });

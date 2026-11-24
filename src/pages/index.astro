@@ -44,10 +44,11 @@ const description = 'Cambodian street BBQ from Culver City. Catering for 30 to 3
 const herbs = [...kreungIngredients, ...kreungIngredients];
 ---
 <BaseLayout title={title} description={description} path="/">
+  <link slot="head" rel="preload" as="image" href={poster.src} type="image/webp" fetchpriority="high" />
   <!-- 1. HERO (matches the current kreungla.com hero) -->
   <section class="sec hero" {...tone('yellow')} style={`${tone('yellow').style};--vo:.3`}>
     <div class="bgv" aria-hidden="true">
-      <video autoplay muted loop playsinline preload="none" poster={poster.src} tabindex="-1">
+      <video muted loop playsinline preload="none" data-hero-video poster={poster.src} tabindex="-1">
         <source src="/video/hero-grill.mp4" type="video/mp4" />
       </video>
       <img src={poster.src} alt="" width="720" height="1280" />
@@ -115,7 +116,7 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
           <div><a class="btn btn--y" href="/catering">See catering options</a></div>
         </div>
         <figure class="photo spread">
-          <Image src={spread} alt="Trays of Kreung LA beef skewers and grilled meats lined up on a buffet at an outdoor party" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" />
+          <Image src={spread} alt="Trays of Kreung LA beef skewers and grilled meats lined up on a buffet at an outdoor party" widths={[480, 800]} sizes="(min-width: 960px) 460px, 100vw" quality={70} />
         </figure>
       </div>
       <div class="stats">
@@ -309,3 +310,13 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
 
   .more-links { margin-top: 22px; font-weight: 700; }
 </style>
+<script>
+  // Start the hero video only after the page has loaded, so it doesn't slow the first paint.
+  // Skipped for reduced motion and data saver. The poster image shows otherwise.
+  const v = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const saveData = (navigator as any).connection?.saveData;
+  if (v && !saveData && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const start = () => setTimeout(() => { v.preload = 'auto'; v.play().catch(() => {}); }, 300);
+    if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+  }
+</script>
