@@ -1,6 +1,9 @@
 # Netlify redirects: old Square Online URLs -> new pages.
 # /corporate-catering and /catering keep their exact URLs (already indexed).
 
+# Astro names the sitemap sitemap-index.xml; this makes /sitemap.xml work too.
+/sitemap.xml         /sitemap-index.xml    301
+
 /contact-us          /catering             301
 /contact             /catering             301
 /menu                /catering-menu        301
