@@ -10,18 +10,19 @@ Everything the site still needs from Sam before (or after) launch. Each item is 
 | 2 | **Grill space and power needs** for on-site events | `/on-site-grill-catering` | `src/pages/on-site-grill-catering.astro` |
 | 3 | **Office Lunch Club pricing and terms** | `/office-lunch-club` | `lunchClub` in `src/data/business.ts` and the page |
 | 4 | **Turn on the Netlify email** for new quote requests (backup copy of every lead to kreungkitchen@gmail.com). This is a Netlify setting, not code. | Netlify dashboard | See Step 2 in `docs/DEPLOY.md` |
+| 5 | **Re-verify Google Search Console** (the old meta tag lives on the Square site). Easiest: add a DNS `TXT` record. Or send Claude the meta tag code. Then submit `sitemap-index.xml` to Google and Bing. | Search Console, Bing Webmaster Tools | Step 7 in `docs/DEPLOY.md`; meta tag code goes in `siteVerification` in `src/data/business.ts` |
 
 ## When you have them
 
 | # | What we need | Where it shows | Where to change it |
 |---|---|---|---|
-| 5 | **Holiday special** (offer and end date) | Holiday block on `/holiday-party-catering` | `holidaySpecial` in `src/data/business.ts` (set `active: true`) |
-| 6 | **Eater LA article link** | `/press` | `press` in `src/data/business.ts` |
-| 7 | **Press kit** (logo files and high-res photos to download) | `/press` | `src/pages/press.astro` |
-| 8 | **FAQ answers**: deposits and payment, cancellation policy, how far "most of LA County" reaches | Left off `/faq` until confirmed | `src/pages/faq.astro` |
-| 9 | **Gift cards**: off for now. Add the Square gift card link if you set them up. | Hidden | `links.giftCards` in `src/data/business.ts` |
-| 10 | **More client logos** (Rare Beauty, Altruist, Causeway, Karney, Layla Bagels show as text tiles) | Client tiles | Add an SVG to `public/images/clients/` and fill in `clientTiles` in `src/data/business.ts` |
-| 11 | **Higher-resolution stacked logo** (current file is 288px wide) | Stamp logo and footer | `src/assets/brand/` |
+| 6 | **Holiday special** (offer and end date) | Holiday block on `/holiday-party-catering` | `holidaySpecial` in `src/data/business.ts` (set `active: true`) |
+| 7 | **Eater LA article link** | `/press` | `press` in `src/data/business.ts` |
+| 8 | **Press kit** (logo files and high-res photos to download) | `/press` | `src/pages/press.astro` |
+| 9 | **FAQ answers**: deposits and payment, cancellation policy, how far "most of LA County" reaches | Left off `/faq` until confirmed | `src/pages/faq.astro` |
+| 10 | **Gift cards**: off for now. Add the Square gift card link if you set them up. | Hidden | `links.giftCards` in `src/data/business.ts` |
+| 11 | **More client logos** (Rare Beauty, Altruist, Causeway, Karney, Layla Bagels show as text tiles) | Client tiles | Add an SVG to `public/images/clients/` and fill in `clientTiles` in `src/data/business.ts` |
+| 12 | **Higher-resolution stacked logo** (current file is 288px wide) | Stamp logo and footer | `src/assets/brand/` |
 
 ## Before go-live housekeeping
 

@@ -33,6 +33,17 @@ export const business = {
 } as const;
 
 /** External links. TODO(Sam): Square ordering and gift card links. */
+/**
+ * Search engine verification codes (meta tag method). Leave blank if you
+ * verify Google Search Console with a DNS TXT record instead (recommended).
+ * Paste only the code from inside content="...", not the whole tag.
+ * See docs/DEPLOY.md, Step 7.
+ */
+export const siteVerification = {
+  google: '', // TODO(Sam): only if you choose the "HTML tag" method in Search Console
+  bing: '', // optional: only if you verify Bing yourself instead of importing from Google
+};
+
 export const links = {
   order: '', // TODO(Sam): Square online ordering URL
   giftCards: '', // Not set up yet in Square (Sam, 2026-11-24). Gift card links stay hidden until this is filled in.

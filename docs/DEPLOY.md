@@ -61,6 +61,12 @@ This is the step that actually moves visitors from the old Square site to the ne
 
 Log in to wherever your domain lives (see "Before you start") and find the **DNS settings** (sometimes called "DNS records" or "Advanced DNS").
 
+> **⚠️ Don't break your email.** kreungla.com uses Google Workspace for email. Your DNS has five `MX` records that point to Google: `aspmx.l.google.com`, `alt1.aspmx.l.google.com`, `alt2.aspmx.l.google.com`, `alt3.aspmx.l.google.com` and `alt4.aspmx.l.google.com`.
+>
+> **Change only the two website records: `@` (the bare domain, also called the apex or root) and `www`.** Leave every `MX` record exactly as it is. Don't edit, delete or "reset to default" anything else. If your DNS page has a button like "Use default records" or "Reset DNS", don't click it. It can wipe the email records.
+>
+> Before you change anything, take a screenshot of the whole DNS records page. If something goes wrong, you can put it back.
+
 **Option A (simplest): keep DNS where it is and change two records**
 
 | Type | Name / Host | Value |
@@ -69,12 +75,12 @@ Log in to wherever your domain lives (see "Before you start") and find the **DNS
 | `CNAME` | `www` | `kreungla.netlify.app` (your Netlify address from Step 1) |
 
 - Delete any old `A` or `CNAME` records for `@` and `www` that point to Square. Two records for the same name will confuse browsers.
-- **Do not delete** any `MX` or `TXT` records. Those handle email and verification.
+- **Do not touch** any `MX` records (Google Workspace email, see the warning above) or any `TXT` records. Those handle email and verification.
 - Always use the exact values Netlify shows you on the Domain management page if they're different from the table above.
 
 **Option B: let Netlify run your DNS**
 
-In Netlify, choose **Set up Netlify DNS**. Netlify gives you four "name servers" (they look like `dns1.p01.nsone.net`). At your domain company, replace the current name servers with those four. This hands all DNS to Netlify, so copy over any email (`MX`) records first.
+In Netlify, choose **Set up Netlify DNS**. Netlify gives you four "name servers" (they look like `dns1.p01.nsone.net`). At your domain company, replace the current name servers with those four. This hands **all** DNS to Netlify, so first add your five Google Workspace `MX` records in Netlify DNS, copied exactly from your screenshot (the same names, values and priority numbers). If you skip this, email to your @kreungla.com addresses stops working. Option A is safer if you're not sure.
 
 **If your domain was bought through Square** and Square won't let you change these records, you can transfer the domain to another registrar (Netlify, Namecheap, Cloudflare and others). Ask Square support for the "transfer authorization code" (also called an EPP code). Don't cancel anything at Square until the new site is live.
 
@@ -94,6 +100,7 @@ Open **www.kreungla.com** on your phone and computer and check:
 
 - [ ] The home page loads with the padlock (https).
 - [ ] `kreungla.com` (without www) forwards to `www.kreungla.com`.
+- [ ] Email still works. Send an email to one of your @kreungla.com addresses from another account and check that it arrives. Reply to it to check sending too.
 - [ ] Send a test quote request. You land on the thank-you page and get the email.
 - [ ] Send a test Rewards sign-up and get the email.
 - [ ] The "Text us" button opens a text message to (562) 726-5072.
@@ -106,18 +113,22 @@ Open **www.kreungla.com** on your phone and computer and check:
 
 This helps the new pages show up in search faster.
 
+**Why you need to re-verify:** today, Google Search Console knows the site is yours because of a meta tag on the Square site. That tag goes away when the new site goes live, so Google will stop trusting it. Verify again in one of the two ways below. Either one keeps your Search Console history.
+
 **Google Search Console**
 
-1. Go to **search.google.com/search-console** and sign in with `kreungkitchen@gmail.com`.
-2. Click **Add property → Domain** and type `kreungla.com`.
-3. Google gives you a `TXT` record. Add it in your DNS settings (same place as Step 4, or in Netlify DNS if you chose Option B). Click **Verify**. This can take a few minutes.
-4. In the left menu, go to **Sitemaps**, type `sitemap-index.xml` and click **Submit**.
-5. Optional: use **URL Inspection** on `https://www.kreungla.com/catering` and click **Request indexing** to speed things up for your most important page.
+1. Go to **search.google.com/search-console** and sign in with the Google account you already use for Search Console.
+2. Verify the site. Pick **one** way:
+   - **Way 1 (recommended): DNS `TXT` record.** Click **Add property → Domain** and type `kreungla.com`. Google gives you a `TXT` record that starts with `google-site-verification=`. Add it in your DNS settings (same place as Step 4, or in Netlify DNS if you chose Option B). It's a *new* record: don't change the `MX` records or anything else. Click **Verify**. It can take a few minutes. This covers `kreungla.com`, `www.kreungla.com` and any future site, and you can do it **before** Step 4, while the Square site is still live.
+   - **Way 2: meta tag on the new site.** In your existing `https://www.kreungla.com/` property, go to **Settings → Ownership verification → HTML tag**. Google shows a tag like `<meta name="google-site-verification" content="abc123..." />`. Send the code inside `content="..."` to Claude (or paste it into `siteVerification.google` in `src/data/business.ts`). The site then adds the tag to every page. After the new site is live, click **Verify**.
+3. In the left menu, go to **Sitemaps**, type `sitemap-index.xml` and click **Submit**. (The site's sitemap is called `sitemap-index.xml`. `sitemap.xml` also works, because it forwards to the same file.)
+4. Optional: use **URL Inspection** on `https://www.kreungla.com/catering` and click **Request indexing** to speed things up for your most important page.
 
 **Bing Webmaster Tools** (also feeds ChatGPT search and DuckDuckGo)
 
 1. Go to **bing.com/webmasters** and sign in.
-2. Choose **Import from Google Search Console**. It copies everything over, including the sitemap.
+2. Choose **Import from Google Search Console**. It copies your verified site over, so you don't need another tag or record.
+3. Open **Sitemaps** and check that `https://www.kreungla.com/sitemap-index.xml` is listed. If it isn't, click **Submit sitemap** and add it.
 
 ---
 

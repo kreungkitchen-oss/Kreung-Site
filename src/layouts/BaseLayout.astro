@@ -11,6 +11,7 @@ import Footer from '../components/Footer.astro';
 import TextUs from '../components/TextUs.astro';
 import Flood from '../components/Flood.astro';
 import { businessEntity } from '../data/schema';
+import { siteVerification } from '../data/business';
 import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 
 interface Props {
@@ -36,6 +37,8 @@ const { jsonLd = [], ...seo } = Astro.props;
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {siteVerification.google && <meta name="google-site-verification" content={siteVerification.google} />}
+    {siteVerification.bing && <meta name="msvalidate.01" content={siteVerification.bing} />}
     <slot name="head" />
   </head>
   <body>
