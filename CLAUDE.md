@@ -34,7 +34,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
   - Signature $25/person (most popular): 2 proteins; rice, coconut corn, pickled veggies. For office lunches and team events.
   - The Full Experience $33/person: all 4 meats including short rib; coconut lime leaf rice. For weddings and celebrations.
   - Every package includes house sauces.
-- Catering menu items: grilled lemongrass chicken, beef skewers, tofu skewers (vegan), short rib, coconut chive corn salad, pickled vegetables, rice options incl. coconut lime leaf rice, house sauces. Drinks (bottled water, sodas, sparkling water) available separately.
+- Catering menu items: grilled lemongrass chicken, beef skewers, tofu skewers (vegan), short rib, slow roasted pork belly (added Nov 24, 2026, confirmed by Sam; the 4 meats are chicken, beef, short rib and pork belly), coconut chive corn salad, pickled vegetables, rice options incl. coconut lime leaf rice, house sauces. Drinks (bottled water, sodas, sparkling water) available separately.
 - Minimums: $1,000 for pickup and drop-off; $2,000 for our grill on-site.
 - Delivery: most of LA County, delivery starts at $75, includes setup.
 - Production fee: 10% on drop-off orders for 100+ guests; 20% for on-site cooking (starting at $400). One-time charge, not a gratuity. Sales tax applies.

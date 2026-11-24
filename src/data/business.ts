@@ -46,6 +46,7 @@ export const portions: Portion[] = [
   { item: 'Beef skewers', group: 'Proteins', unit: 'count', perGuest: null },
   { item: 'Tofu skewers (vegan)', group: 'Proteins', unit: 'count', perGuest: null },
   { item: 'Short rib', group: 'Proteins', unit: 'oz', perGuest: null },
+  { item: 'Slow roasted pork belly', group: 'Proteins', unit: 'oz', perGuest: null },
   { item: 'Coconut chive corn salad', group: 'Sides', unit: 'oz', perGuest: null },
   { item: 'Pickled vegetables', group: 'Sides', unit: 'oz', perGuest: null },
   { item: 'Rice', group: 'Rice', unit: 'oz', perGuest: null },
@@ -239,6 +240,7 @@ export const cateringMenu = {
     { name: 'Beef skewers', vegan: false },
     { name: 'Tofu skewers', vegan: true },
     { name: 'Short rib', vegan: false },
+    { name: 'Slow roasted pork belly', vegan: false, note: 'Slow roasted, then finished on the grill.' },
   ],
   sides: [
     { name: 'Coconut chive corn salad' },

@@ -19,7 +19,7 @@ import LoopVideo from '../../components/LoopVideo.astro';
 
 const meatNote = 'Fire-grilled and marinated in kreung.';
 const sections = [
-  { name: 'Proteins', items: cateringMenu.proteins.map((p) => ({ name: p.name, vegan: p.vegan, description: p.vegan ? 'Grilled tofu skewers. Vegan.' : meatNote })) },
+  { name: 'Proteins', items: cateringMenu.proteins.map((p) => ({ name: p.name, vegan: p.vegan, description: p.vegan ? 'Grilled tofu skewers. Vegan.' : ('note' in p && p.note) || meatNote })) },
   { name: 'Sides', items: cateringMenu.sides.map((s) => ({ name: s.name })) },
   { name: 'Rice', items: cateringMenu.rices.map((r) => ({ name: r.name })) },
   { name: 'Sauces', items: cateringMenu.sauces.map((s) => ({ name: s.name, description: 'Included with every package.' })) },
@@ -54,9 +54,9 @@ const crumbs = [
 ---
 <BaseLayout
   title="Cambodian BBQ Catering Menu | Kreung LA"
-  description="Our catering menu: lemongrass chicken, beef skewers, vegan tofu skewers, short rib, coconut corn, pickled veggies, rice and house sauces. No dairy or peanuts."
+  description="Catering menu: lemongrass chicken, beef skewers, short rib, pork belly, vegan tofu skewers, coconut corn, pickled veggies and rice. No dairy or peanuts."
   path="/catering/menu"
-  jsonLd={[menuSchema(sections, '/catering/menu'), service({ name: 'Cambodian BBQ catering menu', description: 'Catering menu: grilled lemongrass chicken, beef skewers, vegan tofu skewers, short rib, sides, rice and house sauces.', path: '/catering/menu' })]}
+  jsonLd={[menuSchema(sections, '/catering/menu'), service({ name: 'Cambodian BBQ catering menu', description: 'Catering menu: grilled lemongrass chicken, beef skewers, vegan tofu skewers, short rib, slow roasted pork belly, sides, rice and house sauces.', path: '/catering/menu' })]}
 >
   <section class="sec s-yellow page-hero">
     <div class="wrap split split--wide">
