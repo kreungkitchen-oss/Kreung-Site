@@ -2,15 +2,17 @@
 
 A step-by-step guide for Sam. No coding needed. Plan on about an hour, plus waiting time for the domain to switch over.
 
-**What stays the same:** Square keeps doing online ordering (when you turn it back on). The website itself moves off Square Online to Netlify, which is free for a site this size.
+**What stays the same:** Square keeps doing online ordering and Kreung Rewards. Your Square Online site keeps running at its free `.square.site` address for ordering. Only `kreungla.com` moves to the new site on Netlify, which is free for a site this size.
 
 ---
 
 ## Before you start
 
 1. **Merge the pull request** on GitHub (the green "Merge" button). This puts the new site on the `main` branch, which is what Netlify will publish.
-2. **Find out where your domain lives.** Log in to wherever you pay for `kreungla.com` each year. If you bought it through Square, it's in your Square dashboard under the website or domain settings. If you bought it from GoDaddy, Namecheap, Google/Squarespace Domains or similar, log in there. You'll need this login in Step 4.
-3. **Go through `TODO.md`.** The site works without those answers, but the "Before launch" items (order link, plate prices and so on) should be filled in before you announce it.
+2. **Know where your domain lives.** You bought `kreungla.com` through **Square**, and its DNS records are at **Register.com**. You'll change two records there in Step 4, so make sure you can log in. The domain renews on **July 6, 2027**. Keep **auto-renew turned on in Square** so it never lapses.
+3. **Find your Square Online `.square.site` address.** In your Square Dashboard, go to **Online → Website → Domains**. Next to `kreungla.com` you'll see a free address that ends in `.square.site`. Write it down, open it in your browser and check that your Square site loads. Do this **before Step 4**: after the switch, that address is how people reach Square Online ordering.
+   - Send that address to Claude. It becomes the site's ordering link (`ORDER_URL`, which is `links.order` in `src/data/business.ts`, plus the `/order` redirects). The "Order ahead" buttons stay hidden until it's set, so send it when you're ready to turn ordering back on.
+4. **Go through `TODO.md`.** The site works without those answers, but the "Before launch" items (order link, grill space, Lunch Club terms and so on) should be filled in before you announce it.
 
 ---
 
@@ -28,19 +30,18 @@ A step-by-step guide for Sam. No coding needed. Plan on about an hour, plus wait
 
 ---
 
-## Step 2. Turn on the forms and get emails
+## Step 2. Turn on the quote form and get emails
 
-The site has two forms: the **catering quote request** and the **Kreung Rewards sign-up**. Netlify collects both.
+The site has one form, the **catering quote request**. Each request goes to your Google Form, and Netlify keeps a backup copy and emails it to you. (Kreung Rewards doesn't use a form on this site. The "Join" buttons go straight to your Square Loyalty page.)
 
-1. In your Netlify site, go to **Forms**. If you see a button to **Enable form detection**, click it, then go to **Deploys → Trigger deploy → Deploy site** so Netlify finds the forms.
-2. You should now see `catering-quote` and `rewards-signup` listed under Forms.
+1. In your Netlify site, go to **Forms**. If you see a button to **Enable form detection**, click it, then go to **Deploys → Trigger deploy → Deploy site** so Netlify finds the form.
+2. You should now see `catering-quote` listed under Forms. If you also see an old `rewards-signup` form from an earlier version, you can ignore it or delete it.
 3. Go to **Site configuration → Notifications → Emails and webhooks → Form submission notifications**.
 4. Click **Add notification → Email notification**.
    - Event: **New form submission**
    - Email: `kreungkitchen@gmail.com`
    - Form: **catering-quote**
-5. Do the same again for **rewards-signup** (or choose "Any form" once to cover both).
-6. **Test it.** On the test address, fill in the quote form with your own details and send it. You should land on the thank-you page and get an email within a minute or two. Check your spam folder the first time and mark it "Not spam".
+5. **Test it.** On the test address, fill in the quote form with your own details and send it. You should land on the thank-you page, get an email within a minute or two, and see the answers in your Google Form responses. Check your spam folder the first time and mark it "Not spam".
 
 Spam is filtered automatically. Every form has a hidden trap field that bots fill in and people don't.
 
@@ -82,7 +83,7 @@ Log in to wherever your domain lives (see "Before you start") and find the **DNS
 
 In Netlify, choose **Set up Netlify DNS**. Netlify gives you four "name servers" (they look like `dns1.p01.nsone.net`). At your domain company, replace the current name servers with those four. This hands **all** DNS to Netlify, so first add your five Google Workspace `MX` records in Netlify DNS, copied exactly from your screenshot (the same names, values and priority numbers). If you skip this, email to your @kreungla.com addresses stops working. Option A is safer if you're not sure.
 
-**If your domain was bought through Square** and Square won't let you change these records, you can transfer the domain to another registrar (Netlify, Namecheap, Cloudflare and others). Ask Square support for the "transfer authorization code" (also called an EPP code). Don't cancel anything at Square until the new site is live.
+**Your DNS is at Register.com.** Make the Option A changes there. If you can't find the DNS settings or Register.com won't let you edit them, ask Square support how to edit DNS for a domain bought through Square. Don't transfer the domain or cancel anything at Square: the domain renews through Square on July 6, 2027, and Square Online keeps running for ordering.
 
 **How long does it take?** Usually under an hour, sometimes up to 24 to 48 hours. During the switch, some people see the old site and some see the new one. That's normal.
 
@@ -102,10 +103,11 @@ Open **www.kreungla.com** on your phone and computer and check:
 - [ ] `kreungla.com` (without www) forwards to `www.kreungla.com`.
 - [ ] Email still works. Send an email to one of your @kreungla.com addresses from another account and check that it arrives. Reply to it to check sending too.
 - [ ] Send a test quote request. You land on the thank-you page and get the email.
-- [ ] Send a test Rewards sign-up and get the email.
+- [ ] The "Join Kreung Rewards" buttons (Home and `/rewards`) open your Square Loyalty page.
 - [ ] The "Text us" button opens a text message to (562) 726-5072.
 - [ ] An old Square link still works. Try `www.kreungla.com/contact-us`; it should go to the catering page.
-- [ ] Online ordering: if you've turned Square ordering back on, the "Order ahead" buttons show and go to Square.
+- [ ] Your `.square.site` address from "Before you start" still opens Square Online.
+- [ ] Online ordering: if you've turned Square ordering back on and sent Claude the address, the "Order ahead" buttons show and go to Square Online.
 
 ---
 
@@ -136,7 +138,7 @@ This helps the new pages show up in search faster.
 
 - **Delete the style guide page.** It's an internal design reference. Ask Claude to remove `src/pages/styleguide.astro`, or delete it on GitHub.
 - **Update your Google Business Profile and Yelp** so the website link is `https://www.kreungla.com`.
-- **Square Online:** once the new site has been live for a week or two and everything works, you can turn off the old Square Online website. Keep Square for ordering and payments.
+- **Square Online:** keep Square Online running at its `.square.site` address for ordering and as a fallback. Only remove `kreungla.com` from it after the new site is confirmed working. Don't turn off or delete the Square Online site.
 
 ---
 
@@ -149,4 +151,4 @@ Every change merged into `main` on GitHub goes live on its own in a minute or tw
 
 ## Costs
 
-Netlify's free plan covers a site like this, including the forms. Netlify's free plan has a monthly limit on form submissions and bandwidth; check **netlify.com/pricing** for the current numbers, and Netlify emails you before you get close. The domain renewal stays with whoever you bought it from.
+Netlify's free plan covers a site like this, including the quote form. Netlify's free plan has a monthly limit on form submissions and bandwidth; check **netlify.com/pricing** for the current numbers, and Netlify emails you before you get close. The domain renewal stays with Square (next renewal July 6, 2027, with auto-renew on).

@@ -49,7 +49,7 @@ export const links = {
   giftCards: '', // Not set up yet in Square (Sam, 2026-11-24). Gift card links stay hidden until this is filled in.
   instagram: business.instagram.url,
   yelp: business.yelp.url,
-  rewardsInfo: 'https://squareup.com/loyalty/3PMJRQ6KW741N', // "How rewards work" (Square Loyalty, from Sam 2026-11-24)
+  rewardsJoin: 'https://squareup.com/loyalty/3PMJRQ6KW741N', // Kreung Rewards runs on Square Loyalty; "Join" buttons go here (from Sam 2026-11-24)
 };
 
 /**

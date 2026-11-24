@@ -52,7 +52,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
   - Follow My Gut, "A pop-up you shouldn't miss": https://www.followmygut.com/why-kreung-kitchen-is-a-pop-up-you-shouldnt-miss-in-la/
   - Eater LA (no link yet)
 - Hero background video (halftone, Cloudflare Stream): desktop ID bab5381544b22a2f7ae1a76cb9c7db48, mobile ID d528c1394beca3f29f256d42e5f91db3. Muted, autoplay, loop, no controls, grayscale/multiply; skipped for reduced motion.
-- Rewards: Kreung Rewards — $5 off when you join; earn a point every visit with a $15 minimum. "How rewards work" link: https://squareup.com/loyalty/3PMJRQ6KW741N
+- Rewards: Kreung Rewards — $5 off when you join; earn a point every visit with a $15 minimum. Runs on Square Loyalty (not Netlify). "Join Kreung Rewards" buttons link to https://squareup.com/loyalty/3PMJRQ6KW741N; there is no sign-up form on this site.
 - Family photos (from Sam, Nov 2026): Sam's baby photo, taken in the Khao-I-Dang refugee camp (chalkboard reads OUM SAMOEUN), and a photo of his mother, Mak, in a green lace top. Use with care.
 - Story: Sam was born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border. His family resettled in North Carolina, far from any Cambodian community. He moved to Long Beach in 2011 and to Culver City in 2017, where he met Christina and started cooking his mother's dishes himself. For years he told his mother, Mak, "I'm gonna bring Cambodian food to LA." She passed in late November 2023; her last words to him were to stop talking and start doing. On January 1, 2024, her birthday, Kreung LA got its first catering order.
 
@@ -64,7 +64,8 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 - "Best Cambodian Barbecue in Los Angeles. And it's not even close." — Pasqual Allen, Google
 
 ## External links
-- Online ordering (Square): [ORDER_URL — TODO] Online ordering is turned off for now; keep order buttons hidden until Sam sends the link before launch.
+- Online ordering (Square): [ORDER_URL — TODO] Online ordering runs on Square Online, which stays up at its free .square.site address (find it in Square Dashboard → Online → Website → Domains). Ordering is turned off for now; keep order buttons hidden until Sam sends that address.
+- Domain: kreungla.com was bought through Square; its DNS is at Register.com. Renews July 6, 2027 (keep auto-renew on in Square). Google Workspace email (MX records) must be left alone.
 - Gift cards (Square): not set up yet. Hide gift card links until Sam sets them up.
 - Instagram: https://www.instagram.com/kreung_la
 

@@ -219,16 +219,8 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
         <div>
           <h2 class="disp d-m">Get $5 off. Join Kreung Rewards.</h2>
           <p>{rewards.joinOffer}. {rewards.earn}</p>
-          <p><a class="inline-link" href={links.rewardsInfo} target="_blank" rel="noopener">How rewards work<span class="visually-hidden"> (opens in a new tab)</span></a></p>
         </div>
-        <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
-          <input type="hidden" name="form-name" value="rewards-signup" />
-          <input type="hidden" name="name" value="" />
-          <p class="visually-hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-          <label class="visually-hidden" for="rw-email">Email address</label>
-          <input id="rw-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required />
-          <button class="btn btn--plum" type="submit">Join and get $5 off</button>
-        </form>
+        <a class="btn btn--plum" href={links.rewardsJoin} rel="noopener">Join and get $5 off<span class="visually-hidden"> (Kreung Rewards on Square)</span></a>
       </div>
     </div>
   </section>
@@ -308,8 +300,8 @@ const herbs = [...kreungIngredients, ...kreungIngredients];
   .club { margin-top: clamp(48px, 7vw, 96px); background: var(--yellow); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 26px; padding: clamp(24px, 5vw, 56px); display: grid; gap: 24px; align-items: center; box-shadow: 8px 10px 0 var(--plum); }
   .club h2 { margin: 0 0 10px; }
   .club p { margin: 0; }
-  .club form { display: flex; gap: 10px; flex-wrap: wrap; }
-  .club input[type='email'] { flex: 1 1 220px; min-width: 0; height: 56px; border: 2.5px solid var(--plum); border-radius: 999px; padding: 0 20px; font: 500 17px var(--f-text); background: #fff; color: var(--plum); }
+  .club > .btn { justify-self: start; }
+  @media (min-width: 860px) { .club > .btn { justify-self: center; } }
   @media (min-width: 860px) { .club { grid-template-columns: 1fr 1fr; } }
 
   .more-links { margin-top: 22px; font-weight: 700; }

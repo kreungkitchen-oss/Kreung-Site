@@ -50,7 +50,6 @@ Merge a change into `main` on GitHub and Netlify publishes it in a minute or two
 Two Netlify Forms, no extra services:
 
 - `catering-quote`: the quote request with the price estimator. Sends people to `/thanks`.
-- `rewards-signup`: Kreung Rewards sign-up. Sends people to `/rewards-thanks`.
 
 Both use a hidden honeypot field to block spam. Set up email notifications in Netlify (see `docs/DEPLOY.md`, Step 2).
 

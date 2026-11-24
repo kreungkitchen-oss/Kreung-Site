@@ -4,6 +4,9 @@
 # Astro names the sitemap sitemap-index.xml; this makes /sitemap.xml work too.
 /sitemap.xml         /sitemap-index.xml    301
 
+# The rewards sign-up moved to Square Loyalty.
+/rewards-thanks      /rewards              301
+
 /contact-us          /catering             301
 /contact             /catering             301
 /menu                /catering-menu        301

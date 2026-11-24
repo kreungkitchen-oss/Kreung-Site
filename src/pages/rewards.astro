@@ -21,19 +21,8 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Kreung Rewards', path: '/r
       </div>
       <div class="join card card--line" id="join">
         <h2 class="disp d-m">Join and get $5 off</h2>
-        <form name="rewards-signup" method="POST" action="/rewards-thanks" data-netlify="true" netlify-honeypot="company-website">
-          <input type="hidden" name="form-name" value="rewards-signup" />
-          <p class="visually-hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label></p>
-          <div class="field">
-            <label for="rw-name">First name</label>
-            <input id="rw-name" name="name" type="text" autocomplete="given-name" />
-          </div>
-          <div class="field">
-            <label for="rw-email2">Email address</label>
-            <input id="rw-email2" name="email" type="email" autocomplete="email" required />
-          </div>
-          <button class="btn" type="submit">Join Kreung Rewards</button>
-        </form>
+        <p>{rewards.name} runs on Square. Join on the Square page, then earn points every time you visit our booth.</p>
+        <a class="btn" href={links.rewardsJoin} rel="noopener">Join Kreung Rewards<span class="visually-hidden"> on Square</span></a>
       </div>
     </div>
   </section>
@@ -42,11 +31,11 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Kreung Rewards', path: '/r
     <div class="wrap">
       <h2 id="how-h">How it works</h2>
       <ol class="howto">
-        <li><b>Join.</b> Sign up with your email and get {rewards.joinOffer.toLowerCase()}.</li>
+        <li><b>Join.</b> Sign up on Square and get {rewards.joinOffer.toLowerCase()}.</li>
         <li><b>Visit.</b> {rewards.earn}</li>
         <li><b>Save.</b> Points add up to more Cambodian BBQ.</li>
       </ol>
-      <p><a href={links.rewardsInfo} target="_blank" rel="noopener">How rewards work<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+      <p><a class="btn btn--y" href={links.rewardsJoin} rel="noopener">Join Kreung Rewards<span class="visually-hidden"> on Square</span></a></p>
     </div>
   </section>
 
@@ -55,6 +44,6 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Kreung Rewards', path: '/r
 
 <style>
   .join h2 { --hf: var(--plum); --hs: var(--pink); --hsw: 0px; margin-bottom: 16px; }
-  .join form { display: grid; gap: 4px; }
+  .join p { margin: 0 0 8px; }
   .join .btn { --fg: var(--plum); --bg: var(--cream); justify-self: start; margin-top: 8px; }
 </style>
