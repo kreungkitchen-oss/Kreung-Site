@@ -1,0 +1,44 @@
+---
+/**
+ * Catering menu highlights with dietary labels.
+ * Labels only where true: Vegan is confirmed for tofu skewers. Every dish has
+ * no dairy or peanuts (CLAUDE.md). Gluten-free: TODO(Sam) — nothing is labeled
+ * gluten-free until Sam confirms which dishes are (oyster sauce contains gluten).
+ */
+import { policies } from '../data/business';
+interface Props { headingLevel?: 3 | 4 }
+const { headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}`;
+const items: { name: string; text: string; labels: string[] }[] = [
+  { name: 'Grilled lemongrass chicken', text: 'Marinated in kreung and grilled over fire. Our best seller.', labels: [] },
+  { name: 'Beef skewers', text: 'Kreung-marinated beef, charred on the grill.', labels: [] },
+  { name: 'Tofu skewers', text: 'Grilled tofu skewers for your plant-based guests.', labels: ['Vegan'] },
+  { name: 'Short rib', text: 'Part of The Full Experience, with all four meats.', labels: [] },
+  { name: 'Coconut chive corn salad', text: 'Sweet corn with coconut and chives.', labels: [] },
+  { name: 'Pickled vegetables', text: 'Bright and crunchy, to cut through the smoke.', labels: [] },
+  { name: 'Rice', text: 'Steamed rice, or coconut lime leaf rice.', labels: [] },
+  { name: 'House sauces', text: 'Included with every package.', labels: [] },
+];
+---
+<ul class="mh" role="list">
+  {items.map((it) => (
+    <li class="mh__item">
+      <H class="mh__name">{it.name}</H>
+      <p>{it.text}</p>
+      {it.labels.length > 0 && <p class="mh__labels">{it.labels.map((l) => <span class="diet">{l}</span>)}</p>}
+    </li>
+  ))}
+</ul>
+<p class="mh__all"><span class="diet diet--all">No dairy</span> <span class="diet diet--all">No peanuts</span> in any of our food.</p>
+<p class="mh__allergy"><b>Allergy note:</b> {policies.allergyNote}</p>
+<style>
+  .mh { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .mh__item { background: var(--white, #fff); color: var(--plum); border: 2.5px solid var(--plum); border-radius: 20px; padding: 18px; display: grid; gap: 6px; align-content: start; }
+  .mh__name { margin: 0; font-size: 20px; line-height: 1.15; color: var(--plum); -webkit-text-stroke: 0; text-shadow: none; }
+  .mh__item p { margin: 0; }
+  .mh__labels { display: flex; gap: 6px; flex-wrap: wrap; }
+  .diet { display: inline-block; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; background: var(--teal-d); color: #fff; }
+  .diet--all { background: var(--plum); color: var(--cream); }
+  .mh__all { margin: 20px 0 6px; font-weight: 700; }
+  .mh__allergy { margin: 0; max-width: 75ch; }
+</style>

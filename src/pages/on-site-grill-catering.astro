@@ -9,7 +9,7 @@ const faqs = [
   { q: 'What events is live grilling good for?', a: 'Company events, parties and weddings. Anywhere you want the smell of the grill and food served hot off the fire.' },
   { q: 'How many guests can you grill for?', a: `We cater for ${policies.guestsLabel} guests.` },
   { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks).` },
-  { q: 'What space do you need?', a: 'Tell us about your venue when you ask for a quote, and we will confirm the space and setup we need.' },
+  { q: 'What do you need from our venue?', a: `Very little. Our setup is self-sufficient. ${policies.onsiteSetup} Tell us about your venue when you ask for a quote, and we will confirm the space we need.` },
 ];
 ---
 <NichePage
@@ -38,13 +38,13 @@ const faqs = [
       <h2>What we bring</h2>
       <ul>
         <li>Our grill and our team to cook and serve</li>
+        <li>Our own generators and a handwashing station</li>
         <li>Kreung-marinated meats and vegan tofu skewers</li>
         <li>Rice, coconut corn, pickled vegetables and house sauces</li>
       </ul>
       <h2>Space and setup</h2>
-      <p>Tell us about your venue when you ask for a quote. We'll confirm the space and setup we need for the grill.</p>
-      {/* TODO(Sam): grill space and power requirements (outdoor only? how much room? power or water needed?). */}
-      <p class="todo">Grill space and power needs coming soon</p>
+      <p>We're self-sufficient. {policies.onsiteSetup} Tell us about your venue when you ask for a quote, and we'll confirm the space we need for the grill.</p>
+      {/* TODO(Sam): how much room the grill setup needs, and whether it must be outdoors. */}
     </div>
     <dl class="facts facts--1">
       <div><dt>Minimum</dt><dd>{money(policies.minimumOnsite)} for our grill on-site.</dd></div>

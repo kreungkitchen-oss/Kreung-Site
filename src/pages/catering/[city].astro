@@ -1,0 +1,74 @@
+---
+/**
+ * City landing pages: /catering/culver-city, /catering/santa-monica, ...
+ * Copy lives in src/data/cities.ts (unique per city). The frame is NichePage.
+ */
+import NichePage from '../../components/NichePage.astro';
+import { cities, cityBySlug, type City } from '../../data/cities';
+import { policies, money, reviews } from '../../data/business';
+
+export function getStaticPaths() {
+  return cities.map((c) => ({ params: { city: c.slug } }));
+}
+
+const photos = import.meta.glob<{ default: ImageMetadata }>('../../assets/photos/*.jpg', { eager: true });
+const c = cityBySlug(Astro.params.city!) as City;
+const photo = photos[`../../assets/photos/${c.photo}`].default;
+const reviewSets: (keyof typeof reviews)[][] = [
+  ['repeatClient', 'rareBeauty', 'janeT'],
+  ['rareBeauty', 'janeT', 'pasqual'],
+  ['janeT', 'repeatClient', 'randall'],
+];
+const reviewKeys = reviewSets[cities.indexOf(c) % reviewSets.length];
+const near = c.nearby.map((s) => cityBySlug(s)!).filter(Boolean);
+---
+<NichePage
+  title={c.title}
+  description={c.description}
+  path={`/catering/${c.slug}`}
+  crumb={c.name}
+  h1={c.h1}
+  lede={c.lede}
+  heroFacts={`Most orders ${policies.typicalRange} per person · ${money(policies.minimumDropoff)} minimum drop-off · Reply within 24 hours`}
+  photo={photo}
+  photoAlt={c.photoAlt}
+  button="Get a quote in 24 hours"
+  estimateHeading={`Get your ${c.name} catering quote`}
+  reviewKeys={reviewKeys}
+  faqs={c.faqs}
+  faqHeading={`${c.name} catering questions`}
+  ctaHeading={`Feed your ${c.name} team.`}
+  bodyTone="cream"
+>
+  <div class="cols">
+    <div class="prose">
+      <h2>{c.corpHeading}</h2>
+      {c.corp.map((p) => <p>{p}</p>)}
+      <h2>{c.cuisineHeading}</h2>
+      {c.cuisine.map((p) => <p>{p}</p>)}
+      {c.tasteFirst && <p><b>{c.tasteFirst}</b></p>}
+      <p>See every option on our main <a href="/catering">catering page</a>, check <a href="/catering-pricing">how pricing works</a>, or read the <a href="/catering-menu">full catering menu</a>.</p>
+    </div>
+    <div class="card card--line">
+      <h2 class="h-card">Good for</h2>
+      <ul class="check">{c.goodFor.map((g) => <li>{g}</li>)}</ul>
+      <dl class="cfacts">
+        <div><dt>Price</dt><dd>Most orders {policies.typicalRange} per person. Premium spread ${policies.premiumTop}.</dd></div>
+        <div><dt>Minimum</dt><dd>{money(policies.minimumDropoff)} drop-off. {money(policies.minimumOnsite)} on-site.</dd></div>
+        <div><dt>Delivery</dt><dd>From ${policies.deliveryFrom}, setup included.</dd></div>
+        <div><dt>Book ahead</dt><dd>At least {policies.leadTimeDays} days.</dd></div>
+      </dl>
+      <p class="near-h">Also near you:</p>
+      <ul class="near-l">{near.map((n) => <li><a href={`/catering/${n.slug}`}>{n.name} catering</a></li>)}</ul>
+    </div>
+  </div>
+</NichePage>
+<style>
+  .h-card { font-size: 24px; margin: 0 0 10px; }
+  .cfacts { margin: 18px 0 0; display: grid; gap: 10px; }
+  .cfacts dt { font-weight: 900; }
+  .cfacts dd { margin: 0; }
+  .near-h { margin: 18px 0 6px; font-weight: 800; }
+  .near-l { margin: 0; padding-left: 1.2em; }
+  .near-l a { font-weight: 700; color: inherit; }
+</style>

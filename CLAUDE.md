@@ -27,6 +27,7 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
   - Thursday: Westwood Village Farmers Market, 1036 Broxton Ave, Los Angeles, 12–5 PM
   - Saturday: Playa Vista Farmers Market, 12775 Millennium Dr, Playa Vista, 9 AM–2 PM
   - Sunday: Smorgasburg LA at ROW DTLA, 777 S Alameda St, Los Angeles, 10 AM–4 PM
+  - Also a Santa Monica farmers market (Sam, Nov 25 2026; which market/day/hours still TODO).
   - Note: schedules can change; check @kreung_la. Evening pop-ups at LA Aleworks (Hawthorne) and events.
 - Market menu (from Sam's menu board, Nov 2026): The Sampler $25 (chicken, pork belly, beef skewer; our three most popular meats), Lemongrass Chicken Plate $16.50 (best seller), Lemongrass Beef Skewer Plate $19 (two beef skewers), Pork Belly Plate $16.50 (slow roasted, finished on the grill). Every plate includes white rice, coconut corn and pickled veggies. Add a short rib to any plate $7; upgrade to coco-lime leaf rice $2. Small bites: pork belly $6.50, chicken thigh $6.50, beef skewer $7 (3 for $18), short rib $8 (2 for $15), pickled veggies $4.50, coconut corn $4.50, coco-lime leaf rice $4.50, white rice $3.50, extra sauce $0.75. Drinks: lemonade $7, soda $2.50, bottled water $3.50.
 - Catering packages:
@@ -35,13 +36,17 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
   - The Full Experience $33/person: all 4 meats including short rib; coconut lime leaf rice. For weddings and celebrations.
   - Every package includes house sauces.
 - Catering menu items: grilled lemongrass chicken, beef skewers, tofu skewers (vegan), short rib, coconut chive corn salad, pickled vegetables, rice options incl. coconut lime leaf rice, house sauces. Drinks (bottled water, sodas, sparkling water) available separately.
+- Pricing summary (Sam, Nov 25 2026): most orders $20–25 per person; premium spread up to $33/person.
 - Minimums: $1,000 for pickup and drop-off; $2,000 for our grill on-site.
+- On-site events are self-sufficient: we bring our own generators and handwashing station (Sam, Nov 25 2026).
+- Film/TV crews: drop-off, individually packaged skewer meals (Sam, Nov 25 2026).
 - Delivery: most of LA County, delivery starts at $75, includes setup.
 - Production fee: 10% on drop-off orders for 100+ guests; 20% for on-site cooking (starting at $400). One-time charge, not a gratuity. Sales tax applies.
 - Guest range: 30 to 300+.
 - Lead time: book at least 14 days (2 weeks) ahead.
 - Response time: reply within 24 hours, aiming for same day. Estimates in 24–48 hours.
 - Allergy note: some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil. Our food contains no dairy or peanuts.
+- Case studies (Sam, Nov 25 2026): Live Nation, repeat client, 4 events in 12 months. Sony Pictures, beef and tofu skewer drop-off for about 50.
 - Clients: SpaceX, Adobe, Live Nation (booked 4 times in 12 months), Amazon, Sony Pictures, DreamWorks, Caltech, Cedars-Sinai, Shamrock Capital, Truist, Rare Beauty, Altruist, Causeway Capital Management, Karney Properties, Layla Bagels. Sam approved showing these client names and logos (Nov 24, 2026; they are already on the current site). Logo files are in public/images/clients/; clients without a logo show as text tiles (`clientTiles` in business.ts).
 - Ratings: 4.9 on Google (45 reviews), 4.9 on Yelp (60 reviews) — as of Nov 2026.
 - Press:
@@ -69,12 +74,14 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
 - Instagram: https://www.instagram.com/kreung_la
 
 ## Site map
-Home `/` · Catering hub `/catering` · `/corporate-catering` (keep this exact URL, it's already indexed) · `/catering-pricing` · `/catering-menu` · `/cambodian-catering-los-angeles` · `/southeast-asian-catering` · `/on-site-grill-catering` · `/production-catering` · `/aapi-heritage-month-catering` · `/holiday-party-catering` · `/office-lunch-club` · `/about` · `/find-us` · `/faq` · `/press` · `/guides/what-is-kreung` · `/guides/cambodian-vs-thai-food` · `/guides/office-lunch-ideas-los-angeles` · `/guides/catering-cost-los-angeles` · `/rewards` · `/404`
+Home `/` · Catering hub `/catering` · `/corporate-catering` (keep this exact URL, it's already indexed) · `/catering-pricing` · `/catering-menu` · `/cambodian-catering-los-angeles` · `/southeast-asian-catering` · `/on-site-grill-catering` · `/production-catering` · city pages `/catering/culver-city`, `/catering/santa-monica`, `/catering/playa-vista`, `/catering/westwood`, `/catering/el-segundo`, `/catering/downtown-la` (copy in `src/data/cities.ts`) · `/aapi-heritage-month-catering` · `/holiday-party-catering` · `/office-lunch-club` · `/about` · `/find-us` · `/faq` · `/press` · `/guides/what-is-kreung` · `/guides/cambodian-vs-thai-food` · `/guides/office-lunch-ideas-los-angeles` · `/guides/catering-cost-los-angeles` · `/rewards` · `/404`
 
 ## Page rules
 - Each page has ONE job and one primary button, repeated at top and bottom.
 - Every catering page includes: specific H1 naming the search (e.g. "Cambodian BBQ Catering in Los Angeles"), who it's for, price range and minimums, proof (client list, 2–3 review quotes, press), a photo of a real spread, 5–8 FAQs with FAQPage JSON-LD, links to /catering-pricing, /catering-menu and /catering.
 - Never invent clients, numbers, reviews, awards or policies. If something is missing, add a visible TODO comment and tell me.
+- Placeholder slots for missing content use `<Placeholder>` ("[REAL QUOTE NEEDED]", "[LOGO NEEDED]"...). They show on deploy previews and local builds only, never on the live site (Netlify CONTEXT=production).
+- Nothing is labeled gluten-free until Sam confirms which dishes are.
 
 ## Repo notes
 - All business facts live in `src/data/business.ts`. Pages import from there; update facts there (and in this file) only.

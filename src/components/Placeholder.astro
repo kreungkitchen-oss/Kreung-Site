@@ -1,0 +1,24 @@
+---
+/**
+ * A clearly marked slot for content we still need from Sam.
+ * Shows only on deploy previews and local builds (see `showPlaceholders`),
+ * never on the live site, so the site never shows a fake or empty item.
+ */
+import { showPlaceholders } from '../data/business';
+interface Props { label: string; detail?: string; as?: 'div' | 'li' | 'figure' }
+const { label, detail, as = 'div' } = Astro.props;
+const Tag = as;
+---
+{showPlaceholders && (
+  <Tag class="ph-slot" data-placeholder>
+    <strong class="ph-slot__label">[{label}]</strong>
+    {detail && <span class="ph-slot__detail">{detail}</span>}
+    <span class="ph-slot__note">Preview only. This box is hidden on the live site until it's filled in.</span>
+  </Tag>
+)}
+<style>
+  .ph-slot { display: grid; gap: 6px; align-content: center; padding: 18px; border-radius: 18px; border: 2.5px dashed var(--plum); background: repeating-linear-gradient(-45deg, #fff1a6 0 10px, #ffe97a 10px 20px); color: var(--plum); min-height: 96px; }
+  .ph-slot__label { font-weight: 900; letter-spacing: 0.02em; }
+  .ph-slot__detail { font-size: 15px; }
+  .ph-slot__note { font-size: 13px; opacity: 0.85; }
+</style>

@@ -3,9 +3,10 @@ import { tone } from '../data/tones';
 import { Image } from 'astro:assets';
 import logo from '../assets/brand/logo-horizontal.png';
 import { business, markets, links, khmer } from '../data/business';
+import { cities } from '../data/cities';
 const catering = [
   ['/catering', 'Plan an event'],
-  ['/corporate-catering#estimate', 'Get an estimate'],
+  ['/catering#estimate', 'Get an estimate'],
   ['/corporate-catering', 'Corporate catering'],
   ['/catering-pricing', 'Catering pricing'],
   ['/catering-menu', 'Catering menu'],
@@ -59,6 +60,8 @@ const guides = [
       <ul>{eat.map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
       <h2 class="fh fh--gap">Guides</h2>
       <ul>{guides.map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+      <h2 class="fh fh--gap">Catering near you</h2>
+      <ul>{cities.map((c) => <li><a href={`/catering/${c.slug}`}>{c.name}</a></li>)}</ul>
     </nav>
     <div class="legal">
       <span>© {new Date().getFullYear()} {business.name} ({business.formerly}) · {business.city}, CA</span>

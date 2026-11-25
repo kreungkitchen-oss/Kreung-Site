@@ -1,5 +1,6 @@
 /** JSON-LD builders. Only use facts from business.ts. */
-import { business, BUSINESS_ID, SITE_URL, ratings, videos } from './business';
+import { business, BUSINESS_ID, SITE_URL, ratings, videos, packages, packagesNote, policies } from './business';
+import { cities } from './cities';
 
 export const businessEntity = () => ({
   '@context': 'https://schema.org',
@@ -12,7 +13,7 @@ export const businessEntity = () => ({
   image: `${SITE_URL}/images/og-image.jpg`,
   slogan: business.taglines.mission,
   description: business.description,
-  servesCuisine: ['Cambodian', 'Khmer', 'Barbecue'],
+  servesCuisine: ['Cambodian', 'Khmer', 'Southeast Asian', 'Barbecue'],
   foundingDate: business.foundingDate,
   founder: [
     { '@type': 'Person', '@id': `${SITE_URL}/about#sam-oum`, name: 'Sam Oum' },
@@ -20,14 +21,32 @@ export const businessEntity = () => ({
   ],
   email: business.email,
   telephone: business.phone.e164,
+  // TODO(Sam): street address. Until then, city only (fine for a caterer with no storefront).
   address: {
     '@type': 'PostalAddress',
+    ...(business.streetAddress ? { streetAddress: business.streetAddress } : {}),
+    ...(business.postalCode ? { postalCode: business.postalCode } : {}),
     addressLocality: business.locality,
     addressRegion: business.state,
     addressCountry: 'US',
   },
-  areaServed: { '@type': 'AdministrativeArea', name: business.areaServed },
-  priceRange: '$20–$33 per person (catering)',
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: business.areaServed },
+    ...cities.map((c) => ({ '@type': 'City', name: `${c.name}, CA`, url: `${SITE_URL}/catering/${c.slug}` })),
+  ],
+  priceRange: `$${packages[0].price}–$${packages[packages.length - 1].price} per person (catering)`,
+  currenciesAccepted: 'USD',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Catering packages',
+    url: `${SITE_URL}/catering-pricing`,
+    itemListElement: packages.map((p) => ({
+      '@type': 'Offer',
+      name: `${p.name} catering package`,
+      description: `${p.proteins}; ${p.sides}. ${packagesNote} Minimum order $${policies.minimumDropoff.toLocaleString('en-US')} (drop-off).`,
+      priceSpecification: { '@type': 'UnitPriceSpecification', price: p.price, priceCurrency: 'USD', unitText: 'per person' },
+    })),
+  },
   sameAs: [business.instagram.url, business.yelp.url],
   // aggregateRating intentionally omitted: Google and Yelp ratings are separate
   // third-party platforms, and Google's guidelines don't allow self-serving
