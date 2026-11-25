@@ -19,11 +19,11 @@ const isCurrent = (href: string) => current === href || (href !== '/' && current
         {nav.map((n) => (
           <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
         ))}
-        <li class="site-nav__cta"><a class="hbtn hbtn--red" href="/corporate-catering#estimate">Get a catering quote</a></li>
+        <li class="site-nav__cta"><a class="hbtn hbtn--red" href="/catering#estimate">Get a catering quote</a></li>
       </ul>
     </nav>
     <div class="header-actions">
-      <a class="hbtn hbtn--red header-cta" href="/corporate-catering#estimate">Get a quote</a>
+      <a class="hbtn hbtn--red header-cta" href="/catering#estimate">Get a quote</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="visually-hidden">Menu</span><span class="nav-toggle__bars" aria-hidden="true"></span>
       </button>

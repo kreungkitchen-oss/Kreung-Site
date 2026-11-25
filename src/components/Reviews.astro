@@ -1,7 +1,13 @@
 ---
+/**
+ * Review quotes. Only approved, real quotes from business.ts.
+ * `placeholders` adds empty "[REAL QUOTE NEEDED]" slots for quotes Sam still
+ * needs to collect. They show on deploy previews only, never on the live site.
+ */
 import { reviews, type Review } from '../data/business';
-interface Props { keys?: (keyof typeof reviews)[] }
-const { keys = Object.keys(reviews) as (keyof typeof reviews)[] } = Astro.props;
+import Placeholder from './Placeholder.astro';
+interface Props { keys?: (keyof typeof reviews)[]; placeholders?: string[] }
+const { keys = Object.keys(reviews) as (keyof typeof reviews)[], placeholders = [] } = Astro.props;
 const list: Review[] = keys.map((k) => reviews[k]);
 ---
 <div class="grid grid--3 reviews">
@@ -12,4 +18,5 @@ const list: Review[] = keys.map((k) => reviews[k]);
       <figcaption>{r.author}<span>, {r.source}</span></figcaption>
     </figure>
   ))}
+  {placeholders.map((d) => <Placeholder as="figure" label="REAL QUOTE NEEDED" detail={d} />)}
 </div>

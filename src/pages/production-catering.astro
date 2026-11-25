@@ -1,24 +1,27 @@
 ---
 import NichePage from '../components/NichePage.astro';
-import { policies, money } from '../data/business';
+import { policies, money, caseStudies } from '../data/business';
 import photo from '../assets/photos/serving-line.jpg';
 
 const faqs = [
-  { q: 'Do you cater film and TV crews?', a: 'Yes. Teams at Sony Pictures, DreamWorks and Live Nation have booked us. We drop off hot food and set it up so your crew can eat and get back to work.' },
+  { q: 'Do you cater film and TV crews?', a: 'Yes. Teams at Sony Pictures, DreamWorks and Live Nation have booked us. We drop off hot food so your crew can eat and get back to work.' },
+  { q: 'Can you pack each meal on its own?', a: 'Yes. For crews we can drop off individually packed skewer meals, so everyone can grab one and go. Tell us your crew size and any vegan meals you need.' },
   { q: 'Can you deliver to a set or studio lot?', a: `We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup. Send us your call time and location when you ask for a quote.` },
   { q: 'How much notice do you need?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
   { q: 'What is the minimum order?', a: `${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.` },
   { q: 'Is there a production fee for big crews?', a: `Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests have a ${policies.productionFeeDropoffPct}% production fee. ${policies.productionFeeNote}` },
   { q: 'Can you handle dietary needs on a crew?', a: `Yes. Our tofu skewers are vegan, and our food contains no dairy or peanuts. ${policies.allergyNote}` },
+  { q: 'Can you cook on location?', a: `Yes. Our on-site setup is self-sufficient. ${policies.onsiteSetup} The minimum is ${money(policies.minimumOnsite)}, with a ${policies.productionFeeOnsitePct}% production fee starting at $${policies.productionFeeOnsiteMin}.` },
 ];
 ---
 <NichePage
-  title="Film, TV & Studio Catering in Los Angeles | Kreung LA"
-  description="Crew meals for LA film, TV, music and photo shoots. Cambodian BBQ dropped off hot and set up. Trusted by Sony Pictures, DreamWorks and Live Nation."
+  title="Film & TV Production Catering in LA | Kreung LA"
+  description="Individually packed Cambodian BBQ skewer meals for LA film and TV crews, dropped off on set or on the lot. Booked by Sony Pictures and DreamWorks."
   path="/production-catering"
   crumb="Production Catering"
-  h1="Film, TV & Studio Catering in Los Angeles"
-  lede="Crew meals that show up hot and on time. We drop off and set up Cambodian BBQ for film, TV, music and photo shoots across LA."
+  h1="Film and TV Production Catering in Los Angeles"
+  lede="Individually packed skewer meals, dropped off on time. Crews grab one and get back to work. Booked by teams at Sony Pictures and DreamWorks."
+  button="Get a crew quote"
   photo={photo}
   photoAlt="Guests lining up at a Kreung LA catering table piled with grilled meats and rice"
   estimateType="Corporate or office lunch"
@@ -32,7 +35,10 @@ const faqs = [
   <div class="cols">
     <div class="prose">
       <h2>Built for call times</h2>
-      <p>You have a schedule to keep. Tell us your call time, crew size and location, and we'll plan the drop-off around it. We set up the food so your team can serve themselves fast.</p>
+      <p>You have a schedule to keep. Tell us your call time, crew size and location, and we'll plan the drop-off around it.</p>
+      <h2>Individually packed skewer meals</h2>
+      <p>No buffet line slowing down your crew. We can pack each meal on its own: grilled skewers with rice and sides, ready to grab. Mix beef, chicken and vegan tofu skewers to fit your crew.</p>
+      <p>Most orders run {policies.typicalRange} per person, with a {money(policies.minimumDropoff)} minimum for drop-off.</p>
       <h2>How it works</h2>
       <ol>
         <li>Get your estimate below, with your crew size and date.</li>
@@ -40,12 +46,15 @@ const faqs = [
         <li>Book at least {policies.leadTimeDays} days out.</li>
         <li>We deliver, set up and get out of your way.</li>
       </ol>
-      <p>Need a big hot lunch on location? Ask about our <a href="/on-site-grill-catering">on-site grill</a>.</p>
+      <p>Need a big hot lunch on location? Our <a href="/on-site-grill-catering">on-site grill</a> setup is self-sufficient. {policies.onsiteSetup}</p>
+      <p>See all our options on the <a href="/catering">catering page</a>, or check <a href="/catering-pricing">pricing</a> and the <a href="/catering-menu">menu</a>.</p>
     </div>
     <div class="card card--line">
       <h3>Trusted on set</h3>
       <p>Teams at <strong>Sony Pictures</strong>, <strong>DreamWorks</strong> and <strong>Live Nation</strong> have booked Kreung LA. Live Nation has booked us 4 times in 12 months.</p>
+      <p><strong>Sony Pictures:</strong> {caseStudies[1].text}</p>
       <ul class="check">
+        <li>Individually packed skewer meals</li>
         <li>Drop-off and setup included with delivery</li>
         <li>Vegan tofu skewers for plant-based crew</li>
         <li>No dairy or peanuts in our food</li>

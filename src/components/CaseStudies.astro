@@ -1,0 +1,28 @@
+---
+/**
+ * Short case-study cards. Facts only from `caseStudies` in business.ts.
+ * Missing details show as preview-only placeholders.
+ */
+import { caseStudies, showPlaceholders } from '../data/business';
+import Placeholder from './Placeholder.astro';
+interface Props { headingLevel?: 3 | 4 }
+const { headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}`;
+---
+<ul class="grid grid--2 cases" role="list">
+  {caseStudies.map((c) => (
+    <li class="case">
+      <p class="eyebrow case__client">{c.client}</p>
+      <H class="case__h">{c.headline}</H>
+      <p>{c.text}</p>
+      {showPlaceholders && <Placeholder label="DETAILS NEEDED" detail={c.todo} />}
+    </li>
+  ))}
+</ul>
+<style>
+  .cases { list-style: none; padding: 0; margin: 0; }
+  .case { background: var(--cream); color: var(--plum); border: 2.5px solid var(--plum); box-shadow: 6px 6px 0 var(--plum); border-radius: var(--r-card, 24px); padding: 24px; display: grid; gap: 10px; align-content: start; }
+  .case__client { margin: 0; color: var(--pink-d); }
+  .case__h { margin: 0; font-size: clamp(22px, 2.6vw, 28px); line-height: 1.1; color: var(--plum); -webkit-text-stroke: 0; text-shadow: none; }
+  .case p { margin: 0; }
+</style>

@@ -18,6 +18,10 @@ export const business = {
   locality: 'Culver City',
   state: 'CA',
   areaServed: 'Los Angeles County',
+  // TODO(Sam): street address for Google and schema (leave blank to show city only,
+  // which is normal for a caterer with no storefront).
+  streetAddress: '',
+  postalCode: '', // TODO(Sam): ZIP code, if you add a street address
   email: 'kreungkitchen@gmail.com',
   // Phone from the current kreungla.com; Sam approved keeping the floating "Text us" button (2026-11-24).
   phone: { display: '(562) 726-5072', e164: '+15627265072' },
@@ -130,6 +134,12 @@ export const markets: Market[] = [
 export const marketNote =
   'Schedules can change, so check @kreung_la on Instagram before you head out. We also do evening pop-ups at LA Aleworks in Hawthorne, plus events.';
 
+/**
+ * Sam (2026-11-25) says we also sell at a Santa Monica farmers market.
+ * TODO(Sam): which market, day, hours and address, so it can join `markets` above.
+ */
+export const otherMarkets = ['a Santa Monica farmers market'];
+
 export const mapsUrl = (m: Market) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${m.name}, ${m.address}`)}`;
 
@@ -236,6 +246,11 @@ export const policies = {
   guestsLabel: '30 to 300+',
   leadTimeDays: 14,
   responseTime: 'We reply within 24 hours, aiming for same day.',
+  // From Sam (2026-11-25): on-site events are self-sufficient.
+  onsiteSetup: 'We bring our own generators and a handwashing station.',
+  // Pricing summary from Sam (2026-11-25).
+  typicalRange: '$20–25',
+  premiumTop: 33,
   estimateTime: 'Estimates in 24–48 hours.',
   allergyNote:
     'Some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil. Our food contains no dairy or peanuts.',
@@ -267,6 +282,32 @@ export const clientTiles: Client[] = [
 ];
 export const clients = clientTiles.map((c) => c.name);
 export const clientNote = 'Live Nation has booked us 4 times in 12 months.';
+
+/**
+ * Short case studies (facts from Sam, 2026-11-25). Only these facts are known.
+ * `todo` lists what we still need from Sam; it shows only on deploy previews.
+ */
+export const caseStudies = [
+  {
+    client: 'Live Nation',
+    headline: 'Repeat client: 4 events in 12 months',
+    text: 'Live Nation has booked Kreung LA 4 times in 12 months.',
+    todo: 'Event types, guest counts, which package, and a quote from the Live Nation team',
+  },
+  {
+    client: 'Sony Pictures',
+    headline: 'Beef and tofu skewer drop-off for about 50',
+    text: 'We dropped off beef skewers and vegan tofu skewers for a Sony Pictures team of about 50.',
+    todo: 'Team or occasion, date, and a quote from the Sony Pictures contact',
+  },
+] as const;
+
+/**
+ * Placeholder slots ("[REAL QUOTE NEEDED]", "[LOGO NEEDED]" and so on) show only
+ * on deploy previews and local builds, never on the live site. Netlify sets
+ * CONTEXT=production for the live build.
+ */
+export const showPlaceholders = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.CONTEXT !== 'production';
 
 export const ratings = {
   google: { value: 4.9, count: 45 },

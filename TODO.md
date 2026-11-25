@@ -7,10 +7,24 @@ Everything the site still needs from Sam before (or after) launch. Each item is 
 | # | What we need | Where it shows | Where to change it |
 |---|---|---|---|
 | 1 | **Square online ordering link** (ordering is turned off for now) | "Order ahead" buttons on Home and Find Us, the FAQ answer, and the `/order` redirects. All hidden until the link exists. | `links.order` in `src/data/business.ts`, and the three `/order` lines in `public/_redirects` |
-| 2 | **Grill space and power needs** for on-site events | `/on-site-grill-catering` | `src/pages/on-site-grill-catering.astro` |
 | 3 | **Office Lunch Club pricing and terms** | `/office-lunch-club` | `lunchClub` in `src/data/business.ts` and the page |
 | 4 | **Turn on the Netlify email** for new quote requests (backup copy of every lead to kreungkitchen@gmail.com). This is a Netlify setting, not code. | Netlify dashboard | See Step 2 in `docs/DEPLOY.md` |
 | 5 | **Re-verify Google Search Console** (the old meta tag lives on the Square site). Easiest: add a DNS `TXT` record. Or send Claude the meta tag code. Then submit `sitemap-index.xml` to Google and Bing. | Search Console, Bing Webmaster Tools | Step 7 in `docs/DEPLOY.md`; meta tag code goes in `siteVerification` in `src/data/business.ts` |
+
+## New from the catering upgrade (Nov 25, 2026)
+
+On deploy previews these show as yellow striped boxes. They are hidden on the live site until filled in.
+
+| # | What we need | Where it shows | Where to change it |
+|---|---|---|---|
+| A | **Real client quotes** (3 slots: a corporate client like Live Nation, SpaceX or Adobe; a film/TV client like Sony Pictures or DreamWorks; an office manager on booking speed). Name, title, company, and OK to publish. | "What clients say" on `/catering` | `reviews` in `src/data/business.ts`, then the `placeholders` list in `src/pages/catering.astro` |
+| B | **Case study details**: Live Nation (event types, guest counts, package, a quote); Sony Pictures (team or occasion, date, a quote). Photos from those jobs if you have them. | "Recent catering jobs" on `/catering` | `caseStudies` in `src/data/business.ts` |
+| C | **Logo files** for Rare Beauty, Altruist, Causeway Capital Management, Karney Properties, Layla Bagels (SVG best, or a large PNG) | Client logo bar (marked [LOGO NEEDED] on previews) | `public/images/clients/` + `clientTiles` |
+| D | **More press outlets** (name, title, link, logo) and the **Eater LA link** | Press section on `/catering` | `press` in `src/data/business.ts` |
+| E | **Street address and ZIP** (optional; city-only is fine for a caterer) | Google schema | `streetAddress`, `postalCode` in `src/data/business.ts` |
+| F | **Santa Monica farmers market**: which market, day, hours, address | `/catering/santa-monica`, llms.txt, could join the markets list | `otherMarkets` / `markets` in `src/data/business.ts` |
+| G | **Gluten-free**: which dishes (if any) are gluten-free | Menu labels | `src/components/MenuHighlights.astro` |
+| H | **Grill footprint** (how much room, outdoor only?) | `/on-site-grill-catering` | that page |
 
 ## When you have them
 
