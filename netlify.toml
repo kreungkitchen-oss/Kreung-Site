@@ -22,3 +22,8 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+# Serverless functions (netlify/functions). /api/events = upcoming events feed for the Square embed.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
