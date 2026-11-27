@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { business, policies, money, markets, marketNote, marketMenuNote, rewards, cateringMenu, links, clientNote } from '../data/business';
+import { business, policies, money, markets, marketNote, marketMenuNote, rewards, cateringMenu, links, clientNote, minimumsText, packageListText } from '../data/business';
 import { faqPage } from '../data/schema';
 
 const drinks = cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B');
@@ -13,8 +13,10 @@ const groups = [
     id: 'catering',
     heading: 'Catering',
     faqs: [
-      { q: 'How much does catering cost?', a: `Packages are $20 (Classic), $25 (Signature) and $33 (The Full Experience) per person. Delivery starts at $${policies.deliveryFrom}, sales tax applies, and some orders have a production fee. A 50-person Signature drop-off is about $29 per guest, all in.` },
-      { q: 'What is the minimum order?', a: `${money(policies.minimumDropoff)} for pickup and drop-off. ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+      { q: 'How much does catering cost?', a: `Packages are ${packageListText} per person. Delivery starts at $${policies.deliveryFrom}, sales tax applies, and some orders have a production fee. A 50-person Signature drop-off is about $29 per guest, all in.` },
+      { q: 'What is the minimum order?', a: `${minimumsText}.` },
+      { q: 'Why is the weekend minimum higher?', a: policies.weekendMinimumReason },
+      { q: 'What is your payment and cancellation policy?', a: `${policies.paymentPolicy} ${policies.cancellationPolicy}` },
       { q: 'How many guests can you serve?', a: `We cater for ${policies.guestsLabel} guests.` },
       { q: 'How far ahead should I book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead.` },
       { q: 'How fast will you get back to me?', a: `${policies.responseTime} ${policies.estimateTime}` },
@@ -23,7 +25,7 @@ const groups = [
       { q: 'Can you grill on-site at our event?', a: `Yes. We bring our grill and cook for your guests. On-site events have a ${money(policies.minimumOnsite)} minimum and a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}.` },
       { q: 'Who have you catered for?', a: `Teams at SpaceX, Adobe, Amazon, Live Nation, Sony Pictures, DreamWorks, Rare Beauty, Cedars-Sinai, Caltech and more. ${clientNote}` },
     ],
-    // TODO(Sam): add answers for deposits/payment, cancellations, and how far "most of LA County" reaches. Left off the page until confirmed.
+    // TODO(Sam): how far "most of LA County" reaches. Left off the page until confirmed.
   },
   {
     id: 'food',

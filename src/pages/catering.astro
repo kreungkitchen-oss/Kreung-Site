@@ -17,7 +17,7 @@ import PressGrid from '../components/PressGrid.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Faq from '../components/Faq.astro';
 import Estimator from '../components/Estimator.astro';
-import { policies, money, cateringMenu } from '../data/business';
+import { policies, money, cateringMenu, minimumsText } from '../data/business';
 import { cities } from '../data/cities';
 import { tone } from '../data/tones';
 import spread from '../assets/photos/event-indoor-buffet.jpg';
@@ -36,7 +36,7 @@ const kinds = [
 const drinks = cateringMenu.drinks.join(', ').toLowerCase();
 
 const faqs = [
-  { q: 'What is the minimum order?', a: `${money(policies.minimumDropoff)} for drop-off or pickup. ${money(policies.minimumOnsite)} when we cook on-site with our grill.` },
+  { q: 'What is the minimum order?', a: `${minimumsText}.` },
   { q: 'How much does Cambodian catering cost per person?', a: `Most orders are ${policies.typicalRange} per person. Our premium spread, with all four meats including short rib and coconut lime leaf rice, is $${policies.premiumTop} per person. Delivery, sales tax and some production fees are extra. See our pricing page for a full example.` },
   { q: 'How far ahead do I need to book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. We reply to every inquiry within 24 hours, usually the same day.` },
   { q: 'Where do you deliver, and what does it cost?', a: `We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom}, and we set up the food for you.` },
@@ -51,7 +51,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Catering', path: '/caterin
 ---
 <BaseLayout
   title="Cambodian BBQ Catering for LA Teams | Kreung LA"
-  description="Cambodian BBQ catering for LA teams. Most orders $20–25 per person, $1,000 minimum, delivered and set up. Book 14 days ahead. Reply in 24 hours."
+  description="Cambodian BBQ catering for LA teams. Most orders $20–25 per person, $500 weekday minimum, delivered and set up. Book 14 days ahead. Reply in 24 hours."
   path="/catering"
 >
   <section class="sec page-hero cat-hero" {...tone('yellow')}>
@@ -63,7 +63,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'Catering', path: '/caterin
         <ul class="price-strip" role="list">
           <li><b>{policies.typicalRange}</b><span>per person, most orders</span></li>
           <li><b>${policies.premiumTop}</b><span>per person, premium spread</span></li>
-          <li><b>{money(policies.minimumDropoff)}</b><span>minimum for drop-off</span></li>
+          <li><b>{money(policies.minimumDropoff)}</b><span>weekday drop-off minimum</span></li>
           <li><b>{money(policies.minimumOnsite)}</b><span>minimum on-site</span></li>
         </ul>
         <div class="btn-row">

@@ -1,13 +1,13 @@
 ---
 import NichePage from '../components/NichePage.astro';
-import { policies, cateringMenu } from '../data/business';
+import { policies, cateringMenu, packagePricesText } from '../data/business';
 import photo from '../assets/photos/event-backyard-spread.jpg';
 
 const faqs = [
   { q: 'Is Cambodian food Southeast Asian?', a: 'Yes. Cambodia sits between Thailand, Laos and Vietnam. Our BBQ uses classic Southeast Asian ingredients like lemongrass, galangal, turmeric and makrut lime leaves.' },
   { q: 'Will it work for a team with mixed tastes?', a: 'Yes. Grilled chicken, beef skewers and short rib are easy for anyone to love, and the herbs make them taste new. There are vegan tofu skewers too.' },
   { q: 'What vegan and allergy options do you have?', a: `Our tofu skewers are vegan, and our food contains no dairy or peanuts. ${policies.allergyNote}` },
-  { q: 'How much does it cost per person?', a: 'Packages are $20, $25 and $33 per person, plus delivery from $75 and sales tax. A 50-person Signature drop-off is about $29 per guest, all in.' },
+  { q: 'How much does it cost per person?', a: `Packages are ${packagePricesText} per person, plus delivery from $75 and sales tax. A 50-person Signature drop-off is about $29 per guest, all in.` },
   { q: 'How big a group can you feed?', a: `We cater for ${policies.guestsLabel} guests.` },
   { q: 'How far ahead should we book?', a: `At least ${policies.leadTimeDays} days (2 weeks). ${policies.responseTime}` },
 ];

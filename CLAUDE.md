@@ -30,14 +30,17 @@ The marketing website for Kreung LA (kreungla.com), a Cambodian street BBQ cater
   - Also a Santa Monica farmers market (Sam, Nov 25 2026; which market/day/hours still TODO).
   - Note: schedules can change; check @kreung_la. Evening pop-ups at LA Aleworks (Hawthorne) and events.
 - Market menu (from Sam's menu board, Nov 2026): The Sampler $25 (chicken, pork belly, beef skewer; our three most popular meats), Lemongrass Chicken Plate $16.50 (best seller), Lemongrass Beef Skewer Plate $19 (two beef skewers), Pork Belly Plate $16.50 (slow roasted, finished on the grill). Every plate includes white rice, coconut corn and pickled veggies. Add a short rib to any plate $7; upgrade to coco-lime leaf rice $2. Small bites: pork belly $6.50, chicken thigh $6.50, beef skewer $7 (3 for $18), short rib $8 (2 for $15), pickled veggies $4.50, coconut corn $4.50, coco-lime leaf rice $4.50, white rice $3.50, extra sauce $0.75. Drinks: lemonade $7, soda $2.50, bottled water $3.50.
-- Catering packages:
+- Catering packages (Sam, Nov 27 2026):
+  - Bowl Bar $16/person: stir-fried lemongrass chicken (cha kreung), white rice and one side, served build-your-own in trays (no individual bowls).
   - Classic $20/person: 1 protein; rice, coconut corn, pickled veggies. For simple team lunches.
   - Signature $25/person (most popular): 2 proteins; rice, coconut corn, pickled veggies. For office lunches and team events.
-  - The Full Experience $33/person: all 4 meats including short rib; coconut lime leaf rice. For weddings and celebrations.
+  - The Full Experience $35/person: all 4 meats including short rib; coconut lime leaf rice. For weddings and celebrations.
   - Every package includes house sauces.
 - Catering menu items: grilled lemongrass chicken, beef skewers, tofu skewers (vegan), short rib, coconut chive corn salad, pickled vegetables, rice options incl. coconut lime leaf rice, house sauces. Drinks (bottled water, sodas, sparkling water) available separately.
-- Pricing summary (Sam, Nov 25 2026): most orders $20–25 per person; premium spread up to $33/person.
-- Minimums: $1,000 for pickup and drop-off; $2,000 for our grill on-site.
+- Pricing summary: packages $16–35 per person; most orders $20–25 per person; premium spread $35/person (Sam, Nov 27 2026).
+- Minimums (Sam, Nov 27 2026): $500 for weekday (Mon–Fri) pickup and drop-off; $1,000 on weekends (Sat–Sun); $2,000 for our grill on-site. Reason for the weekend minimum: the crew is at farmers markets and Smorgasburg on weekends.
+- Payment and cancellation (Sam, Nov 27 2026): corporate orders invoiced in full at booking. Private events: 50% deposit to hold the date, balance due 7 days before. Cancel more than 7 days out: refund everything except 30% of the order total. Within 7 days: 50% of the order total is non-refundable.
+- Estimator shows the food total only (Sam, Nov 27 2026). Delivery, production fee and tax are explained in notices and the FAQ, and added in the quote.
 - On-site events are self-sufficient: we bring our own generators and handwashing station (Sam, Nov 25 2026).
 - Film/TV crews: drop-off, individually packaged skewer meals (Sam, Nov 25 2026).
 - Delivery: most of LA County, delivery starts at $75, includes setup.

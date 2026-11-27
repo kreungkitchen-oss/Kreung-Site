@@ -8,13 +8,13 @@ import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
 import Estimator from '../components/Estimator.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { policies, money, cateringMenu, press, clientNote } from '../data/business';
+import { policies, money, cateringMenu, press, clientNote, minimumsText } from '../data/business';
 import office from '../assets/photos/event-office-lunch.jpg';
 import skewers from '../assets/photos/food-skewers-tray.jpg';
 
 const faqs = [
   { q: 'How much does corporate catering cost?', a: `Our packages are $20, $25 and $33 per person. Most office lunches pick the $25 Signature package with 2 proteins. Delivery starts at $${policies.deliveryFrom}, and sales tax applies.` },
-  { q: 'What is the minimum order for office catering?', a: `The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+  { q: 'What is the minimum order for office catering?', a: `The minimum is ${minimumsText}.` },
   { q: 'How far ahead do we need to book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
   { q: 'Do you deliver and set up?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
   { q: 'Is there a production fee?', a: `Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests have a ${policies.productionFeeDropoffPct}% production fee. On-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
@@ -98,7 +98,7 @@ const crumbs = [
         </ol>
       </div>
       <dl class="facts facts--1">
-        <div><dt>Minimums</dt><dd>{money(policies.minimumDropoff)} for pickup and drop-off. {money(policies.minimumOnsite)} for our grill on-site.</dd></div>
+        <div><dt>Minimums</dt><dd>{money(policies.minimumDropoff)} for weekday pickup and drop-off. {money(policies.minimumWeekend)} on weekends. {money(policies.minimumOnsite)} for our grill on-site.</dd></div>
         <div><dt>Delivery</dt><dd>{policies.deliveryArea.replace(/^m/, 'M')}, from ${policies.deliveryFrom}. Setup included.</dd></div>
         <div><dt>Production fee</dt><dd>{policies.productionFeeDropoffPct}% on drop-off orders for {policies.productionFeeDropoffThreshold}+ guests. {policies.productionFeeOnsitePct}% for on-site cooking, starting at ${policies.productionFeeOnsiteMin}. {policies.productionFeeNote}</dd></div>
         <div><dt>Guests</dt><dd>{policies.guestsLabel}.</dd></div>

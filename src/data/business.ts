@@ -175,7 +175,7 @@ export const marketDrinks: MenuItem[] = [
 /** Formats menu prices: $25, $16.50 */
 export const menuPrice = (n: number) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`);
 
-export type PackageId = 'classic' | 'signature' | 'full';
+export type PackageId = 'bowl' | 'classic' | 'signature' | 'full';
 export const packages: {
   id: PackageId;
   name: string;
@@ -185,6 +185,15 @@ export const packages: {
   bestFor: string;
   popular?: boolean;
 }[] = [
+  {
+    // Sam (2026-11-27): $16 entry option, served build-your-own in trays (no individual bowls).
+    id: 'bowl',
+    name: 'Bowl Bar',
+    price: 16,
+    proteins: 'Stir-fried lemongrass chicken (cha kreung)',
+    sides: 'White rice and one side, served build-your-own in trays',
+    bestFor: 'Budget-friendly team lunches',
+  },
   {
     id: 'classic',
     name: 'Classic',
@@ -205,7 +214,7 @@ export const packages: {
   {
     id: 'full',
     name: 'The Full Experience',
-    price: 33,
+    price: 35,
     proteins: 'All 4 meats, including short rib',
     sides: 'Coconut lime leaf rice',
     bestFor: 'Weddings and celebrations',
@@ -231,8 +240,10 @@ export const cateringMenu = {
 } as const;
 
 export const policies = {
-  minimumDropoff: 1000, // pickup and drop-off
-  minimumOnsite: 2000, // our grill on-site
+  // Sam (2026-11-27): lowered from a flat $1,000. Weekdays (Mon–Fri) $500, weekends (Sat–Sun) $1,000.
+  minimumDropoff: 500, // weekday pickup and drop-off (the lowest minimum)
+  minimumWeekend: 1000, // weekend pickup and drop-off
+  minimumOnsite: 2000, // our grill on-site, any day
   deliveryFrom: 75,
   deliveryArea: 'most of LA County',
   deliveryIncludes: 'setup',
@@ -250,8 +261,16 @@ export const policies = {
   onsiteSetup: 'We bring our own generators and a handwashing station.',
   // Pricing summary from Sam (2026-11-25).
   typicalRange: '$20–25',
-  premiumTop: 33,
+  premiumTop: 35,
+  startingPrice: 16,
   estimateTime: 'Estimates in 24–48 hours.',
+  weekendMinimumReason:
+    'On weekends, our crew is out grilling at farmers markets across the Westside and at Smorgasburg, so catering takes us off the market schedule. Weekday events get our full team, which is why the weekday drop-off minimum is just $500.',
+  // Sam (2026-11-27): payment and cancellation policy.
+  paymentPolicy:
+    'Corporate orders are invoiced in full at booking. For private events, a 50% deposit holds your date, and the rest is due 7 days before your event.',
+  cancellationPolicy:
+    'If you cancel more than 7 days before your event, we refund everything except 30% of the order total, which covers ingredients we have already bought. Within 7 days, 50% of the order total is non-refundable, since staffing and prep are locked in.',
   allergyNote:
     'Some dishes contain fish sauce, oyster sauce (shellfish, gluten), tamari (soy) and sesame oil. Our food contains no dairy or peanuts.',
 } as const;
@@ -402,3 +421,10 @@ export const lunchClub = {
   name: 'Office Lunch Club',
   pitch: 'A standing Cambodian BBQ lunch for your team, monthly or every other week.',
 };
+
+/** Minimums in one sentence, used on every page (Sam, 2026-11-27). */
+export const minimumsText = `${money(policies.minimumDropoff)} for weekday pickup and drop-off (Mon–Fri), ${money(policies.minimumWeekend)} on weekends, and ${money(policies.minimumOnsite)} for our grill on-site`;
+/** All package prices as a phrase: "$16, $20, $25 and $35". */
+export const packagePricesText = (() => { const p = packages.map((x) => `$${x.price}`); return `${p.slice(0, -1).join(', ')} and ${p[p.length - 1]}`; })();
+/** Package prices with names: "$16 (Bowl Bar), $20 (Classic), $25 (Signature) and $35 (The Full Experience)". */
+export const packageListText = (() => { const p = packages.map((x) => `$${x.price} (${x.name})`); return `${p.slice(0, -1).join(', ')} and ${p[p.length - 1]}`; })();

@@ -57,7 +57,7 @@ const crumbs = [
         <Breadcrumbs items={crumbs} />
         <h1>{p.h1}</h1>
         <p class="lede">{p.lede}</p>
-        <p class="hero-facts">{p.heroFacts ?? `From $20 per person · ${policies.guestsLabel} guests · ${money(policies.minimumDropoff)} minimum`}</p>
+        <p class="hero-facts">{p.heroFacts ?? `From $${policies.startingPrice} per person · ${policies.guestsLabel} guests · ${money(policies.minimumDropoff)} weekday minimum`}</p>
         <div class="btn-row"><a class="btn" href="#estimate">{button}</a></div>
       </div>
       <figure class="photo">

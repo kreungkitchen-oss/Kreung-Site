@@ -29,7 +29,7 @@ const near = c.nearby.map((s) => cityBySlug(s)!).filter(Boolean);
   crumb={c.name}
   h1={c.h1}
   lede={c.lede}
-  heroFacts={`Most orders ${policies.typicalRange} per person · ${money(policies.minimumDropoff)} minimum drop-off · Reply within 24 hours`}
+  heroFacts={`Most orders ${policies.typicalRange} per person · ${money(policies.minimumDropoff)} weekday minimum · Reply within 24 hours`}
   photo={photo}
   photoAlt={c.photoAlt}
   button="Get a quote in 24 hours"
@@ -54,7 +54,7 @@ const near = c.nearby.map((s) => cityBySlug(s)!).filter(Boolean);
       <ul class="check">{c.goodFor.map((g) => <li>{g}</li>)}</ul>
       <dl class="cfacts">
         <div><dt>Price</dt><dd>Most orders {policies.typicalRange} per person. Premium spread ${policies.premiumTop}.</dd></div>
-        <div><dt>Minimum</dt><dd>{money(policies.minimumDropoff)} drop-off. {money(policies.minimumOnsite)} on-site.</dd></div>
+        <div><dt>Minimum</dt><dd>{money(policies.minimumDropoff)} weekday drop-off. {money(policies.minimumWeekend)} weekends. {money(policies.minimumOnsite)} on-site.</dd></div>
         <div><dt>Delivery</dt><dd>From ${policies.deliveryFrom}, setup included.</dd></div>
         <div><dt>Book ahead</dt><dd>At least {policies.leadTimeDays} days.</dd></div>
       </dl>

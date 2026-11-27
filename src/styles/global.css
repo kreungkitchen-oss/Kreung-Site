@@ -271,11 +271,15 @@ figure { margin: 0; }
 }
 @media (min-width: 960px) {
   :root { --gutter: 32px; --header-h: 84px; }
-  .grid--3, .tiers { grid-template-columns: repeat(3, 1fr); }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .tiers { grid-template-columns: repeat(2, 1fr); }
   .grid--4 { grid-template-columns: repeat(4, 1fr); }
   .split { grid-template-columns: 1fr 1fr; }
   .split--wide { grid-template-columns: 1.2fr 1fr; }
   .page-hero__grid { grid-template-columns: 1.3fr 1fr; }
+}
+@media (min-width: 1200px) {
+  .tiers { grid-template-columns: repeat(4, 1fr); }
 }
 
 /* ---------- Shared page bits ---------- */

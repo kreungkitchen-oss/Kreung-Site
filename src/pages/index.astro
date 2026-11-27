@@ -10,7 +10,7 @@ import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { tone } from '../data/tones';
 import PressGrid from '../components/PressGrid.astro';
-import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients, videos } from '../data/business';
+import { business, policies, links, press, story, rewards, money, khmer, kreungIngredients, videos, minimumsText } from '../data/business';
 
 import logo from '../assets/brand/logo-horizontal.png';
 import heroStill from '../assets/photos/grill-sausage-flames.jpg';
@@ -34,7 +34,7 @@ const doors = [
 
 const faqs = [
   { q: 'How many people can you cater for?', a: `We cater for ${policies.guestsLabel} guests. Packages start at $20 per person.` },
-  { q: 'Is there a minimum order for catering?', a: `Yes. The minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+  { q: 'Is there a minimum order for catering?', a: `Yes. The minimum is ${minimumsText}.` },
   { q: 'How far ahead should I book?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
   { q: 'Do you deliver?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
   { q: 'What about allergies?', a: `${policies.allergyNote} We also have vegan tofu skewers.` },

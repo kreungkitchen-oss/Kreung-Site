@@ -1,11 +1,11 @@
 ---
 import GuideLayout from '../../components/GuideLayout.astro';
-import { marketContext, policies, money } from '../../data/business';
+import { marketContext, policies, money, minimumsText } from '../../data/business';
 
 const faqs = [
   { q: 'How much does catering cost per person in Los Angeles?', a: `${marketContext.text} Kreung LA packages are $20, $25 and $33 per person.` },
   { q: 'What fees should I expect on a catering quote?', a: 'Common extras are delivery, setup, service or production fees, sales tax, drinks and gratuity. Ask for an all-in estimate so nothing surprises you.' },
-  { q: 'Do caterers have minimums?', a: `Most do. At Kreung LA the minimum is ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.` },
+  { q: 'Do caterers have minimums?', a: `Most do. At Kreung LA the minimum is ${minimumsText}.` },
   { q: 'Is a production fee the same as a tip?', a: 'Not always. At Kreung LA, the production fee is a one-time charge for large or on-site events. It is not a gratuity.' },
   { q: 'How can I lower my catering cost?', a: 'Choose drop-off instead of full service, pick fewer proteins, get an accurate headcount and book early so you are not paying rush fees.' },
 ];

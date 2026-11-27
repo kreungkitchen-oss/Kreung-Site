@@ -7,7 +7,7 @@ const faqs = [
   { q: 'How early should we book a holiday party?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. For December dates, the earlier the better.` },
   { q: 'Can you grill on-site at our holiday party?', a: `Yes. Our grill on-site has a ${money(policies.minimumOnsite)} minimum and a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}.` },
   { q: 'What does holiday catering cost?', a: 'Packages are $20, $25 and $33 per person. The Full Experience, with all 4 meats including short rib, is our pick for a big celebration.' },
-  { q: 'Can you drop off for an office party?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup. The drop-off minimum is ${money(policies.minimumDropoff)}.` },
+  { q: 'Can you drop off for an office party?', a: `Yes. We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup. The drop-off minimum is ${money(policies.minimumDropoff)} on weekdays and ${money(policies.minimumWeekend)} on weekends.` },
   { q: 'Do you have options for vegan guests?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
   { q: 'Can we add drinks?', a: 'Yes. Bottled water, sodas and sparkling water are available separately.' },
 ];

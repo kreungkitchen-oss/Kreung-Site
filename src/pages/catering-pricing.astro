@@ -7,7 +7,7 @@ import ProofBar from '../components/ProofBar.astro';
 import Reviews from '../components/Reviews.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { packages, policies, money, marketContext, cateringMenu } from '../data/business';
+import { packages, policies, money, marketContext, cateringMenu, minimumsText, packageListText, packagePricesText } from '../data/business';
 import { article } from '../data/schema';
 import plating from '../assets/photos/food-rice-corn-plating.jpg';
 
@@ -27,12 +27,13 @@ const ex1 = example(50, 'signature', 'drop');
 const ex2 = example(150, 'signature', 'drop');
 
 const faqs = [
-  { q: 'How much does catering cost per person?', a: `Our packages are $20 (Classic), $25 (Signature) and $33 (The Full Experience) per person. A 50-person Signature drop-off comes to about ${money(ex1.per)} per guest with delivery and estimated tax.` },
-  { q: 'Is there a minimum order?', a: `Yes. ${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} when we bring our grill on-site.` },
+  { q: 'How much does catering cost per person?', a: `Our packages are ${packageListText} per person. A 50-person Signature drop-off comes to about ${money(ex1.per)} per guest with delivery and estimated tax.` },
+  { q: 'Is there a minimum order?', a: `Yes. ${minimumsText}.` },
+  { q: 'Why is the weekend minimum higher?', a: policies.weekendMinimumReason },
+  { q: 'What is your payment and cancellation policy?', a: `${policies.paymentPolicy} ${policies.cancellationPolicy}` },
   { q: 'How much is delivery?', a: `Delivery starts at $${policies.deliveryFrom} and includes setup. We deliver to ${policies.deliveryArea}.` },
   { q: 'What is the production fee?', a: `It's ${policies.productionFeeDropoffPct}% on drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests, and ${policies.productionFeeOnsitePct}% for on-site cooking, starting at $${policies.productionFeeOnsiteMin}. ${policies.productionFeeNote}` },
-  { q: 'Is gratuity included?', a: 'The production fee is not a gratuity. It is a one-time charge that covers the work of producing a large or on-site event.' },
-  { q: 'Do I pay sales tax?', a: `Yes, sales tax applies. Our estimator uses ${policies.estimatedTaxPct}% as a guide. Your final tax is confirmed in your quote.` },
+  { q: 'Do I pay sales tax?', a: `Yes, sales tax applies. It's added to your quote. The example on this page uses ${policies.estimatedTaxPct}% as a guide.` },
   { q: 'Are drinks included?', a: `No. ${cateringMenu.drinks.join(', ').toLowerCase().replace(/^b/, 'B')} are available separately.` },
 ];
 
@@ -42,7 +43,7 @@ const crumbs = [
   { name: 'Pricing', path: '/catering-pricing' },
 ];
 const title = 'Catering Cost in Los Angeles: Pricing Guide | Kreung LA';
-const description = 'What Cambodian BBQ catering costs in LA: $20–33 per person, minimums, delivery, production fee and tax, with a worked example. About $29 per guest.';
+const description = 'What Cambodian BBQ catering costs in LA: $16–35 per person, minimums, delivery, production fee and tax, with a worked example. About $29 per guest.';
 ---
 <BaseLayout
   title={title}
@@ -55,7 +56,7 @@ const description = 'What Cambodian BBQ catering costs in LA: $20–33 per perso
       <div>
         <Breadcrumbs items={crumbs} />
         <h1>How Much Does Catering Cost in Los Angeles? Kreung LA Pricing Guide</h1>
-        <p class="lede">Our catering is priced per person: $20, $25 or $33. Most office lunches land around {money(ex1.per)} per guest, all in. Here's exactly how it adds up.</p>
+        <p class="lede">Our catering is priced per person: {packagePricesText}. Most office lunches land around {money(ex1.per)} per guest, all in. Here's exactly how it adds up.</p>
         <div class="btn-row">
           <a class="btn" href="/catering#estimate">Get your estimate</a>
         </div>
@@ -82,7 +83,7 @@ const description = 'What Cambodian BBQ catering costs in LA: $20–33 per perso
       <table>
         <thead><tr><th scope="col">Item</th><th scope="col">How it works</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Minimum order</th><td>{money(policies.minimumDropoff)} for pickup and drop-off. {money(policies.minimumOnsite)} when we bring our grill on-site.</td></tr>
+          <tr><th scope="row">Minimum order</th><td>{money(policies.minimumDropoff)} for weekday pickup and drop-off. {money(policies.minimumWeekend)} on weekends. {money(policies.minimumOnsite)} when we bring our grill on-site.</td></tr>
           <tr><th scope="row">Delivery</th><td>From ${policies.deliveryFrom}, setup included. We cover {policies.deliveryArea}.</td></tr>
           <tr><th scope="row">Production fee</th><td>{policies.productionFeeDropoffPct}% on drop-off orders for {policies.productionFeeDropoffThreshold}+ guests. {policies.productionFeeOnsitePct}% for on-site cooking, starting at ${policies.productionFeeOnsiteMin}. {policies.productionFeeNote}</td></tr>
           <tr><th scope="row">Sales tax</th><td>Sales tax applies. We estimate {policies.estimatedTaxPct}% and confirm the final amount in your quote.</td></tr>
@@ -109,7 +110,7 @@ const description = 'What Cambodian BBQ catering costs in LA: $20–33 per perso
       <ul>
         <li><strong>Guest count.</strong> More guests means more food. Drop-off orders for {policies.productionFeeDropoffThreshold}+ guests add a {policies.productionFeeDropoffPct}% production fee.</li>
         <li><strong>Proteins.</strong> Classic has 1 protein, Signature has 2, and The Full Experience has all 4, including short rib.</li>
-        <li><strong>Drop-off or on-site.</strong> Pickup and drop-off start at a {money(policies.minimumDropoff)} minimum. Our grill on-site starts at {money(policies.minimumOnsite)}, with a {policies.productionFeeOnsitePct}% production fee (at least ${policies.productionFeeOnsiteMin}).</li>
+        <li><strong>Drop-off or on-site.</strong> Pickup and drop-off have a {money(policies.minimumDropoff)} minimum on weekdays and {money(policies.minimumWeekend)} on weekends. Our grill on-site starts at {money(policies.minimumOnsite)}, with a {policies.productionFeeOnsitePct}% production fee (at least ${policies.productionFeeOnsiteMin}).</li>
         <li><strong>Distance.</strong> Delivery starts at ${policies.deliveryFrom}. Farther locations may cost more.</li>
         <li><strong>Drinks.</strong> Water, sodas and sparkling water are extra.</li>
       </ul>

@@ -1,13 +1,13 @@
 ---
 import NichePage from '../components/NichePage.astro';
-import { policies, khmer } from '../data/business';
+import { policies, khmer, packagePricesText, minimumsText } from '../data/business';
 import photo from '../assets/photos/team-shirts-tent.jpg';
 
 const faqs = [
   { q: 'When should we book for AAPI Heritage Month?', a: `AAPI Heritage Month is in May. Please book as early as you can, and at least ${policies.leadTimeDays} days ahead.` },
   { q: 'Is Kreung LA AAPI-owned?', a: 'Yes. Kreung LA is owned by Sam Oum and Christina. Sam is Cambodian American, born in Khao-I-Dang, a refugee camp on the Thai-Cambodian border.' },
   { q: 'Can Sam share the story behind the food?', a: 'Tell us what your event needs when you ask for a quote, and we will talk through it with you.' },
-  { q: 'How much does it cost?', a: 'Packages are $20, $25 and $33 per person. The minimum is $1,000 for pickup and drop-off and $2,000 for our grill on-site.' },
+  { q: 'How much does it cost?', a: `Packages are ${packagePricesText} per person. The minimum is ${minimumsText}.` },
   { q: 'Can you serve our whole office?', a: `Yes. We cater for ${policies.guestsLabel} guests and deliver to ${policies.deliveryArea}.` },
   { q: 'Do you have vegan options?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
 ];
