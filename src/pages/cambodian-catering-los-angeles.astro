@@ -1,13 +1,13 @@
 ---
 import NichePage from '../components/NichePage.astro';
-import { policies, khmer, kreungIngredients } from '../data/business';
+import { policies, khmer, kreungIngredients, packagePricesText, minimumsText } from '../data/business';
 import photo from '../assets/photos/plate-combo.jpg';
 
 const faqs = [
   { q: 'What is Cambodian BBQ?', a: 'Cambodian street BBQ is meat grilled over fire after soaking in kreung, an herb paste of lemongrass, galangal, turmeric, makrut lime leaves, garlic and shallots. We serve it with rice, coconut corn, pickled vegetables and house sauces.' },
   { q: 'What comes with the meat?', a: 'Every package comes with rice, coconut corn, pickled vegetables and house sauces. The Full Experience comes with coconut lime leaf rice.' },
   { q: 'How is Cambodian food different from Thai food?', a: 'They share some ingredients, like lemongrass and galangal. Cambodian cooking is built on herb pastes like kreung, with fresh and pickled sides on the plate. Our guide on Cambodian vs. Thai food explains more.' },
-  { q: 'How much does Cambodian catering cost?', a: `Our packages are $20, $25 and $33 per person. The minimum is $1,000 for pickup and drop-off and $2,000 for our grill on-site.` },
+  { q: 'How much does Cambodian catering cost?', a: `Our packages are ${packagePricesText} per person. The minimum is ${minimumsText}.` },
   { q: 'Do you have vegan Cambodian dishes?', a: 'Yes. Our tofu skewers are vegan. Our food contains no dairy or peanuts.' },
   { q: 'Where in LA do you cater?', a: `We are based in Culver City and deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup.` },
 ];

@@ -3,7 +3,7 @@
  * Built from src/data/business.ts so it never drifts from the site.
  */
 import type { APIRoute } from 'astro';
-import { business, packages, packagesNote, policies, markets, marketNote, otherMarkets, cateringMenu, clients, clientNote, caseStudies, ratings, rewards, money, SITE_URL } from '../data/business';
+import { business, packages, packagesNote, policies, markets, marketNote, otherMarkets, cateringMenu, clients, clientNote, caseStudies, ratings, rewards, money, SITE_URL, minimumsText } from '../data/business';
 import { cities } from '../data/cities';
 
 const u = (p: string) => `${SITE_URL}${p}`;
@@ -18,7 +18,7 @@ Founded January 1, 2024 by Sam Oum and Christina. Contact: ${business.email}, te
 ## Catering at a glance
 
 - Price: most orders are ${policies.typicalRange} per person. Premium spread (all four meats including short rib, plus coconut lime leaf rice): $${policies.premiumTop} per person.
-- Minimum order: ${money(policies.minimumDropoff)} for drop-off; ${money(policies.minimumOnsite)} for on-site catering.
+- Minimum order: ${minimumsText}.
 - Book at least ${policies.leadTimeDays} days ahead. We reply within 24 hours, usually the same day.
 - Delivery: ${policies.deliveryArea}, from $${policies.deliveryFrom}. We deliver and set up.
 - On-site events are self-sufficient: ${policies.onsiteSetup.replace(/^We/, 'we')}
@@ -37,7 +37,7 @@ ${packages.map((p) => `- ${p.name}: $${p.price} per person. ${p.proteins}; ${p.s
 
 ## Catering policies
 
-- Minimums: ${money(policies.minimumDropoff)} for pickup and drop-off; ${money(policies.minimumOnsite)} for our grill on-site.
+- Minimums: ${minimumsText}.
 - Delivery: ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes ${policies.deliveryIncludes}.
 - Production fee: ${policies.productionFeeDropoffPct}% on drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests; ${policies.productionFeeOnsitePct}% for on-site cooking (starting at $${policies.productionFeeOnsiteMin}). ${policies.productionFeeNote}
 - Guests: ${policies.guestsLabel}.

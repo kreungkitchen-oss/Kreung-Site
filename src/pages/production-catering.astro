@@ -1,6 +1,6 @@
 ---
 import NichePage from '../components/NichePage.astro';
-import { policies, money, caseStudies } from '../data/business';
+import { policies, money, caseStudies, minimumsText } from '../data/business';
 import photo from '../assets/photos/serving-line.jpg';
 
 const faqs = [
@@ -8,7 +8,7 @@ const faqs = [
   { q: 'Can you pack each meal on its own?', a: 'Yes. For crews we can drop off individually packed skewer meals, so everyone can grab one and go. Tell us your crew size and any vegan meals you need.' },
   { q: 'Can you deliver to a set or studio lot?', a: `We deliver to ${policies.deliveryArea}. Delivery starts at $${policies.deliveryFrom} and includes setup. Send us your call time and location when you ask for a quote.` },
   { q: 'How much notice do you need?', a: `Please book at least ${policies.leadTimeDays} days (2 weeks) ahead. ${policies.responseTime}` },
-  { q: 'What is the minimum order?', a: `${money(policies.minimumDropoff)} for pickup and drop-off, and ${money(policies.minimumOnsite)} for our grill on-site.` },
+  { q: 'What is the minimum order?', a: `${minimumsText}.` },
   { q: 'Is there a production fee for big crews?', a: `Drop-off orders for ${policies.productionFeeDropoffThreshold}+ guests have a ${policies.productionFeeDropoffPct}% production fee. ${policies.productionFeeNote}` },
   { q: 'Can you handle dietary needs on a crew?', a: `Yes. Our tofu skewers are vegan, and our food contains no dairy or peanuts. ${policies.allergyNote}` },
   { q: 'Can you cook on location?', a: `Yes. Our on-site setup is self-sufficient. ${policies.onsiteSetup} The minimum is ${money(policies.minimumOnsite)}, with a ${policies.productionFeeOnsitePct}% production fee starting at $${policies.productionFeeOnsiteMin}.` },
@@ -38,7 +38,7 @@ const faqs = [
       <p>You have a schedule to keep. Tell us your call time, crew size and location, and we'll plan the drop-off around it.</p>
       <h2>Individually packed skewer meals</h2>
       <p>No buffet line slowing down your crew. We can pack each meal on its own: grilled skewers with rice and sides, ready to grab. Mix beef, chicken and vegan tofu skewers to fit your crew.</p>
-      <p>Most orders run {policies.typicalRange} per person, with a {money(policies.minimumDropoff)} minimum for drop-off.</p>
+      <p>Most orders run {policies.typicalRange} per person, with a {money(policies.minimumDropoff)} minimum for weekday drop-off ({money(policies.minimumWeekend)} on weekends).</p>
       <h2>How it works</h2>
       <ol>
         <li>Get your estimate below, with your crew size and date.</li>

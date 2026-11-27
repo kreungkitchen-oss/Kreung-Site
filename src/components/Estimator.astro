@@ -10,7 +10,7 @@
  *   Google Form field mapping: src/data/googleForm.ts.
  * Pricing rules come from src/data/business.ts.
  */
-import { packages, policies, money } from '../data/business';
+import { packages, policies, money, minimumsText, packagePricesText } from '../data/business';
 interface Props { defaultType?: string; heading?: string; defaultService?: 'Drop-off' | 'Pickup' | 'On-site grill'; notes?: string }
 const { defaultType = 'Corporate or office lunch', heading = 'Get your estimate', defaultService = 'Drop-off', notes = '' } = Astro.props;
 const eventTypes = ['Corporate or office lunch', 'Private celebration', 'Wedding or engagement', 'Community event', 'Other'];
@@ -25,6 +25,7 @@ const cfg = {
   feeOnsiteMin: policies.productionFeeOnsiteMin,
   tax: policies.estimatedTaxPct,
   minDrop: policies.minimumDropoff,
+  minWeekend: policies.minimumWeekend,
   minOnsite: policies.minimumOnsite,
   lead: policies.leadTimeDays,
 };
@@ -185,26 +186,21 @@ const cfg = {
         <div data-live hidden>
           <p class="est-total" aria-live="polite" data-total>$0</p>
           <p class="est-pp" data-pp></p>
-          <dl class="est-lines">
-            <div><dt>Food</dt><dd data-food>$0</dd></div>
-            <div><dt>Delivery</dt><dd data-delivery>$0</dd></div>
-            <div><dt>Production fee</dt><dd data-fee>$0</dd></div>
-            <div><dt>Estimated tax ({policies.estimatedTaxPct}%)</dt><dd data-tax>$0</dd></div>
-          </dl>
+          <p class="est-min" data-min></p>
           <ul class="est-warn" data-warn aria-live="polite"></ul>
+          <ul class="est-note" data-notes aria-live="polite"></ul>
         </div>
         <div class="est-static" data-static>
           <p>How we price it:</p>
           <ul>
-            <li>Food: guests × package price ($20, $25 or $33 per person).</li>
-            <li>Drop-off delivery starts at ${policies.deliveryFrom}, setup included.</li>
-            <li>Production fee: {policies.productionFeeDropoffPct}% on drop-off orders for {policies.productionFeeDropoffThreshold}+ guests, or {policies.productionFeeOnsitePct}% for on-site cooking (starting at ${policies.productionFeeOnsiteMin}).</li>
-            <li>Sales tax applies.</li>
-            <li>Minimums: {money(policies.minimumDropoff)} for pickup and drop-off, {money(policies.minimumOnsite)} for our grill on-site.</li>
+            <li>Food: guests × package price ({packagePricesText} per person).</li>
+            <li>Minimums: {minimumsText}.</li>
+            <li>A production fee applies to drop-off orders for {policies.productionFeeDropoffThreshold}+ guests and to on-site grilling.</li>
+            <li>Delivery (from ${policies.deliveryFrom}), any production fee and sales tax are added to your quote.</li>
           </ul>
         </div>
-        <p class="est-fine">Tax is estimated; final pricing confirmed in your quote. The production fee is a one-time charge, not a gratuity.</p>
-        <p class="est-fine"><a href="/catering-pricing">How pricing works</a></p>
+        <p class="est-fine">Food only. Delivery (from ${policies.deliveryFrom}), any production fee and sales tax are added to your quote.</p>
+        <p class="est-fine"><a href="/faq">Catering FAQ</a> · <a href="/catering-pricing">How pricing works</a></p>
       </div>
     </div>
   </div>
@@ -212,7 +208,7 @@ const cfg = {
 
 <script>
   import { GFORM, GFORM_URL, EVENT_TYPE, SERVICE_TEXT, SOURCE, ACK_TEXT, guestRange, budgetFor, dietChoices, time12 } from '../data/googleForm';
-  type Cfg = { prices: Record<string, number>; names: Record<string, string>; delivery: number; feeDropPct: number; feeDropMin: number; feeOnsitePct: number; feeOnsiteMin: number; tax: number; minDrop: number; minOnsite: number; lead: number };
+  type Cfg = { prices: Record<string, number>; names: Record<string, string>; delivery: number; feeDropPct: number; feeDropMin: number; feeOnsitePct: number; feeOnsiteMin: number; tax: number; minDrop: number; minWeekend: number; minOnsite: number; lead: number };
   const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US');
   document.querySelectorAll<HTMLElement>('[data-est]').forEach((root) => {
     const cfg: Cfg = JSON.parse(root.dataset.cfg || '{}');
@@ -242,35 +238,50 @@ const cfg = {
       const guests = Math.max(0, parseInt(val('guests'), 10) || 0);
       const price = cfg.prices[val('package')] || 0;
       const service = val('service');
+      // Sam (2026-11-27): the estimate shows food only. Delivery, production fee and tax are explained, not added.
       const food = guests * price;
       const delivery = service === 'Drop-off' ? cfg.delivery : 0;
       let fee = 0;
       if (service === 'Drop-off' && guests >= cfg.feeDropMin) fee = food * cfg.feeDropPct / 100;
       if (service === 'On-site grill') fee = Math.max(food * cfg.feeOnsitePct / 100, cfg.feeOnsiteMin);
-      const sub = food + delivery + fee;
-      const tax = sub * cfg.tax / 100;
-      const total = sub + tax;
-      const pp = guests ? total / guests : 0;
-      $('[data-total]').textContent = money(total);
-      $('[data-pp]').textContent = guests ? `About ${money(pp)} per guest, all in` : 'Enter your guest count';
-      $('[data-food]').textContent = `${money(food)} (${guests} × $${price})`;
-      $('[data-delivery]').textContent = service === 'Drop-off' ? `from ${money(delivery)}` : '$0';
-      $('[data-fee]').textContent = money(fee);
-      $('[data-tax]').textContent = money(tax);
-      const warns: string[] = [];
-      if (service === 'On-site grill' && food < cfg.minOnsite) warns.push(`Our grill on-site has a ${money(cfg.minOnsite)} food minimum.`);
-      if (service !== 'On-site grill' && food < cfg.minDrop) warns.push(`Pickup and drop-off have a ${money(cfg.minDrop)} food minimum.`);
+      const tax = 0;
+      const total = food;
+      const pp = price;
       const d = val('event-date');
+      const dow = d ? new Date(d + 'T12:00:00').getDay() : -1;
+      const weekend = dow === 0 || dow === 6;
+      const onsite = service === 'On-site grill';
+      const min = onsite ? cfg.minOnsite : weekend ? cfg.minWeekend : cfg.minDrop;
+      const svcName = onsite ? 'on-site grilling' : service === 'Pickup' ? 'pickup' : 'drop-off';
+      const dayName = onsite ? '' : !d ? 'weekday ' : weekend ? 'weekend ' : 'weekday ';
+      $('[data-total]').textContent = money(total);
+      $('[data-pp]').textContent = guests ? `Food total: ${guests} guests × $${price}` : 'Enter your guest count';
+      $('[data-min]').textContent = food >= min
+        ? `✓ Meets the ${money(min)} ${dayName}${svcName} minimum${!onsite && !d ? ` (${money(cfg.minWeekend)} on weekends)` : ''}.`
+        : '';
+      const warns: string[] = [];
+      if (food < min) {
+        const need = price ? Math.ceil(min / price) : 0;
+        let w = `${money(min)} minimum for ${dayName}${svcName}. That's about ${need} guests on this package, or choose a bigger package.`;
+        if (!onsite && weekend) w += ` Our weekday minimum is just ${money(cfg.minDrop)}.`;
+        if (!onsite && !d) w += ` (${money(cfg.minWeekend)} on weekends.)`;
+        warns.push(w);
+      }
       if (d) {
         const days = (new Date(d + 'T12:00:00').getTime() - Date.now()) / 86400000;
         if (days < cfg.lead) warns.push(`That's less than ${cfg.lead} days away. We need 2 weeks' notice, but send it anyway and we'll check.`);
       }
       $('[data-warn]').innerHTML = warns.map((w) => `<li>${w}</li>`).join('');
+      const notes: string[] = [];
+      if (onsite) notes.push(`<b>Production fee applies.</b> On-site grilling includes a ${cfg.feeOnsitePct}% production fee (starting at $${cfg.feeOnsiteMin}) for our grill team, equipment and setup.`);
+      else if (service === 'Drop-off' && guests >= cfg.feeDropMin) notes.push(`<b>Production fee applies.</b> Drop-off orders for ${cfg.feeDropMin}+ guests include a ${cfg.feeDropPct}% production fee for the extra staffing and logistics.`);
+      notes.forEach((_, i) => (notes[i] += ' It’s a one-time charge, not a gratuity, and it’s itemized on your quote.'));
+      $('[data-notes]').innerHTML = notes.map((n) => `<li>${n}</li>`).join('');
       setHidden('estimate-food', money(food));
       setHidden('estimate-delivery', service === 'Drop-off' ? `from ${money(delivery)}` : '$0');
       setHidden('estimate-production-fee', money(fee));
-      setHidden('estimate-tax', money(tax));
-      setHidden('estimate-total', money(total));
+      setHidden('estimate-tax', 'added in quote');
+      setHidden('estimate-total', money(total) + ' (food only)');
       setHidden('estimate-per-guest', money(pp));
       setHidden('estimate-warnings', warns.join(' '));
       last = { food, delivery, fee, tax, total, pp, guests, warns };
@@ -326,7 +337,7 @@ const cfg = {
         `Package: ${cfg.names[pkgId] || pkgId} ($${cfg.prices[pkgId] || 0}/person)`,
         `Drinks: ${g('drinks') || 'No'}`,
         `Exact guest count: ${last.guests}`,
-        `Website estimate: ${money(last.total)} (about ${money(last.pp)} per guest, tax estimated). Food ${money(last.food)}, delivery ${g('service') === 'Drop-off' ? 'from ' + money(last.delivery) : '$0'}, production fee ${money(last.fee)}, tax ${money(last.tax)}.`,
+        `Website estimate (food only): ${money(last.food)} (${last.guests} × $${last.pp}). Delivery ${g('service') === 'Drop-off' ? 'from ' + money(last.delivery) : '$0'}, production fee ${last.fee ? 'about ' + money(last.fee) : 'none'}, plus tax (added in your quote).`,
         g('budget') && `Budget (their words): ${g('budget')}`,
         diet && `Dietary needs (their words): ${diet}`,
         g('heard-about') && `Heard about us: ${g('heard-about')}`,
@@ -424,6 +435,11 @@ const cfg = {
   .est-warn { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
   .est-warn li { background: var(--cream); border: 2px solid var(--plum); border-radius: 12px; padding: 8px 12px; font-weight: 700; font-size: 15px; }
   .est-warn:empty { display: none; }
+  .est-min { font-weight: 800; margin: 0; }
+  .est-min:empty { display: none; }
+  .est-note { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
+  .est-note li { background: var(--white); border: 2px solid var(--plum); border-left: 8px solid var(--orange); border-radius: 12px; padding: 8px 12px; font-size: 15px; }
+  .est-note:empty { display: none; }
   .est-static p { font-weight: 800; margin-bottom: 6px; }
   .est-static ul { margin: 0; }
   .est-fine { font-size: 14px; margin: 12px 0 0; }

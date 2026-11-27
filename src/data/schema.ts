@@ -43,7 +43,7 @@ export const businessEntity = () => ({
     itemListElement: packages.map((p) => ({
       '@type': 'Offer',
       name: `${p.name} catering package`,
-      description: `${p.proteins}; ${p.sides}. ${packagesNote} Minimum order $${policies.minimumDropoff.toLocaleString('en-US')} (drop-off).`,
+      description: `${p.proteins}; ${p.sides}. ${packagesNote} Minimum order $${policies.minimumDropoff.toLocaleString('en-US')} for weekday drop-off, $${policies.minimumWeekend.toLocaleString('en-US')} on weekends.`,
       priceSpecification: { '@type': 'UnitPriceSpecification', price: p.price, priceCurrency: 'USD', unitText: 'per person' },
     })),
   },

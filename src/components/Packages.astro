@@ -1,5 +1,5 @@
 ---
-import { packages, packagesNote, policies, money } from '../data/business';
+import { packages, packagesNote, policies, money, minimumsText } from '../data/business';
 interface Props { headingLevel?: 2 | 3 | 4; showMinimums?: boolean; steps?: boolean }
 const { headingLevel = 3, showMinimums = true, steps = false } = Astro.props;
 const H = `h${headingLevel}`;
@@ -18,5 +18,5 @@ const H = `h${headingLevel}`;
     </article>
   ))}
 </div>
-<p class="pk-note">{packagesNote}{showMinimums && ` ${money(policies.minimumDropoff)} minimum for pickup and drop-off, ${money(policies.minimumOnsite)} for our grill on-site.`}</p>
+<p class="pk-note">{packagesNote}{showMinimums && ` Minimums: ${minimumsText}.`}</p>
 <style>.pk-note { margin-top: 22px; font-weight: 600; }</style>

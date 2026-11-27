@@ -1,13 +1,13 @@
 ---
 import NichePage from '../components/NichePage.astro';
-import { policies, money, lunchClub } from '../data/business';
+import { policies, money, lunchClub, packagePricesText } from '../data/business';
 import photo from '../assets/photos/event-office-lunch.jpg';
 
 const faqs = [
   { q: 'What is the Office Lunch Club?', a: `${lunchClub.pitch} You pick a regular day, and Cambodian BBQ shows up for your team on schedule.` },
   { q: 'How often can we book?', a: 'Monthly or every other week. Tell us what rhythm works for your office.' },
   { q: 'Do members get first pick of dates?', a: 'Yes. Lunch Club teams get first pick of dates on our calendar.' },
-  { q: 'What does it cost?', a: `Pricing starts from our regular packages: $20, $25 and $33 per person. The drop-off minimum is ${money(policies.minimumDropoff)} per order. Ask us about Lunch Club terms.` },
+  { q: 'What does it cost?', a: `Pricing starts from our regular packages: ${packagePricesText} per person. The weekday drop-off minimum is ${money(policies.minimumDropoff)} per order. Ask us about Lunch Club terms.` },
   { q: 'Can we switch up the menu each time?', a: 'Yes. Rotate between grilled lemongrass chicken, beef skewers, vegan tofu skewers and short rib.' },
   { q: 'Do you deliver and set up?', a: `Yes. We deliver to ${policies.deliveryArea}, from $${policies.deliveryFrom}, with setup included.` },
 ];

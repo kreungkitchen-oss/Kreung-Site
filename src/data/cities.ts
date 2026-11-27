@@ -31,7 +31,7 @@ export type City = {
 const deliveryA = (city: string) =>
   `Yes. ${city} is in our delivery area. Delivery starts at $${policies.deliveryFrom}, and we set up the food for you. We confirm the exact fee in your quote.`;
 const leadA = `Please book at least ${policies.leadTimeDays} days ahead. We reply to every inquiry within 24 hours, usually the same day.`;
-const minA = `${money(policies.minimumDropoff)} for drop-off and ${money(policies.minimumOnsite)} for on-site catering. Most orders run ${policies.typicalRange} per person.`;
+const minA = `${money(policies.minimumDropoff)} for weekday drop-off, ${money(policies.minimumWeekend)} on weekends, and ${money(policies.minimumOnsite)} for on-site catering. Most orders run ${policies.typicalRange} per person.`;
 const onsiteA = (where: string) =>
   `Yes. Our on-site setup is self-sufficient. ${policies.onsiteSetup} That makes it easy to cook at ${where}. On-site cooking has a ${policies.productionFeeOnsitePct}% production fee, starting at $${policies.productionFeeOnsiteMin}.`;
 
@@ -40,7 +40,7 @@ export const cities: City[] = [
     slug: 'culver-city',
     name: 'Culver City',
     title: 'Corporate Catering in Culver City | Kreung LA',
-    description: 'Cambodian BBQ catering from a Culver City team. Most orders $20–25 per person, $1,000 minimum, delivered and set up. Reply within 24 hours.',
+    description: 'Cambodian BBQ catering from a Culver City team. Most orders $20–25 per person, $500 weekday minimum, delivered and set up. Reply within 24 hours.',
     h1: 'Corporate catering in Culver City',
     lede: 'Culver City is home. We cook Cambodian street BBQ for the offices, studios and teams right here in our own neighborhood.',
     photo: 'event-office-lunch.jpg',
@@ -70,7 +70,7 @@ export const cities: City[] = [
     slug: 'santa-monica',
     name: 'Santa Monica',
     title: 'Corporate Catering in Santa Monica | Kreung LA',
-    description: 'Cambodian BBQ catering for Santa Monica offices and events. $20–25 per person for most orders, $1,000 minimum. Delivered, set up, booked fast.',
+    description: 'Cambodian BBQ catering for Santa Monica offices and events. $20–25 per person for most orders, $500 weekday minimum. Delivered, set up, booked fast.',
     h1: 'Corporate catering in Santa Monica',
     lede: 'Fire-grilled Cambodian BBQ for Santa Monica startups, agencies and studios. Just a few miles from our Culver City home base.',
     photo: 'event-night-dinner.jpg',
@@ -101,7 +101,7 @@ export const cities: City[] = [
     slug: 'playa-vista',
     name: 'Playa Vista',
     title: 'Corporate Catering in Playa Vista | Kreung LA',
-    description: 'Cambodian BBQ catering for Playa Vista tech teams. Most orders $20–25 per person, $1,000 minimum, delivered and set up. Book 14 days ahead.',
+    description: 'Cambodian BBQ catering for Playa Vista tech teams. Most orders $20–25 per person, $500 weekday minimum, delivered and set up. Book 14 days ahead.',
     h1: 'Corporate catering in Playa Vista',
     lede: "Cambodian street BBQ for Playa Vista tech and media teams. You may already know us from the Saturday farmers market.",
     photo: 'market-booth.jpg',
@@ -132,7 +132,7 @@ export const cities: City[] = [
     slug: 'westwood',
     name: 'Westwood',
     title: 'Corporate Catering in Westwood | Kreung LA',
-    description: 'Cambodian BBQ catering in Westwood for offices, campus groups and events. Most orders $20–25 per person, $1,000 minimum. Reply in 24 hours.',
+    description: 'Cambodian BBQ catering in Westwood for offices, campus groups and events. Most orders $20–25 per person, $500 weekday minimum. Reply in 24 hours.',
     h1: 'Corporate catering in Westwood',
     lede: 'Cambodian BBQ for Westwood offices, campus departments and events. We are at the Westwood Village Farmers Market every Thursday.',
     photo: 'event-campus-lawn.jpg',
@@ -163,7 +163,7 @@ export const cities: City[] = [
     slug: 'el-segundo',
     name: 'El Segundo',
     title: 'Corporate Catering in El Segundo | Kreung LA',
-    description: 'Cambodian BBQ catering for El Segundo offices. Most orders $20–25 per person, $1,000 minimum, delivered and set up. Prices shown, reply in 24 hours.',
+    description: 'Cambodian BBQ catering for El Segundo offices. Most orders $20–25 per person, $500 weekday minimum, delivered and set up. Reply in 24 hours.',
     h1: 'Corporate catering in El Segundo',
     lede: 'Cambodian BBQ for El Segundo aerospace, tech and media offices. Prices up front, booked in three steps.',
     photo: 'food-skewers-tray.jpg',
@@ -193,7 +193,7 @@ export const cities: City[] = [
     slug: 'downtown-la',
     name: 'Downtown LA',
     title: 'Corporate Catering in Downtown LA | Kreung LA',
-    description: 'Cambodian BBQ catering for Downtown LA offices and events. Most orders $20–25 per person, $1,000 minimum, delivered and set up. Reply in 24 hours.',
+    description: 'Cambodian BBQ catering for Downtown LA offices and events. Most orders $20–25 per person, $500 weekday minimum, delivered and set up. Reply in 24 hours.',
     h1: 'Corporate catering in Downtown LA',
     lede: 'Cambodian street BBQ for DTLA firms, studios and event spaces. Find us at Smorgasburg LA every Sunday.',
     photo: 'event-loft-party.jpg',
